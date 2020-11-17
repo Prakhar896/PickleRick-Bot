@@ -1,0 +1,20 @@
+{
+  "name": "picklerick",
+  "version": "1.0.0",
+  "description": "This is a multi-purpose Discord Bot for Discord users that use Discord a lot or are mods in a server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prakhar Trivedi",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "discord.js": "^12.4.1",
+    "fortnite-api-com": "^2.2.0",
+    "https": "^1.0.0",
+    "minecraft-server-util": "^3.1.0",
+    "ms": "^2.1.2",
+    "request": "^2.88.2"
+  }
+}
