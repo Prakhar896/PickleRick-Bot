@@ -324,7 +324,9 @@ bot.on('message', msg => {
                     .setTitle('Fortnite Commands Help')
                     .addField('Fortnite Map', 'You can get the fortnite map using the command pr!fn map')
                     .addField('Fortnite User Stats', 'Get stats on a specifc user from online via pr!fn stats <username, e.g Lachy>. Additionally, you can add an account type at the back, like pr!fn stats PWR%Lachy epic, to make account-specific queries. Accepted account types are epic, psn and xbl. (case-sensitive).')
-                    .addField('Fortnite Shop', 'Get information about the items in the Item Shop by pr!fn shop')
+                    .addField('Fortnite Creator Code Details', 'Get information on a creator code using pr!fn cc <creator code, with spaces replaced with %>, e.g: \'pr!fn cc Lachy\'')
+                    .addField('Fortnite News', 'Get the latest fortnite news with pr!fn news. the image also refreshes to other tabs.')
+                    .addField('Fortnite Cosmetics', 'Find out more information about a cosmetic with pr!fn cos <name of cosmetic, with spaces replaced with %>')
                     .setThumbnail('https://thumbs.dreamstime.com/b/fortnite-white-vector-logo-black-textured-background-online-game-editorial-illustration-144436055.jpg');
                 msg.channel.send(fnHelpEmbed)
             }
