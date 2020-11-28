@@ -7,11 +7,22 @@ const mcUtil = require('minecraft-server-util');
 const cheerio = require('cheerio');
 const request = require('request');
 const fortniteAPI = require('fortnite-api-com');
-const token = '<your token here>'; //if running locally
+const triviaDB = require('triviadb')
+const fs = require('fs')
+const token = '' //if running locally
+
+//command collection config
+bot.commands = new Discord.Collection()
+
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
+for(const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    bot.commands.set(command.name, command);
+}
 
 //API configs
 const fortniteConfig = {
-    apikey: "<fortnite-api.com API Key here>",
+    apikey: "",
     language: "en",
     debug: true
 };
@@ -462,14 +473,35 @@ bot.on('message', msg => {
             const memberWithinServerBan = msg.guild.members.cache.get(banMember.id)
             if (!memberWithinServerBan.bannable) return msg.reply('This user cannot be banned. Ensure that the user does not have Administrator permissions.')
             memberWithinServerBan.ban()
-            .then(() => {
-                msg.channel.send(`**The ban hammer has spoken!** ${memberWithinServerBan.user.tag} was banned!`)
-                msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} banned ${memberWithinServerBan.user.tag} in #${msg.channel.name}!`)
-            })
-            .catch(err => {
-                msg.reply('An error occurred in banning the member. Please ensure that you have given this bot Administrator and Ban Members permissions.')
-                console.log('Ban Error: ' + err)
-            })
+                .then(() => {
+                    msg.channel.send(`**The ban hammer has spoken!** ${memberWithinServerBan.user.tag} was banned!`)
+                    msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} banned ${memberWithinServerBan.user.tag} in #${msg.channel.name}!`)
+                })
+                .catch(err => {
+                    msg.reply('An error occurred in banning the member. Please ensure that you have given this bot Administrator and Ban Members permissions.')
+                    console.log('Ban Error: ' + err)
+                })
+            break;
+        case 'trivia':
+            let triviaParam = args[1]
+            if (!triviaParam) {
+                let triviaHelpEmbed = new Discord.MessageEmbed()
+                .setTitle('Trivia Command Help')
+                .addField('Categories', 'You can customise the category of trivia questions you would like. To get the full list of all the categories and their IDs, type pr!trivia categories')
+                .setThumbnail('https://www.thesynergist.org/wp-content/uploads/2014/09/469564565.jpg')
+                msg.channel.send(triviaHelpEmbed);
+                return
+            }
+            (async () => {
+                console.log(await triviaDB.getCategories())
+                //works with either the id of the category or name
+                console.log(await triviaDB.getCategoryInfo(17))
+                console.log(await triviaDB.getCategoryInfo("History"))
+                console.log(await triviaDB.getToken())
+                console.log(await triviaDB.getGlobalQuestionsInfo())
+                //replace unused parameters with null
+                console.log(await triviaDB.getQuestions(3, null, "hard")) //3 hard questions.
+            })()
             break;
     }
 })
