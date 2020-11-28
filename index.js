@@ -32,7 +32,7 @@ bot.on('disconnect', () => {
     console.log('Bot is disconnected or disconnecting.')
 })
 
-//Main Even Handler
+//Main Event Handler
 bot.on('message', msg => {
     if (!msg.content.startsWith(Prefix)) return
     let args = msg.content.substring(Prefix.length).split(' ');
@@ -94,7 +94,13 @@ bot.on('message', msg => {
             if (!msg.guild) return msg.reply('Please use this bot in a guild.')
             if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (mute) in #${msg.channel.name}`))
             const person = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]))
-            if (!person) return msg.reply('Could not find that member.');
+            if (!person) return msg.reply('Could not find that member.')
+            if (msg.guild.me.hasPermission('MANAGE_ROLES')) {
+                console.log('Has permissions')
+            } else {
+                msg.reply('Please give this bot Manage Roles permissions to mute someone.')
+                return
+            }
 
             let mainRole = msg.guild.roles.cache.find(role => role.name === stringMainRole);
             let muteRole = msg.guild.roles.cache.find(role => role.name === stringMuteRole);
@@ -112,8 +118,8 @@ bot.on('message', msg => {
             msg.guild.channels.cache.get(logChannel).send(`${msg.author.username} muted ${person.user.username} for ${args[2]}`)
 
             setTimeout(function () {
-                person.roles.add(mainRole.id);
-                person.roles.remove(muteRole.id);
+                person.roles.add(mainRole.id)
+                person.roles.remove(muteRole.id)
                 msg.channel.send(`@${person.user.tag} has been unmuted!`)
             }, ms(time));
             break;
@@ -188,6 +194,7 @@ bot.on('message', msg => {
             if (!args[1]) return msg.reply(prefixHelpEmbed)
             Prefix = args[1];
             msg.reply('Prefix set!')
+            msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the prefix of this bot as ${Prefix} in #${msg.channel.name}`)
             break;
         case 'bypassandunmute':
             if (!msg.guild) return msg.reply('Please use this bot in a guild.')
@@ -253,7 +260,6 @@ bot.on('message', msg => {
             msg.channel.send(channelEmbed);
             break;
         case 'sinfo':
-            if (!msg.guild) return msg.reply('Please use this bot in a guild.')
             if (!msg.guild) return msg.reply('Could not find guild to get information from. Please type this command in a channel.')
             let serverEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Info')
@@ -266,18 +272,15 @@ bot.on('message', msg => {
             msg.channel.send(serverEmbed)
             break;
         case 'mc':
+            if (!msg.guild) return msg.reply('Please use this bot in a guild.')
             let serverIP = args[1]
-            let port = 25565
-            if (!args[2]) {
-
-            } else {
-                port = args[2]
+            if (!serverIP) {
+                //send help embed
+                let mcHelpEmbed = new Discord.MessageEmbed()
+                    .setTitle('Minecraft Command Help')
+                    .addField('Online Server Status', 'Do pr!mc <server IP> to find out a Minecraft Online Server\'s status, like pr!mc play.hypixel.net')
+                    .setThumbnail('https://thumbs.dreamstime.com/b/minecraft-logo-online-game-dirt-block-illustrations-concept-design-isolated-186775550.jpg');
             }
-            let mcHelpEmbed = new Discord.MessageEmbed()
-                .setTitle('Minecraft Online Server Status Command Help')
-                .addField('Command Format', 'pr!mc <server IP> ')
-                .setThumbnail('https://thumbs.dreamstime.com/b/minecraft-logo-online-game-dirt-block-illustrations-concept-design-isolated-186775550.jpg');
-            if (!serverIP) return msg.channel.send(mcHelpEmbed)
             msg.reply('Please wait a second while I get the server\'s status')
             mcUtil.status(serverIP)
                 .then((response) => {
@@ -295,6 +298,7 @@ bot.on('message', msg => {
                 });
             break;
         case 'gi':
+            if (!msg.guild) return msg.reply('Please use this bot in a guild.')
             let query = args[1]
             if (!query) {
                 //no query provided, use default query
@@ -317,6 +321,7 @@ bot.on('message', msg => {
             }
             break;
         case 'fn':
+            if (!msg.guild) return msg.reply('Please use this bot in a guild.')
             let fnParam = args[1]
             if (fnParam === 'help') {
                 //create and send embed
@@ -385,34 +390,86 @@ bot.on('message', msg => {
             } else if (fnParam === 'news') {
                 msg.reply('Please wait a moment while I get the latest Battle Royale news.')
                 fortniteStats.NewsBR('en')
-                .then(res => {
-                    msg.channel.send(res.data.image)
-                }).catch(err => {
-                    msg.channel.send('An error occurred in getting the news. The API servers could be down. Try again in a few minutes.')
-                    console.log(err)
-                })
+                    .then(res => {
+                        msg.channel.send(res.data.image)
+                    }).catch(err => {
+                        msg.channel.send('An error occurred in getting the news. The API servers could be down. Try again in a few minutes.')
+                        console.log(err)
+                    })
             } else if (fnParam === 'cos') {
                 let name = args[2]
                 if (!name) return msg.reply('Please give the name of the cosmetic you want information on.')
                 if (typeof name !== 'string') return msg.reply('Please give the proper name of the cosmetic.')
                 name = name.replace('%', ' ')
                 msg.reply('Please wait a moment while I search for the Fortnite cosmetic with the given name.')
-                fortniteStats.CosmeticsSearch({name: name})
-                .then(res => {
-                    let fnCosEmbed = new Discord.MessageEmbed()
-                    .setTitle(`${name} Cosmetic Details`)
-                    .addField('Name And ID', `Name: ${name}, ID: ${res.data.id}`)
-                    .addField('Description', res.data.description)
-                    .addField('Rarity', res.data.rarity.value)
-                    .addField('Introduction', `Chapter ${res.data.introduction.chapter}, Season ${res.data.introduction.season}`)
-                    .addField('Added On', `${res.data.added}`);
-                    msg.channel.send(res.data.images.featured)
-                    msg.channel.send(fnCosEmbed)
-                }).catch(err => {
-                    msg.channel.send('An error occurred in getting the cosmetic\'s name. Ensure that you typed it correctly and that you replaced any spaces with %')
-                    console.log(err)
-                })
+                fortniteStats.CosmeticsSearch({ name: name })
+                    .then(res => {
+                        let fnCosEmbed = new Discord.MessageEmbed()
+                            .setTitle(`${name} Cosmetic Details`)
+                            .addField('Name And ID', `Name: ${name}, ID: ${res.data.id}`)
+                            .addField('Description', res.data.description)
+                            .addField('Rarity', res.data.rarity.value)
+                            .addField('Introduction', `Chapter ${res.data.introduction.chapter}, Season ${res.data.introduction.season}`)
+                            .addField('Added On', `${res.data.added}`);
+                        msg.channel.send(res.data.images.featured)
+                        msg.channel.send(fnCosEmbed)
+                    }).catch(err => {
+                        msg.channel.send('An error occurred in getting the cosmetic\'s name. Ensure that you typed it correctly and that you replaced any spaces with %')
+                        console.log(err)
+                    })
             }
+            break;
+        case 'coinflip':
+            if (!msg.guild) return msg.reply('Please use this bot in a guild.')
+            let bet = args[1]
+            if (!bet) return msg.reply('Please give which side are you betting on.')
+            if (bet !== 'heads' && bet !== 'tails') return msg.reply('Bets can only be heads or tails.')
+            let randCoinInt = Math.floor((Math.random() * 2) + 1);
+            if (randCoinInt == 1) {
+                if (bet == 'heads') {
+                    msg.reply('Coin landed on **heads**! You won!')
+                    return
+                }
+                msg.reply('Coin landed on **heads**! You lost!')
+            } else {
+                if (bet == 'tails') {
+                    msg.reply('Coin landed on **tails**! You won!')
+                    return
+                }
+                msg.reply('Coin landed on **tails**! You lost!')
+            }
+            break;
+        case 'kick':
+            const kickMember = msg.mentions.users.first();
+            if (!kickMember) return msg.reply('Please mention a member that you would like to kick!')
+            if (!msg.member.hasPermission('KICK_MEMBERS')) return msg.reply('You do not have authorization to use this command. To use this command you must have the Kick Members permission. This action will be logged!').then(() => { msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} attempted to kick ${kickMember.tag} in #${msg.channel.name} although the user does not have permissions!`) })
+            const memberWithinServer = msg.guild.members.cache.get(kickMember.id)
+            if (!memberWithinServer.bannable) return msg.reply('This user cannot be kicked. Ensure that the user does not have Administrator permissions.')
+            memberWithinServer.kick(`${msg.author.tag} used the kick command in #${msg.channel.name}`)
+                .then(() => {
+                    msg.channel.send(`${memberWithinServer.user.tag} was kicked!`)
+                    msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} kicked ${memberWithinServer.user.tag} in #${msg.channel.name}!`)
+                })
+                .catch(err => {
+                    msg.reply('An error occurred in kicking the member. Please ensure that you have given this bot Administrator and Kick Members permissions.')
+                    console.log('Kicking Error: ' + err)
+                })
+            break;
+        case 'ban':
+            const banMember = msg.mentions.users.first();
+            if (!banMember) return msg.reply('Please mention a member that you would like to ban!')
+            if (!msg.member.hasPermission('BAN_MEMBERS')) return msg.reply('You do not have authorization to use this command. To use this command you must have the Kick Members permission. This action will be logged!').then(() => { msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} attempted to ban ${banMember.tag} in #${msg.channel.name} although the user does not have permissions!`) })
+            const memberWithinServerBan = msg.guild.members.cache.get(banMember.id)
+            if (!memberWithinServerBan.bannable) return msg.reply('This user cannot be banned. Ensure that the user does not have Administrator permissions.')
+            memberWithinServerBan.ban()
+            .then(() => {
+                msg.channel.send(`**The ban hammer has spoken!** ${memberWithinServerBan.user.tag} was banned!`)
+                msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} banned ${memberWithinServerBan.user.tag} in #${msg.channel.name}!`)
+            })
+            .catch(err => {
+                msg.reply('An error occurred in banning the member. Please ensure that you have given this bot Administrator and Ban Members permissions.')
+                console.log('Ban Error: ' + err)
+            })
             break;
     }
 })

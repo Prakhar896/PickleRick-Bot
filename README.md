@@ -28,3 +28,6 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 12) Random google images (default subject is: memes): pr!gi <subject (optional)>
 13) Minecraft server status: pr!mc <server IP>
 12) Fortnite Game Details: 'pr!fn help' or 'pr!fn troubleshoot' if you are running into some issues
+13) Coinflip Feature: pr!coinflip <heads or tails>
+14) Kicking: pr!kick @...
+15) Banning: pr!ban @...
