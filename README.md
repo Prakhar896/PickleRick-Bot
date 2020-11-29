@@ -9,7 +9,7 @@ This is a Discord bot that I made for any Discord server and has features from m
 # Usage
 Upon adding the bot to the server, ensure that you have Administrator permissions and that the bot has them too. 
 
-Do $botinit <server's log channel id> to initialise the bot and set the channel where the bot will send logs as you use the commands. pr! is the default prefix of the bot. Do pr!setprefix <prefix> if you want to choose your own prefix.
+Do pr!botinit <server's log channel id> to initialise the bot and set the channel where the bot will send logs as you use the commands. pr! is the default prefix of the bot. Do pr!setprefix <prefix> if you want to choose your own prefix.
 
 To find out more about the bot, do pr!modhelp (moderator-only command) or pr!help.
 
