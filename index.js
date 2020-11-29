@@ -31,11 +31,11 @@ const kick = require('./commands/kick');
 const ban = require('./commands/ban');
 const trivia = require('./commands/trivia');
 
-const token = '' //if running locally
+const token = 'Nzc3MjEwMTEwNzkxMjU0MDQ2.X7AHUg.ZXKot4iC4M1HWuQGpI-ZabLtSMQ' //if running locally
 
 //API configs
 const fortniteConfig = {
-    apikey: "",
+    apikey: "56b3ad2396815fff7a7ac727e87b91ece362822a",
     language: "en",
     debug: true
 };
