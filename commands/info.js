@@ -13,7 +13,7 @@ module.exports = {
     name: 'info',
     description: 'Sends information about what this bot is.',
     execute(msg, args, logChannel, Prefix) {
-        msg.reply(`Hi there! I am PickleRick Bot. My prefix is **${Prefix}**. Say ${Prefix} help to know the commands you can carry out!`)
+        msg.reply(`Hi there! I am PickleRick Bot. My prefix is **${Prefix}**. Say ${Prefix} help to know the commands you can carry out! The source of this bot is at https://github.com/Prakhar896/PickleRick-Bot`)
         return
     }
 }
