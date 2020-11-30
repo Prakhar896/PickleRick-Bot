@@ -30,6 +30,7 @@ const coinflip = require('./commands/coinflip');
 const kick = require('./commands/kick');
 const ban = require('./commands/ban');
 const trivia = require('./commands/trivia');
+const nick = require('./commands/nick');
 
 const token = '' //if running locally
 
@@ -124,6 +125,9 @@ bot.on('message', msg => {
             break;
         case 'trivia':
             trivia.execute(msg, args, logChannel)
+            break;
+        case 'nick':
+            nick.execute(msg, args, logChannel)
             break;
     }
 })

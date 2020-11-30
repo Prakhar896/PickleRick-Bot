@@ -13,7 +13,10 @@ module.exports = {
     name: '',
     description: '',
     execute(msg, args, logChannel) {
-        
+        if (!msg.guild) return msg.reply('Please use this bot in a guild.')
+        // admin check
+        // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
+
         return
     }
 }

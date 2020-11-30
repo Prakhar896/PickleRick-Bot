@@ -14,6 +14,7 @@ module.exports = {
     name: 'Trivia',
     description: 'Gets a random trivia question varying in difficulty and category from online.',
     execute(msg, args, logChannel) {
+        if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         let triviaParam = args[1]
         if (!triviaParam || triviaParam == 'help') {
             let triviaHelpEmbed = new Discord.MessageEmbed()
