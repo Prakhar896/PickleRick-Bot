@@ -22,6 +22,7 @@ module.exports = {
             .then(() => {
                 msg.channel.send(`**The ban hammer has spoken!** ${memberWithinServerBan.user.tag} was banned!`)
                 msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} banned ${memberWithinServerBan.user.tag} in #${msg.channel.name}!`)
+                msg.channel.send(`If you do wish to unban this user at a later date, you will require his/her ID. The ID of this user is: ` + memberWithinServerBan.user.id)
             })
             .catch(err => {
                 msg.reply('An error occurred in banning the member. Please ensure that you have given this bot Administrator and Ban Members permissions.')

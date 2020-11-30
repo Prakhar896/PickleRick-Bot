@@ -31,6 +31,7 @@ const kick = require('./commands/kick');
 const ban = require('./commands/ban');
 const trivia = require('./commands/trivia');
 const nick = require('./commands/nick');
+const unban = require('./commands/unban');
 
 const token = '' //if running locally
 
@@ -129,6 +130,9 @@ bot.on('message', msg => {
         case 'nick':
             nick.execute(msg, args, logChannel)
             break;
+        case 'unban':
+            unban.execute(msg, args, logChannel)
+        break;
     }
 })
 
