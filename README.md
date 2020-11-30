@@ -19,17 +19,17 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 3) Bot Info: pr!info
 4) Help (pr!help) and moderator help (pr!modhelp)
 5) Mute: pr!mute @... 10s
-6) Poll: pr!poll <poll channel id> do you like pancakes?
+6) Poll: pr!poll (channel ID where poll is to be sent) do you like pancakes?
 7) Clear all messages in channel: pr!clear-all 
 8) Setting prefix: pr!setprefix !
 9) Bypass and unmute to bypass timer and unmute someone: pr!bypassandunmute @...
 10) Channel info: pr!cinfo
 11) Server Info: pr!sinfo
-12) Random google images (default subject is: memes): pr!gi <subject (optional)>
-13) Minecraft server status: pr!mc <server IP>
+12) Random google images (default subject is: memes): pr!gi (subject (optional))
+13) Minecraft server status: pr!mc (server IP)
 12) Fortnite Game Details: 'pr!fn help' or 'pr!fn troubleshoot' if you are running into some issues
-13) Coinflip Feature: pr!coinflip <heads or tails>
+13) Coinflip Feature: pr!coinflip (heads or tails)
 14) Kicking: pr!kick @...
 15) Banning: pr!ban @...
 15) Trivia: pr!trivia help
-16) Change a user's nickname: pr!nick @<user> <new nickname>
+16) Change a user's nickname: pr!nick @... (new nickname)
