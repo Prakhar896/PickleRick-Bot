@@ -32,6 +32,8 @@ const ban = require('./commands/ban');
 const trivia = require('./commands/trivia');
 const nick = require('./commands/nick');
 const unban = require('./commands/unban');
+const invitelist = require('./commands/invitelist');
+const inv = require('./commands/inv');
 
 const token = '' //if running locally
 
@@ -48,10 +50,36 @@ var Prefix = 'pr!'; //default prefix, do $setprefix to update prefix
 var logChannel = '773172065263943704';
 var stringMainRole = 'normie'
 var stringMuteRole = 'dood is shut'
+const guildInvites = new Map();
 
 //Side Event Handlers
 bot.on('ready', () => {
     console.log('The bot is online :).');
+    bot.user.setActivity(`Do ${Prefix}help or ${Prefix}cmdlist`)
+    bot.guilds.cache.forEach(guild => {
+        guild.fetchInvites()
+            .then(invites => {
+                guildInvites.set(guild.id, invites)
+            })
+            .catch(err => { console.log(err) })
+    })
+})
+
+bot.on('inviteCreate', invite => {
+    bot.guilds.cache.forEach(guild => {
+        guild.fetchInvites()
+            .then(invites => {
+                guildInvites.set(guild.id, invites)
+            })
+            .catch(err => { console.log(err) })
+    })
+    console.log(`Invite created: ${invite.url}`)
+})
+
+bot.on('guildMemberAdd', guildMember => {
+    let welcomeRole = guildMember.guild.roles.cache.find(role => role.name === 'normie')
+    guildMember.roles.add(welcomeRole)
+    guildMember.guild.systemChannel.send(`Welcome <@${guildMember.id}> to ${guildMember.guild.name}!`)
 })
 
 bot.on('disconnect', () => {
@@ -132,7 +160,13 @@ bot.on('message', msg => {
             break;
         case 'unban':
             unban.execute(msg, args, logChannel)
-        break;
+            break;
+        case 'invitelist':
+            invitelist.execute(msg, args, logChannel, guildInvites)
+            break;
+        case 'inv':
+            inv.execute(msg, args, logChannel)
+            break;
     }
 })
 

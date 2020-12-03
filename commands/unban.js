@@ -7,7 +7,8 @@ const cheerio = require('cheerio');
 const request = require('request');
 const fortniteAPI = require('fortnite-api-com');
 const triviaDB = require('triviadb')
-const fs = require('fs')
+const fs = require('fs');
+const { error } = require('console');
 
 module.exports = {
     name: 'Unban',
