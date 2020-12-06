@@ -34,5 +34,5 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 15) Trivia: pr!trivia help
 16) Change a user's nickname: pr!nick @... (new nickname)
 17) Unban a banned user with an ID: pr!unban (user ID)
-18) Create an invite (works only if you have Create Instant Invite permissions) : pr!inv 
+18) Create/Manage an invite (works only if you have Create Instant Invite permissions) : pr!inv 
 19) Get a list of active invites: pr!invitelist

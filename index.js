@@ -76,6 +76,18 @@ bot.on('inviteCreate', invite => {
     console.log(`Invite created: ${invite.url}`)
 })
 
+bot.on('inviteDelete', invite => {
+    //refresh invites list
+    bot.guilds.cache.forEach(guild => {
+        guild.fetchInvites()
+            .then(invites => {
+                guildInvites.set(guild.id, invites)
+            })
+            .catch(err => { console.log(err) })
+    })
+    console.log(`Invite deleted: ${invite.url}`)
+})
+
 bot.on('guildMemberAdd', guildMember => {
     let welcomeRole = guildMember.guild.roles.cache.find(role => role.name === 'normie')
     guildMember.roles.add(welcomeRole)

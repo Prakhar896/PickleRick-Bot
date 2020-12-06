@@ -21,7 +21,7 @@ module.exports = {
         let inviteEmbed = new Discord.MessageEmbed()
         .setTitle('Server Invites List');
         invites.forEach(invite => {
-            inviteEmbed.addField(invite.url, `Creator: <@${invite.inviter.id}>,\n Code: ${invite.code},\n Expires At: ${invite.expiresAt},\n Created At: ${invite.createdAt},\n Uses: ${invite.uses}`)
+            inviteEmbed.addField(invite.url, `Creator: <@${invite.inviter.id}>,\n Code: ${invite.code},\n Expires At: ${invite.expiresAt},\n Created At: ${invite.createdAt},\n Target channel: ${invite.channel},\n Uses: ${invite.uses}`)
         })
         msg.channel.send(inviteEmbed)
         return
