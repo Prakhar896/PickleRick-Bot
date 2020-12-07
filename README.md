@@ -36,3 +36,4 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 17) Unban a banned user with an ID: pr!unban (user ID)
 18) Create/Manage an invite (works only if you have Create Instant Invite permissions) : pr!inv 
 19) Get a list of active invites: pr!invitelist
+20) Perform a mathematical operatoin: pr!math (operation, e.g 5*10)

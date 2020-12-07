@@ -34,6 +34,7 @@ const nick = require('./commands/nick');
 const unban = require('./commands/unban');
 const invitelist = require('./commands/invitelist');
 const inv = require('./commands/inv');
+const math = require('./commands/math')
 
 const token = '' //if running locally
 
@@ -178,6 +179,9 @@ bot.on('message', msg => {
             break;
         case 'inv':
             inv.execute(msg, args, logChannel)
+            break;
+        case 'math':
+            math.execute(msg, args, logChannel)
             break;
     }
 })

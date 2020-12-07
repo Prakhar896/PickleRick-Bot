@@ -13,6 +13,7 @@
     "discord.js": "^12.4.1",
     "fortnite-api-com": "^2.2.0",
     "https": "^1.0.0",
+    "mathjs": "^8.1.0",
     "minecraft-server-util": "^3.1.0",
     "ms": "^2.1.2",
     "request": "^2.88.2",
