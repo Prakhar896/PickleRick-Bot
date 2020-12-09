@@ -8,3 +8,6 @@ These are some credits to services that my bot uses:
 5) URL Encoder and Decoder: https://www.npmjs.com/package/url-encode-decode
 6) mathjs (mathematical operations handler): https://www.npmjs.com/package/mathjs
 
+Credits to YT Tutorials:
+
+1) CodeLyon, has very good and comprehensive tutorials and I recommend it for people from beginners to experts: https://youtube.com/codelyon
