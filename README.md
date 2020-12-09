@@ -12,7 +12,7 @@ This is a Discord bot that I made for any Discord server and has features from m
 
 - Download/Fork this repository.
 - Go to [index.js](https://github.com/Prakhar896/PickleRick-Bot/blob/main/index.js) and update the 'token' variable at line 39 to your bot's token.
-- Additionally, this bot requires a [FortntieAPI](https://fortnite-api.com) API Key, so, get one [here](https://dash.fortnite-api.com/) and update the variable at line 43 in [index.js](https://github.com/Prakhar896/PickleRick-Bot/blob/main/index.js)
+- Additionally, this bot requires a [FortniteAPI](https://fortnite-api.com) API Key, so, get one [here](https://dash.fortnite-api.com/) and update the variable at line 43 in [index.js](https://github.com/Prakhar896/PickleRick-Bot/blob/main/index.js) with your API key
 - Go to a [Discord Bot Permissions Calculator](https://discordapi.com/permissions.html#8) and enter your [Discord application's Client ID](https://discord.com/developers) **Do not change the permissions as the bot requires Admin permissions to function**
 - Click the link provided in the calculator and add the bot to a server.
 - On your computer, open up Terminal/Command prompt and 'cd' into the folder and type 'node .' *You must have [node.js](https://nodejs.org) installed for this command to work*
