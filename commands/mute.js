@@ -18,14 +18,14 @@ module.exports = {
         const person = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]))
         if (!person) return msg.reply('Could not find that member.')
         if (msg.guild.me.hasPermission('MANAGE_ROLES')) {
-            console.log('Has permissions')
+            
         } else {
             msg.reply('Please give this bot Manage Roles permissions to mute someone.')
             return
         }
 
-        let mainRole = msg.guild.roles.cache.find(role => role.name === stringMainRole);
-        let muteRole = msg.guild.roles.cache.find(role => role.name === stringMuteRole);
+        let mainRole = msg.guild.roles.cache.find(role => role.name === 'normie');
+        let muteRole = msg.guild.roles.cache.find(role => role.name === 'dood is shut');
 
         if (!muteRole) return msg.reply('Could not find a mute role');
         if (!mainRole) return msg.reply('Could not find a main role.')

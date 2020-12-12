@@ -41,7 +41,7 @@ module.exports = {
             //get user stats
             //param variables
             if (!args[2]) return msg.reply('Please give the user\'s name')
-            let username = args[2].replace('%', ' ')
+            let username = args[2].split("%").join(" ");
             if (!username) return msg.reply('Please give the user\'s name')
             let accountType = args[3]
             if (!accountType) {
@@ -64,7 +64,7 @@ module.exports = {
         } else if (fnParam === 'cc') {
             let name = args[2]
             if (!name) return msg.reply('Please provide the creator code to get details on.')
-            name = name.replace('%', ' ')
+            name = name.split("%").join(" ");
             if (typeof name !== 'string') return msg.reply('Please provide a proper creater code')
             msg.reply('Please wait a moment while I get the details on the creator code.')
             fortniteStats.CreatorCode(name)
@@ -92,7 +92,7 @@ module.exports = {
             let name = args[2]
             if (!name) return msg.reply('Please give the name of the cosmetic you want information on.')
             if (typeof name !== 'string') return msg.reply('Please give the proper name of the cosmetic.')
-            name = name.replace('%', ' ')
+            name = name.split("%").join(" ");
             msg.reply('Please wait a moment while I search for the Fortnite cosmetic with the given name.')
             fortniteStats.CosmeticsSearch({ name: name })
                 .then(res => {

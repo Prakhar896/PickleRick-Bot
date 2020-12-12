@@ -14,7 +14,7 @@ module.exports = {
     description: 'Changes the nickname of a user in a guild',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (nick) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('MANAGE_NICKNAMES', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (nick) in #${msg.channel.name}`))
         let user = msg.mentions.users.first()
         let nickHelpEmbed = new Discord.MessageEmbed()
             .setTitle('Nick Command Help')
@@ -23,7 +23,7 @@ module.exports = {
         if (!user) return msg.channel.send(nickHelpEmbed)
         let newNickName = args[2]
         if (!newNickName) return msg.channel.send(nickHelpEmbed)
-        newNickName = newNickName.replace('%', ' ')
+        newNickName = newNickName.split("%").join(" ");
         let memberInGuild = msg.guild.member(user)
         if (!memberInGuild) return msg.reply('That user does not exist in this server.')
         memberInGuild.setNickname(newNickName, `${msg.author.tag} changed the nickname of this user in #${msg.channel.name}`)

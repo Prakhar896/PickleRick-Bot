@@ -18,8 +18,8 @@ module.exports = {
         let userToUnmute = msg.mentions.members.first()
         if (!userToUnmute) return msg.reply('Please mention a person you would like to unmute.')
 
-        let mainRole2 = msg.guild.roles.cache.find(role => role.name === stringMainRole);
-        let muteRole2 = msg.guild.roles.cache.find(role => role.name === stringMuteRole);
+        let mainRole2 = msg.guild.roles.cache.find(role => role.name === 'normie');
+        let muteRole2 = msg.guild.roles.cache.find(role => role.name === 'dood is shut');
 
         userToUnmute.roles.add(mainRole2.id);
         userToUnmute.roles.remove(muteRole2.id);
