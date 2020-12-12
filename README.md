@@ -1,11 +1,11 @@
-## PickleRick-Bot
-# Description
+# PickleRick-Bot
+## Description
 This is a Discord bot that I made for any Discord server and has features from moderation to fun google images and game stats.
 
-# Contributors
+## Contributors
 - Prakhar Trivedi, public email: prakh0706@outlook.com
 
-# Usage
+## Usage
 
 (Works only if you have an application with a bot setup at the [Discord Developer Portal](https://discord.com/developers)
 
@@ -22,7 +22,7 @@ pr! is the default prefix of the bot. Do pr!setprefix <prefix> if you want to ch
 
 To find out more about the bot, do pr!modhelp (moderator-only command) or pr!help.
 
-# Features
+## Features
 1) Message Clearing: pr!clear 50...
 2) Finding out information about members: pr!minfo @...
 3) Bot Info: pr!info
