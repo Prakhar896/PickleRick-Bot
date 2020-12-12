@@ -14,7 +14,7 @@ module.exports = {
     description: 'This command bypasses the time and unmutes anyone who is muted.',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (bypassandunmute) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (bypassandunmute) in #${msg.channel.name}`))
         let userToUnmute = msg.mentions.members.first()
         if (!userToUnmute) return msg.reply('Please mention a person you would like to unmute.')
 

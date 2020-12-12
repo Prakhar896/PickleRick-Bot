@@ -14,7 +14,7 @@ module.exports = {
     description: 'Creates a poll in a channel',
     async execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (poll) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (poll) in #${msg.channel.name}`))
         let pollEmbed = new Discord.MessageEmbed()
             .setTitle("Initiating A Poll")
             .setDescription('Start a poll by using $poll <polls channel id> <poll text>')

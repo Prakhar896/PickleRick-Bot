@@ -14,7 +14,7 @@ module.exports = {
     description: 'Gets information about a member and displays it.',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (botinit) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (botinit) in #${msg.channel.name}`))
         let logChannelID = args[1]
         if (!logChannelID) return msg.reply('Please give the ID of the log channel.')
         msg.reply('Bot Initialised!')

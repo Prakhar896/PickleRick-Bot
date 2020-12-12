@@ -13,7 +13,7 @@ module.exports = {
     description: 'Clears a certain number of messages in the channel.',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (clear) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (clear) in #${msg.channel.name}`))
         if (!args[1]) return msg.reply('Please specify a number of messages that you would like to delete')
         if (isNaN(args[1])) return msg.reply('Please give a number.')
         if (args[1] > 100) return msg.reply('You cannot delete more than 100 messages at a time.')

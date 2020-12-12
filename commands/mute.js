@@ -14,7 +14,7 @@ module.exports = {
     description: 'Gives the mute role to a user for a certain amount of time.',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (mute) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (mute) in #${msg.channel.name}`))
         const person = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]))
         if (!person) return msg.reply('Could not find that member.')
         if (msg.guild.me.hasPermission('MANAGE_ROLES')) {

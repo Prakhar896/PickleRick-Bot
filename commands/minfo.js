@@ -24,7 +24,7 @@ module.exports = {
             .setTitle('Info About ' + memberUser.username)
             .addField('Name and Tag', memberUser.tag, true)
             .addField('Nickname in ' + member.guild.name, member.nickname, true)
-            .addField('Last Message', 'ID: ' + memberUser.lastMessageID)
+            .addField('User', 'ID: ' + memberUser.id)
             .addField('Account Created At', memberUser.createdAt, true)
             .setThumbnail(memberUser.displayAvatarURL());
 

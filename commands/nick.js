@@ -14,7 +14,7 @@ module.exports = {
     description: 'Changes the nickname of a user in a guild',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
-        if (!msg.member.hasPermission('MANAGE_NICKNAMES', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (nick) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('MANAGE_NICKNAMES', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (nick) in #${msg.channel.name}`))
         let user = msg.mentions.users.first()
         let nickHelpEmbed = new Discord.MessageEmbed()
             .setTitle('Nick Command Help')
