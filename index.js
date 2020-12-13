@@ -11,7 +11,6 @@ const triviaDB = require('triviadb');
 const { Console } = require('console');
 const clear = require('./commands/clear');
 const minfo = require('./commands/minfo')
-const botinit = require('./commands/botinit');
 const info = require('./commands/info');
 const help = require('./commands/help');
 const mute = require('./commands/mute');
@@ -48,7 +47,7 @@ const fortniteConfig = {
 var fortniteStats = new fortniteAPI(fortniteConfig);
 
 //Init variables
-var Prefix = 'pr!'; //default prefix, do $setprefix to update prefix
+var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 var logChannel = '773172065263943704';
 var stringMainRole = 'normie'
 var stringMuteRole = 'dood is shut'
@@ -112,9 +111,6 @@ bot.on('message', msg => {
         case 'minfo':
             minfo.execute(msg, args, logChannel)
             break;
-        case 'botinit':
-            logChannel = botinit.execute(msg, args, logChannel)
-            break;
         case 'info':
             info.execute(msg, args, logChannel, Prefix)
             break;
@@ -134,7 +130,7 @@ bot.on('message', msg => {
             clearAll.execute(msg, args, logChannel)
             break;
         case "setprefix":
-            setprefix.execute(msg, args, logChannel)
+            Prefix = setprefix.execute(msg, args, logChannel)
             break;
         case 'bypassandunmute':
             bypassandunmute.execute(msg, args, logChannel)
@@ -185,7 +181,10 @@ bot.on('message', msg => {
             math.execute(msg, args, logChannel)
             break;
         case 'ss':
-            ss.execute(msg, args, logChannel, stringMainRole, stringMuteRole)
+            let params = ss.execute(msg, args, logChannel, stringMainRole, stringMuteRole)
+            stringMainRole = params.stringMainRole
+            stringMuteRole = params.stringMuteRole
+            logChannel = params.logChannel
             break;
     }
 })

@@ -21,9 +21,9 @@ module.exports = {
             .setThumbnail(msg.author.displayAvatarURL())
             .setColor(0xFF7F50);
         if (!args[1]) return msg.reply(prefixHelpEmbed)
-        Prefix = args[1];
+        let Prefix = args[1];
         msg.reply('Prefix set!')
         msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the prefix of this bot as ${Prefix} in #${msg.channel.name}`)
-        return
+        return Prefix
     }
 }

@@ -18,7 +18,6 @@ module.exports = {
         if (isNaN(args[1])) return msg.reply('Please give a number.')
         if (args[1] > 100) return msg.reply('You cannot delete more than 100 messages at a time.')
         if (args[1] < 1) return msg.reply('You must delete at least one message.')
-        msg.delete({ timeout: 1000, reason: 'Hides command so normal users cannot see.' })
         msg.channel.bulkDelete(args[1])
         .catch(err => {
             msg.channel.send('An error occurred in deleting the requested messages.')
