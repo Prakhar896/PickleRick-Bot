@@ -35,6 +35,7 @@ const invitelist = require('./commands/invitelist');
 const inv = require('./commands/inv');
 const math = require('./commands/math');
 const ss = require('./commands/ss');
+const lockchannel = require('./commands/lockchannel');
 
 const token = '' //if running locally
 
@@ -185,6 +186,9 @@ bot.on('message', msg => {
             stringMainRole = params.stringMainRole
             stringMuteRole = params.stringMuteRole
             logChannel = params.logChannel
+            break;
+        case 'lockchannel':
+            lockchannel.execute(msg, args, logChannel, stringMainRole)
             break;
     }
 })

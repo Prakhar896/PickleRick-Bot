@@ -19,6 +19,12 @@ module.exports = {
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`))
         let ssParam = args[1]
         if (ssParam == 'current') {
+            let mainRoleStatus;
+            let muteRoleStatus;
+            let logChannelStatus;
+            if (!stringMainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = stringMainRole }
+            if (!stringMuteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = stringMuteRole }
+            if (!logChannel) { logChannelStatus = 'Not Set' } else { logChannelStatus = logChannel }
             let ssCurrentEmbed = new Discord.MessageEmbed()
                 .setTitle(`Server Settings for ${msg.guild.name}`)
                 .addField(`Name`, `${msg.guild.name}`)
@@ -27,10 +33,14 @@ module.exports = {
                 .addField('System Channel', `<#${msg.guild.systemChannelID}>`)
                 .addField('Rules Channel', `<#${msg.guild.rulesChannelID}>`)
                 .addField('Verification Level', `${msg.guild.verificationLevel}`)
-                .addField('Main Role', `${stringMainRole}`)
-                .addField('Mute Role', `${stringMuteRole}`)
-                .addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannel).id}>`)
-                .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`)
+                .addField('Main Role', `${mainRoleStatus}`)
+                .addField('Mute Role', `${muteRoleStatus}`)
+                .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
+            if (logChannelStatus != 'Not Set') {
+                ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
+            } else {
+                ssCurrentEmbed.addField('Log Channel', `Not Set`);
+            }
             msg.channel.send(ssCurrentEmbed)
         } else if (ssParam == 'setname') {
             let newName = args[2]
