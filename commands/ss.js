@@ -101,11 +101,11 @@ module.exports = {
             } else {
                 let currentVerLevel = msg.guild.verificationLevel
                 msg.guild.setVerificationLevel(newLevel, `${msg.author.tag} requested to change the verification level in #${msg.channel.name} to ${newLevel}`)
-                .catch(err => {
-                    msg.reply('Failed to set the verification level. Please ensure that I have Administrator permissions.')
-                    console.log('Server Setting SetVerificationLevel Error: ' + err)
-                    return
-                })
+                    .catch(err => {
+                        msg.reply('Failed to set the verification level. Please ensure that I have Administrator permissions.')
+                        console.log('Server Setting SetVerificationLevel Error: ' + err)
+                        return
+                    })
                 msg.reply(`Set verification level of this server to ${newLevel} successfully.`)
                 msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the verification level of this server from ${currentVerLevel} to ${newLevel}`)
             }
@@ -113,23 +113,80 @@ module.exports = {
             let mainRole = args[2]
             if (!mainRole) return msg.reply('Please give the name of the main role you would like to set as the new Main role. Do note that any spaces should be replace with the % sign.')
             mainRole = mainRole.split('%').join(' ')
-            if (!msg.guild.roles.cache.find(role =>  role.name === mainRole)) return msg.reply('That role does not exist in this server.')
+            if (!msg.guild.roles.cache.find(role => role.name === mainRole)) return msg.reply('That role does not exist in this server.')
             msg.reply('Main role set successfully.')
-            return {stringMainRole: mainRole, stringMuteRole: stringMuteRole, logChannel: logChannel}
+            return { stringMainRole: mainRole, stringMuteRole: stringMuteRole, logChannel: logChannel }
         } else if (ssParam == 'setmuterole') {
             let muteRole = args[2]
             if (!muteRole) return msg.reply('Please give the name of the mute role you would like to set as the new Mute role. Do note that any spaces should be replace with the % sign.')
             muteRole = muteRole.split('%').join(' ')
-            if (!msg.guild.roles.cache.find(role =>  role.name === muteRole)) return msg.reply('That role does not exist in this server.')
+            if (!msg.guild.roles.cache.find(role => role.name === muteRole)) return msg.reply('That role does not exist in this server.')
             msg.reply('Mute role set successfully.')
-            return {stringMainRole: stringMainRole, stringMuteRole: muteRole, logChannel: logChannel}
+            return { stringMainRole: stringMainRole, stringMuteRole: muteRole, logChannel: logChannel }
         } else if (ssParam == 'setlogchannel') {
             let logChannelID = args[2]
             if (!logChannelID) return msg.reply('Please give the ID of the new log channel in this server.')
             if (!msg.guild.channels.cache.get(logChannelID)) return msg.reply('That channel does not exist in this server.')
             msg.reply(`Log Channel set to <#${logChannelID}> successfully.`)
-            return {stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannelID}
+            return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannelID }
+        } else if (ssParam == 'help') {
+            let ssHelpEmbed = new Discord.MessageEmbed()
+                .setTitle('Server Settings Help')
+                .addField('NOTE:', 'This bot is quite complex to use and all information listed below will take a minute to take in. It is worth the time reading through all the help for newer servers using me! Enjoy using PickleRick!!!')
+                .addField('pr!ss current', 'Shows all the current settings of the Discord server in an embed.', true)
+                .addField('pr!ss setname <name>', 'Sets the new name of the Discord server.', true)
+                .addField('pr!ss setsyschannel <channel ID>', 'Sets the the server\'s default system channel where all system messages such as new members joining are sent from the system.', true)
+                .addField('pr!ss setruleschannel <channel ID>', 'Sets the system rules channel for people to go to check out your server\'s rules and guidelines. The rules channel will have a special book and tickmark icon to indicate it is a rules channel', true)
+                .addField('pr!ss setverlevel <verification level>', 'Sets the verification level required to join the server. Get more information on this command using pr!ss setverlevel help', true)
+                .addField('pr!ss setmainrole <main role name, with spaces replaced with %>', 'Sets the main role of the server in the bot\'s settings. This role, upon choice, will be used for muting people and also adding a role to new people who join the server, this, it is crucial to run this command when I join the server.', true)
+                .addField('pr!ss setmuterole <mute role name, with spaces replaced with %', 'Sets the mute role of the server in the bot\'s settings. This role will be used by the bot to mute people. A mute role is a role that has disadvantaged permissions causing members to not be able to send messages and is used as a punishment by moderators for notorious members.', true)
+                .addField('pr!ss setlogchannel <log channel ID>', 'Sets the log channel of the server in the bot. This allows the bot to log important changes or commands that have been executed in the log channel for Admins or Mods to later look back at if needed. This command is also pretty crucial and I recommend that every server have a log channel.', true)
+                .addField('pr!ss autosetup <main role name, spaces replaced with %> <mute role name, spaces replaced with %> <log channel ID>', 'Runs an auto-setup command that quickly sets the bot\'s main role, mute role and log channel. The command is quite complexed but if you know and understand how to use it, it is pretty good to use, especially for new servers.')
+                .addField('Spaces Replaced With % Formatting', 'In this bot, most commands have this style of formatting where spaces are replaced with the % sign, like pr!initiatespam hello%there 10 <channel ID>. This is to allow the bot to register commands quickly and properly and execute them as quickly as possible.', true)
+                .setFooter('Do pr!cmdlist to view the full list of commands that can be executed.')
+            msg.channel.send(ssHelpEmbed)
+        } else if (ssParam == 'autosetup') {
+            msg.reply('Running auto-setup with given fields.')
+            let mainRole = args[2]
+            if (!mainRole) return msg.reply('Please give the name of the main role you would like to set as the new Main role. Do note that any spaces should be replace with the % sign. Auto-setup failed.')
+            mainRole = mainRole.split('%').join(' ')
+            if (!msg.guild.roles.cache.find(role => role.name === mainRole)) return msg.reply('Given main role does not exist in this server. Auto-setup failed.')
+            msg.reply('Main role set successfully.')
+            let muteRole = args[3]
+            if (!muteRole) return msg.reply('Please give the name of the mute role you would like to set as the new Mute role. Do note that any spaces should be replace with the % sign. Auto-setup failed.')
+            muteRole = muteRole.split('%').join(' ')
+            if (!msg.guild.roles.cache.find(role => role.name === muteRole)) return msg.reply('Given mute role does not exist in this server. Auto-setup failed.')
+            msg.reply('Mute role set successfully.')
+            let logChannelID = args[4]
+            if (!logChannelID) return msg.reply('Please give the ID of the new log channel in this server. Auto-setup failed.')
+            if (!msg.guild.channels.cache.get(logChannelID)) return msg.reply('Given log channel does not exist in this server. Auto-setup failed.')
+            msg.reply(`Log Channel set to <#${logChannelID}> successfully.`)
+            msg.channel.send('Auto-setup complete! Triggering pr!ss current command to show all new current settings...')
+            let mainRoleStatus;
+            let muteRoleStatus;
+            let logChannelStatus;
+            if (!mainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = mainRole }
+            if (!muteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = muteRole }
+            if (!logChannelID) { logChannelStatus = 'Not Set' } else { logChannelStatus = logChannelID }
+            let ssCurrentEmbed = new Discord.MessageEmbed()
+                .setTitle(`Server Settings for ${msg.guild.name}`)
+                .addField(`Name`, `${msg.guild.name}`)
+                .addField('Description', `${msg.guild.description}`)
+                .addField('Owner', `${msg.guild.owner.user.tag}`)
+                .addField('System Channel', `<#${msg.guild.systemChannelID}>`)
+                .addField('Rules Channel', `<#${msg.guild.rulesChannelID}>`)
+                .addField('Verification Level', `${msg.guild.verificationLevel}`)
+                .addField('Main Role', `${mainRoleStatus}`)
+                .addField('Mute Role', `${muteRoleStatus}`)
+                .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
+            if (logChannelStatus != 'Not Set') {
+                ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
+            } else {
+                ssCurrentEmbed.addField('Log Channel', `Not Set`);
+            }
+            msg.channel.send(ssCurrentEmbed)
+            return { stringMainRole: mainRole, stringMuteRole: muteRole, logChannel: logChannelID }
         }
-        return {stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel}
+        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel }
     }
 }

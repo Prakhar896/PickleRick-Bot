@@ -24,7 +24,7 @@ module.exports = {
         userToUnmute.roles.add(mainRole2.id);
         userToUnmute.roles.remove(muteRole2.id);
         msg.channel.send(`@${userToUnmute.user.tag} has been unmuted!`)
-        msg.guild.channels.cache.get(logChannel).send(`${msg.author.name} bypassed the timed mute and unmuted ${userToUnmute.displayName}!`)
+        msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} bypassed the timed mute and unmuted ${userToUnmute.displayName}!`)
         return
     }
 }

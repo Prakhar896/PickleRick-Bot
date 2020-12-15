@@ -32,7 +32,7 @@ module.exports = {
             msg.guild.channels.cache.get(channelToSpam).send(messageToSpam)
         }
         msg.delete({ timeout: 100, reason: 'To hide the command so as to not be seen by other users.' })
-        msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} initiated a spam of ${numberofMsgs} messages in #${msg.guild.channels.cache.get(channelToSpam).name} with the message ${messageToSpam}.`)
+        msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} initiated a spam of ${numberofMsgs} messages in <#${msg.guild.channels.cache.get(channelToSpam).id}> with the message ${messageToSpam}.`)
         return
     }
 }
