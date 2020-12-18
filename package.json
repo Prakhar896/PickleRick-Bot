@@ -18,6 +18,7 @@
     "ms": "^2.1.2",
     "request": "^2.88.2",
     "triviadb": "^0.1.0",
-    "url-encode-decode": "^1.0.0"
+    "url-encode-decode": "^1.0.0",
+    "wikipedia": "^1.0.1"
   }
 }

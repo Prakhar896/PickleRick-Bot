@@ -36,6 +36,7 @@ const inv = require('./commands/inv');
 const math = require('./commands/math');
 const ss = require('./commands/ss');
 const lockchannel = require('./commands/lockchannel');
+const wiki = require('./commands/wiki');
 
 const token = '' //if running locally
 
@@ -189,6 +190,9 @@ bot.on('message', msg => {
             break;
         case 'lockchannel':
             lockchannel.execute(msg, args, logChannel, stringMainRole)
+            break;
+        case 'wiki':
+            wiki.execute(msg, args, logChannel)
             break;
     }
 })
