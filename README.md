@@ -48,5 +48,6 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 20) Perform a mathematical operation: pr!math (operation, e.g 5*10)
 21) Change some server settings and bot settings: pr!ss help [MOD]
 22) Lock a channel (prevent people from messaging in it): pr!lockchannel help [MOD]
+23) Get information from Wikipedia: pr!wiki help
 
 Commands tagged with [MOD] or [SPECIAL PERMISSIONS] work only if you are a moderator or if you have specific permissions.
