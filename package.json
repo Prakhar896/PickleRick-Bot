@@ -9,8 +9,11 @@
   "author": "Prakhar Trivedi",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.3.3",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.4.1",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^4.2.7",
     "fortnite-api-com": "^2.2.0",
     "https": "^1.0.0",
     "mathjs": "^8.1.0",
@@ -19,6 +22,8 @@
     "request": "^2.88.2",
     "triviadb": "^0.1.0",
     "url-encode-decode": "^1.0.0",
-    "wikipedia": "^1.0.1"
+    "wikipedia": "^1.0.1",
+    "yt-search": "^2.5.1",
+    "ytdl-core": "^4.2.1"
   }
 }

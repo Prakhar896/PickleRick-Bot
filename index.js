@@ -37,6 +37,7 @@ const math = require('./commands/math');
 const ss = require('./commands/ss');
 const lockchannel = require('./commands/lockchannel');
 const wiki = require('./commands/wiki');
+const music = require('./commands/music');
 
 const token = '' //if running locally
 
@@ -193,6 +194,9 @@ bot.on('message', msg => {
             break;
         case 'wiki':
             wiki.execute(msg, args, logChannel)
+            break;
+        case 'music':
+            music.execute(msg, args, logChannel)
             break;
     }
 })
