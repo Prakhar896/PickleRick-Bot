@@ -83,6 +83,7 @@ module.exports = {
             .addField('pr!music play <query>', 'This command searches youtube with your given keywords (note that these need not be separated with the % sign, unlike most commands of this bot) and plays the media in a voice channel.')
             .addField('pr!music stop', 'Stop the music in the voice channel and leaves the channel.')
             .addField('Upon finishing...', 'The bot will leave the voice channel if the media has played finishing.')
+            msg.channel.send(musicHelpEmbed)
         }
         return
     }
