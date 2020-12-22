@@ -36,19 +36,19 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 11) Server Info: pr!sinfo
 12) Random google images (default subject is: memes): pr!gi (subject (optional))
 13) Minecraft server status: pr!mc (server IP)
-12) Fortnite Game Details: 'pr!fn help' or 'pr!fn troubleshoot' if you are running into some issues
-13) Coinflip Feature: pr!coinflip (heads or tails)
-14) Kicking: pr!kick @... [MOD]
-15) Banning: pr!ban @... [MOD]
-15) Trivia: pr!trivia help
-16) Change a user's nickname: pr!nick @... (new nickname) 
-17) Unban a banned user with an ID: pr!unban (user ID) [MOD]
-18) Create/Manage an invite: pr!inv [SPECIAL PERMISSIONS]
-19) Get a list of active invites: pr!invitelist [MOD]
-20) Perform a mathematical operation: pr!math (operation, e.g 5*10)
-21) Change some server settings and bot settings: pr!ss help [MOD]
-22) Lock a channel (prevent people from messaging in it): pr!lockchannel help [MOD]
-23) Get information from Wikipedia: pr!wiki help
-24) Listen to Music in a Voice Channel: pr!music help
+14) Fortnite Game Details: 'pr!fn help' or 'pr!fn troubleshoot' if you are running into some issues
+15) Coinflip Feature: pr!coinflip (heads or tails)
+16) Kicking: pr!kick @... [MOD]
+17) Banning: pr!ban @... [MOD]
+18) Trivia: pr!trivia help
+19) Change a user's nickname: pr!nick @... (new nickname) 
+20) Unban a banned user with an ID: pr!unban (user ID) [MOD]
+21) Create/Manage an invite: pr!inv [SPECIAL PERMISSIONS]
+22) Get a list of active invites: pr!invitelist [MOD]
+23) Perform a mathematical operation: pr!math (operation, e.g 5*10)
+24) Change some server settings and bot settings: pr!ss help [MOD]
+25) Lock a channel (prevent people from messaging in it): pr!lockchannel help [MOD]
+26) Get information from Wikipedia: pr!wiki help
+27) Listen to Music in a Voice Channel: pr!music help
 
 Commands tagged with [MOD] or [SPECIAL PERMISSIONS] work only if you are a moderator or if you have specific permissions.
