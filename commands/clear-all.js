@@ -25,7 +25,13 @@ module.exports = {
                 (async () => {
                     let deleted;
                     do {
-                        deleted = await msg.channel.bulkDelete(100);
+                        try {
+                            deleted = await msg.channel.bulkDelete(100);
+                        } catch {
+                            msg.reply('Failed to delete all messages in this channel. This is likely due to the messages being older than 14 days. I cannot delete messages older than 14 days.')
+                            console.log('Clear-all Error Occurred')
+                            return
+                        }
                     } while (deleted.size != 0)
                 })();
                 status = true;
