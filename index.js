@@ -38,6 +38,7 @@ const ss = require('./commands/ss');
 const lockchannel = require('./commands/lockchannel');
 const wiki = require('./commands/wiki');
 const music = require('./commands/music');
+const consolespam = require('./commands/consolespam');
 
 const token = '' //if running locally
 
@@ -197,6 +198,9 @@ bot.on('message', msg => {
             break;
         case 'music':
             music.execute(msg, args, logChannel)
+            break;
+        case 'lullyspamyconsole':
+            consolespam.execute(msg, args, logChannel)
             break;
     }
 })

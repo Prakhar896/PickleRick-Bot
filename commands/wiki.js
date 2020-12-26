@@ -21,13 +21,13 @@ module.exports = {
         if (!query) return msg.reply('Please give the name of the Wikipedia page you would like to get. Ensure that any spaces are replaced with the % sign.')
         query = query.split('%').join(' ');
         let wikiHelpEmbed = new Discord.MessageEmbed()
-        .setTitle('Wikipedia Search Help')
-        .addField('Format', 'The format for the wiki command is: pr!wiki <query name, with spaces replaced with the % sign> <level of detail, optional>')
-        .addField('What is Level Of Detail?', 'Level of details is, as the name suggessts, the amount of information you want to get from the Wikipedia article online. There are 3 levels: low, medium and high. Information on them is listed below.')
-        .addField('Low Level Of Detail', 'Information is displayed in a small embed and the information is pretty small, like say the first few sentences of the article, along with a picture. This is useful for quick knowledge on a topic.')
-        .addField('Medium Level Of Detail', 'Information displayed in this level (and the high level) is sent in multiple messages. Things like the page\'s image URL is also sent alont with a few paragraphs of the article. Please wait a while while all the information is sent as Discord may take a while to send it.')
-        .addField('High Level Of Detail', 'The whole article\'s content will slowly be sent in this level. Things like related pages to the article will also be sent. **Warning: All of the information may take a while to be sent as the entire article is slowly being sent. The waiting time depends on the length of the article.**')
-        .setFooter('If you do not put the level of detail at the back, the bot will default to the Low level of detail and send information accordingly.')
+            .setTitle('Wikipedia Search Help')
+            .addField('Format', 'The format for the wiki command is: pr!wiki <query name, with spaces replaced with the % sign> <level of detail, optional>')
+            .addField('What is Level Of Detail?', 'Level of details is, as the name suggessts, the amount of information you want to get from the Wikipedia article online. There are 3 levels: low, medium and high. Information on them is listed below.')
+            .addField('Low Level Of Detail', 'Information is displayed in a small embed and the information is pretty small, like say the first few sentences of the article, along with a picture. This is useful for quick knowledge on a topic.')
+            .addField('Medium Level Of Detail', 'Information displayed in this level (and the high level) is sent in multiple messages. Things like the page\'s image URL is also sent alont with a few paragraphs of the article. Please wait a while while all the information is sent as Discord may take a while to send it.')
+            .addField('High Level Of Detail', 'The whole article\'s content will slowly be sent in this level. Things like related pages to the article will also be sent. **Warning: All of the information may take a while to be sent as the entire article is slowly being sent. The waiting time depends on the length of the article.**')
+            .setFooter('If you do not put the level of detail at the back, the bot will default to the Low level of detail and send information accordingly.')
         if (query == 'help') return msg.channel.send(wikiHelpEmbed)
         let levelOfDetail = args[2]
         if (!levelOfDetail) levelOfDetail = 'low'
@@ -40,13 +40,22 @@ module.exports = {
                 if (!summary) return msg.reply('Unable to find an article on Wikipedia.')
                 // console.log(summary)
                 if (summary.extract.includes('may refer to:')) return msg.reply(`\'${query}\' could refer to multiple things. Please provide the specific title of a page to get the information on. URL: ${summary.content_urls.desktop.page}`)
-                
+
                 if (levelOfDetail == 'low') {
                     let wikiEmbed = new Discord.MessageEmbed()
                         .setTitle(summary.title)
-                        .addField('Description:', summary.description)
-                        .addField('Information:', summary.extract)
-                        .setFooter('URL: ' + summary.content_urls.desktop.page)
+                        .addField('Description:', summary.description);
+                    let extract = summary.extract
+                    if (extract.length >= 1024) {
+                        while (extract.length >= 1024) {
+                            wikiEmbed.addField('Information: ', extract.slice(0, 1024))
+                            extract = extract.slice(1024)
+                        }
+                        if (extract) wikiEmbed.addField('Information: ', extract)
+                    } else {
+                        wikiEmbed.addField('Information: ', extract)
+                    }
+                    wikiEmbed.setFooter('URL: ' + summary.content_urls.desktop.page)
                     if (summary.thumbnail) wikiEmbed.setThumbnail(summary.thumbnail.source)
                     msg.channel.send(wikiEmbed)
                 } else if (levelOfDetail == 'medium') {
@@ -71,8 +80,8 @@ module.exports = {
                     msg.channel.send('---')
                 } else if (levelOfDetail == 'high') {
                     let relatedPagesEmbed = new Discord.MessageEmbed()
-                    .setTitle(`Related pages to ${summary.title}`)
-                    .setFooter('Type the name of the pages listed to view information about them.');
+                        .setTitle(`Related pages to ${summary.title}`)
+                        .setFooter('Type the name of the pages listed to view information about them.');
                     let relatedPages = await page.related()
                     for (var relatedPage of relatedPages.pages) {
                         relatedPagesEmbed.addField(relatedPage.title, relatedPage.content_urls.desktop.page)
