@@ -10,7 +10,7 @@ const triviaDB = require('triviadb')
 const fs = require('fs')
 
 module.exports = {
-    name: 'bypassandunmute',
+    name: 'unmute',
     description: 'This command bypasses the time and unmutes anyone who is muted.',
     execute(msg, args, logChannel) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')

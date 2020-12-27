@@ -18,7 +18,6 @@ const modhelp = require('./commands/modhelp');
 const poll = require('./commands/poll');
 const clearAll = require('./commands/clear-all');
 const setprefix = require('./commands/setprefix');
-const bypassandunmute = require('./commands/bypassandunmute');
 const initiatespam = require('./commands/initiatespam');
 const cinfo = require('./commands/cinfo');
 const sinfo = require('./commands/sinfo');
@@ -39,6 +38,7 @@ const lockchannel = require('./commands/lockchannel');
 const wiki = require('./commands/wiki');
 const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
+const unmute = require('./commands/unmute');
 
 const token = '' //if running locally
 
@@ -136,8 +136,8 @@ bot.on('message', msg => {
         case "setprefix":
             Prefix = setprefix.execute(msg, args, logChannel)
             break;
-        case 'bypassandunmute':
-            bypassandunmute.execute(msg, args, logChannel)
+        case 'unmute':
+            unmute.execute(msg, args, logChannel)
             break;
         case 'initiatespam':
             initiatespam.execute(msg, args, logChannel)
