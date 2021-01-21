@@ -40,11 +40,11 @@ const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
 
-const token = '' //if running locally
+const token = 'Nzc3MjEwMTEwNzkxMjU0MDQ2.X7AHUg.gbLT5W0JMkswj2SjCcnarSAKu2E' //if running locally
 
 //API configs
 const fortniteConfig = {
-    apikey: "",
+    apikey: "5338f97f316c5f636fc4c822137f70a36118d00d",
     language: "en",
     debug: true
 };
