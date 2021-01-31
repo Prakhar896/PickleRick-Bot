@@ -39,7 +39,6 @@ const wiki = require('./commands/wiki');
 const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
-const Models = require('./Models')
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
