@@ -39,6 +39,7 @@ const wiki = require('./commands/wiki');
 const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
+const Models = require('./Models')
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -49,6 +50,19 @@ const fortniteConfig = {
     debug: true
 };
 var fortniteStats = new fortniteAPI(fortniteConfig);
+
+//models
+class PickleRickGuild {
+    constructor(guildID, logChannel, stringMainRole, stringMuteRole) {
+        this.guildID = guildID
+        this.logChannel = logChannel
+        this.stringMainRole = stringMainRole
+        this.stringMuteRole = stringMuteRole
+    }
+    sendLogMessage(message, logMessage) {
+        message.guild.channels.cache.get(this.logChannel).send(logMessage)
+    }
+}
 
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
