@@ -39,12 +39,12 @@ const wiki = require('./commands/wiki');
 const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
-
-const token = 'Nzc3MjEwMTEwNzkxMjU0MDQ2.X7AHUg.gbLT5W0JMkswj2SjCcnarSAKu2E' //if running locally
+require('dotenv').config();
+const token = process.env.DISCORD_TOKEN
 
 //API configs
 const fortniteConfig = {
-    apikey: "5338f97f316c5f636fc4c822137f70a36118d00d",
+    apikey: process.env.FORTNITE_API_TOKEN,
     language: "en",
     debug: true
 };
@@ -52,7 +52,7 @@ var fortniteStats = new fortniteAPI(fortniteConfig);
 
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
-var logChannel = '773172065263943704';
+var logChannel = ['773172065263943704', '804692091724496907']
 var stringMainRole = 'normie'
 var stringMuteRole = 'dood is shut'
 const guildInvites = new Map();
@@ -107,102 +107,106 @@ bot.on('disconnect', () => {
 bot.on('message', msg => {
     if (!msg.content.startsWith(Prefix)) return
     let args = msg.content.substring(Prefix.length).split(' ');
-
+    var serverIndex
+    if (msg.guild.id == '780685961079685120') {
+        serverIndex = 1
+    } else {
+        serverIndex = 0
+    }
     switch (args[0]) {
         case 'clear':
-            clear.execute(msg, args, logChannel)
+            clear.execute(msg, args, logChannel[serverIndex])
             break;
         case 'minfo':
-            minfo.execute(msg, args, logChannel)
+            minfo.execute(msg, args, logChannel[serverIndex])
             break;
         case 'info':
-            info.execute(msg, args, logChannel, Prefix)
+            info.execute(msg, args, logChannel[serverIndex], Prefix)
             break;
         case 'help':
-            help.execute(msg, args, logChannel)
+            help.execute(msg, args, logChannel[serverIndex])
             break;
         case 'mute':
-            mute.execute(msg, args, logChannel)
+            mute.execute(msg, args, logChannel[serverIndex])
             break;
         case 'modhelp':
-            modhelp.execute(msg, args, logChannel)
+            modhelp.execute(msg, args, logChannel[serverIndex])
             break;
         case "poll":
-            poll.execute(msg, args, logChannel)
+            poll.execute(msg, args, logChannel[serverIndex])
             break;
         case 'clear-all':
-            clearAll.execute(msg, args, logChannel)
+            clearAll.execute(msg, args, logChannel[serverIndex])
             break;
         case "setprefix":
-            Prefix = setprefix.execute(msg, args, logChannel)
+            Prefix = setprefix.execute(msg, args, logChannel[serverIndex])
             break;
         case 'unmute':
-            unmute.execute(msg, args, logChannel)
+            unmute.execute(msg, args, logChannel[serverIndex])
             break;
         case 'initiatespam':
-            initiatespam.execute(msg, args, logChannel)
+            initiatespam.execute(msg, args, logChannel[serverIndex])
             break;
         case 'cinfo':
-            cinfo.execute(msg, args, logChannel)
+            cinfo.execute(msg, args, logChannel[serverIndex])
             break;
         case 'sinfo':
-            sinfo.execute(msg, args, logChannel)
+            sinfo.execute(msg, args, logChannel[serverIndex])
             break;
         case 'mc':
-            mc.execute(msg, args, logChannel)
+            mc.execute(msg, args, logChannel[serverIndex])
             break;
         case 'gi':
-            gi.execute(msg, args, logChannel)
+            gi.execute(msg, args, logChannel[serverIndex])
             break;
         case 'fn':
-            fn.execute(msg, args, logChannel, fortniteStats)
+            fn.execute(msg, args, logChannel[serverIndex], fortniteStats)
             break;
         case 'coinflip':
-            coinflip.execute(msg, args, logChannel)
+            coinflip.execute(msg, args, logChannel[serverIndex])
             break;
         case 'kick':
-            kick.execute(msg, args, logChannel)
+            kick.execute(msg, args, logChannel[serverIndex])
             break;
         case 'ban':
-            ban.execute(msg, args, logChannel)
+            ban.execute(msg, args, logChannel[serverIndex])
             break;
         case 'trivia':
-            trivia.execute(msg, args, logChannel)
+            trivia.execute(msg, args, logChannel[serverIndex])
             break;
         case 'nick':
-            nick.execute(msg, args, logChannel)
+            nick.execute(msg, args, logChannel[serverIndex])
             break;
         case 'unban':
-            unban.execute(msg, args, logChannel)
+            unban.execute(msg, args, logChannel[serverIndex])
             break;
         case 'invitelist':
-            invitelist.execute(msg, args, logChannel, guildInvites)
+            invitelist.execute(msg, args, logChannel[serverIndex], guildInvites)
             break;
         case 'inv':
-            inv.execute(msg, args, logChannel)
+            inv.execute(msg, args, logChannel[serverIndex])
             break;
         case 'math':
-            math.execute(msg, args, logChannel)
+            math.execute(msg, args, logChannel[serverIndex])
             break;
         case 'ss':
-            let params = ss.execute(msg, args, logChannel, stringMainRole, stringMuteRole)
+            let params = ss.execute(msg, args, logChannel[serverIndex], stringMainRole, stringMuteRole)
             stringMainRole = params.stringMainRole
             stringMuteRole = params.stringMuteRole
-            logChannel = params.logChannel
+            logChannel[serverIndex] = params.logChannel
             break;
         case 'lockchannel':
-            lockchannel.execute(msg, args, logChannel, stringMainRole)
+            lockchannel.execute(msg, args, logChannel[serverIndex], stringMainRole)
             break;
         case 'wiki':
-            wiki.execute(msg, args, logChannel)
+            wiki.execute(msg, args, logChannel[serverIndex])
             break;
         case 'music':
-            music.execute(msg, args, logChannel)
+            music.execute(msg, args, logChannel[serverIndex])
             break;
         case 'lullyspamyconsole':
-            consolespam.execute(msg, args, logChannel)
+            consolespam.execute(msg, args, logChannel[serverIndex])
             break;
     }
 })
-
-bot.login(token); //BOT_TOKEN is client secret
+bot.login(process.env.DISCORD_TOKEN); //DISCORD_TOKEN is discord bot's token.
