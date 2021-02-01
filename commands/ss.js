@@ -13,7 +13,7 @@ const indexjs = require('../index')
 module.exports = {
     name: 'ss',
     description: 'Allows moderator to change some server\'s setting using the bot.',
-    execute(msg, args, logChannel, stringMainRole, stringMuteRole) {
+    execute(msg, args, logChannel, stringMainRole, stringMuteRole, allowsDeleting) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`))
@@ -143,6 +143,7 @@ module.exports = {
                 .addField('pr!ss setlogchannel <log channel ID>', 'Sets the log channel of the server in the bot. This allows the bot to log important changes or commands that have been executed in the log channel for Admins or Mods to later look back at if needed. This command is also pretty crucial and I recommend that every server have a log channel.', true)
                 .addField('pr!ss autosetup <main role name, spaces replaced with %> <mute role name, spaces replaced with %> <log channel ID>', 'Runs an auto-setup command that quickly sets the bot\'s main role, mute role and log channel. The command is quite complexed but if you know and understand how to use it, it is pretty good to use, especially for new servers.')
                 .addField('Spaces Replaced With % Formatting', 'In this bot, most commands have this style of formatting where spaces are replaced with the % sign, like pr!initiatespam hello%there 10 <channel ID>. This is to allow the bot to register commands quickly and properly and execute them as quickly as possible.', true)
+                .addField('pr!ss setdeletelogs <true or false>', 'This setting allows you to control whether the bot should report the deletion of messages throughout the server to the log channel. true means you allow and false means you don\'t')
                 .setFooter('Do pr!cmdlist to view the full list of commands that can be executed.')
             msg.channel.send(ssHelpEmbed)
         } else if (ssParam == 'autosetup') {
@@ -189,8 +190,19 @@ module.exports = {
                 ssCurrentEmbed.addField('Log Channel', `Not Set`);
             }
             msg.channel.send(ssCurrentEmbed)
-            return { stringMainRole: mainRole, stringMuteRole: muteRole, logChannel: logChannelID }
+            return { stringMainRole: mainRole, stringMuteRole: muteRole, logChannel: logChannelID, allowsDeleting }
+        } else if (ssParam == 'setdeletelogs') {
+            let condition = args[2]
+            if (!condition) return msg.reply('Please type either true (you want to have logs of deleted messages) or false (you do not want to have logs of deleted messages)')
+            if (condition != "true" && condition != "false") return msg.reply('Please give a valid value (either true or false).')
+            msg.reply(`Set deletelogs to ${condition} successfully!`)
+            if (condition == 'true') {
+                allowsDeleting = true
+            } else {
+                allowsDeleting = false
+            }
+            return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
         }
-        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel }
+        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
     }
 }

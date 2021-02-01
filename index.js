@@ -68,6 +68,7 @@ var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406']
 var mainRoles = ['normie', 'ma homie']
 var muteRoles = ['dood is shut', 'stfu']
+var allowsDeleting = [true, false, true]
 const guildInvites = new Map();
 
 //Side Event Handlers
@@ -218,6 +219,7 @@ bot.on('message', msg => {
             stringMainRole = params.stringMainRole
             stringMuteRole = params.stringMuteRole
             logChannel[serverIndex] = params.logChannel
+            allowsDeleting[serverIndex] = params.allowsDeleting
             break;
         case 'lockchannel':
             lockchannel.execute(msg, args, logChannel[serverIndex], stringMainRole)
@@ -231,6 +233,36 @@ bot.on('message', msg => {
         case 'lullyspamyconsole':
             consolespam.execute(msg, args, logChannel[serverIndex])
             break;
+    }
+})
+
+bot.on('messageDelete', deletedMessage => {
+    var sendDeleteOrNot;
+    var serverIndex;
+    if (deletedMessage.guild.id == '773172065263943701') {
+        if (allowsDeleting[0] == true) {
+            sendDeleteOrNot = true
+        } else {
+            sendDeleteOrNot = false
+        }
+        serverIndex = 0
+    } else if (deletedMessage.guild.id == '780685961079685120') {
+        if (allowsDeleting[1] == true) {
+            sendDeleteOrNot = true
+        } else {
+            sendDeleteOrNot = false
+        }
+        serverIndex = 1
+    } else {
+        if (allowsDeleting[2] == true) {
+            sendDeleteOrNot = true
+        } else {
+            sendDeleteOrNot = false
+        }
+        serverIndex = 2
+    }
+    if (sendDeleteOrNot == true) {
+        deletedMessage.guild.channels.cache.get(logChannel[serverIndex]).send(`${deletedMessage.author.tag} deleted a message with the content \`${deletedMessage.content}\` in <#${deletedMessage.channel.id}>`)
     }
 })
 bot.login(process.env.DISCORD_TOKEN); //DISCORD_TOKEN is discord bot's token.
