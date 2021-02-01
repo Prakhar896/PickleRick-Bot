@@ -65,7 +65,7 @@ class PickleRickGuild {
 
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
-var logChannel = ['773172065263943704', '804692091724496907']
+var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406']
 var stringMainRole = 'normie'
 var stringMuteRole = 'dood is shut'
 const guildInvites = new Map();
@@ -123,9 +123,13 @@ bot.on('message', msg => {
     var serverIndex
     if (msg.guild.id == '780685961079685120') {
         serverIndex = 1
+    } else if (msg.guild.id == '805723501544603658'){
+        serverIndex = 2
     } else {
         serverIndex = 0
     }
+    console.log(serverIndex)
+    console.log(logChannel[serverIndex])
     switch (args[0]) {
         case 'clear':
             clear.execute(msg, args, logChannel[serverIndex])
