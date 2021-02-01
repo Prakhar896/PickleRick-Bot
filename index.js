@@ -66,8 +66,8 @@ class PickleRickGuild {
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406']
-var stringMainRole = 'normie'
-var stringMuteRole = 'dood is shut'
+var mainRoles = ['normie', 'ma homie']
+var muteRoles = ['dood is shut', 'stfu']
 const guildInvites = new Map();
 
 //Side Event Handlers
@@ -128,8 +128,15 @@ bot.on('message', msg => {
     } else {
         serverIndex = 0
     }
-    console.log(serverIndex)
-    console.log(logChannel[serverIndex])
+    var stringMainRole;
+    var stringMuteRole;
+    if (msg.guild.id == '805723501544603658') {
+        stringMainRole = mainRoles[1]
+        stringMuteRole = muteRoles[1]
+    } else if (msg.guild.id == '773172065263943701') {
+        stringMainRole = mainRoles[0]
+        stringMuteRole = muteRoles[0]
+    }
     switch (args[0]) {
         case 'clear':
             clear.execute(msg, args, logChannel[serverIndex])
@@ -144,7 +151,7 @@ bot.on('message', msg => {
             help.execute(msg, args, logChannel[serverIndex])
             break;
         case 'mute':
-            mute.execute(msg, args, logChannel[serverIndex])
+            mute.execute(msg, args, logChannel[serverIndex], stringMainRole, stringMuteRole)
             break;
         case 'modhelp':
             modhelp.execute(msg, args, logChannel[serverIndex])

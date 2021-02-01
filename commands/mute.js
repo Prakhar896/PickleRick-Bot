@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'mute',
     description: 'Gives the mute role to a user for a certain amount of time.',
-    execute(msg, args, logChannel) {
+    execute(msg, args, logChannel, stringMainRole, stringMuteRole) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (mute) in #${msg.channel.name}`))
         const person = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]))
@@ -24,8 +24,8 @@ module.exports = {
             return
         }
 
-        let mainRole = msg.guild.roles.cache.find(role => role.name === 'normie');
-        let muteRole = msg.guild.roles.cache.find(role => role.name === 'dood is shut');
+        let mainRole = msg.guild.roles.cache.find(role => role.name === stringMainRole);
+        let muteRole = msg.guild.roles.cache.find(role => role.name === stringMuteRole);
 
         if (!muteRole) return msg.reply('Could not find a mute role');
         if (!mainRole) return msg.reply('Could not find a main role.')
