@@ -65,10 +65,10 @@ class PickleRickGuild {
 
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
-var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406']
+var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
 var mainRoles = ['normie', 'ma homie']
 var muteRoles = ['dood is shut', 'stfu']
-var allowsDeleting = [true, false, true]
+var allowsDeleting = [true, false, true, true]
 const guildInvites = new Map();
 
 //Side Event Handlers
@@ -126,8 +126,10 @@ bot.on('message', msg => {
         serverIndex = 1
     } else if (msg.guild.id == '805723501544603658'){
         serverIndex = 2
+    } else if (msg.guild.id == '807599800379768862') {
+        serverIndex = 3
     } else {
-        serverIndex = 0
+        serverIndex = 9
     }
     var stringMainRole;
     var stringMuteRole;
@@ -137,6 +139,9 @@ bot.on('message', msg => {
     } else if (msg.guild.id == '773172065263943701') {
         stringMainRole = mainRoles[0]
         stringMuteRole = muteRoles[0]
+    } else if (msg.guild.id == '807599800379768862') {
+        stringMainRole = 'verified'
+        stringMuteRole = 'muted'
     }
     switch (args[0]) {
         case 'clear':
@@ -253,6 +258,13 @@ bot.on('messageDelete', deletedMessage => {
             sendDeleteOrNot = false
         }
         serverIndex = 1
+    } else if (deletedMessage.guild.id == '807599800379768862') {
+        if (allowsDeleting[3] == true) {
+            sendDeleteOrNot = true
+        } else {
+            sendDeleteOrNot = false
+        }
+        serverIndex = 3
     } else {
         if (allowsDeleting[2] == true) {
             sendDeleteOrNot = true
