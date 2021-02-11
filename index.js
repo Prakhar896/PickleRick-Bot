@@ -129,7 +129,7 @@ bot.on('message', msg => {
     } else if (msg.guild.id == '807599800379768862') {
         serverIndex = 3
     } else {
-        serverIndex = 9
+        serverIndex = 0
     }
     var stringMainRole;
     var stringMuteRole;
