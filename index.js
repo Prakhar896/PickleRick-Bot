@@ -39,6 +39,7 @@ const wiki = require('./commands/wiki');
 const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
+const dev = require('./commands/dev');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -237,6 +238,9 @@ bot.on('message', msg => {
             break;
         case 'lullyspamyconsole':
             consolespam.execute(msg, args, logChannel[serverIndex])
+            break;
+        case 'dev':
+            dev.execute(msg, args, logChannel[serverIndex], bot)
             break;
     }
 })
