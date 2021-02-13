@@ -202,6 +202,10 @@ module.exports = {
                 allowsDeleting = false
             }
             return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+        } else if (ssParam == 'create.suggest') {
+            msg.guild.channels.create('suggestions', { type: 'text', topic: 'Suggestions made by members to be democratically voted by all members in the server.' })
+            msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
+            return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
         }
         return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
     }

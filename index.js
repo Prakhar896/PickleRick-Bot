@@ -40,6 +40,7 @@ const music = require('./commands/music');
 const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
 const dev = require('./commands/dev');
+const suggest = require('./commands/suggest');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -247,6 +248,9 @@ bot.on('message', msg => {
             break;
         case 'dev':
             dev.execute(msg, args, logChannel[serverIndex], bot)
+            break;
+        case 'suggest':
+            suggest.execute(msg, args, logChannel[serverIndex])
             break;
     }
 })
