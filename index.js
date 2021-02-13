@@ -67,7 +67,7 @@ class PickleRickGuild {
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
-var mainRoles = ['normie', 'ma homie']
+var mainRoles = ['member', 'ma homie']
 var muteRoles = ['dood is shut', 'stfu']
 var allowsDeleting = [true, false, true, true]
 const guildInvites = new Map();
@@ -109,7 +109,13 @@ bot.on('inviteDelete', invite => {
 })
 
 bot.on('guildMemberAdd', guildMember => {
-    let welcomeRole = guildMember.guild.roles.cache.find(role => role.name === 'normie')
+    var stringWelcomeRole;
+    if (guildMember.guild.id == '773172065263943701') {
+        stringWelcomeRole = 'member'
+    }
+    if (!stringWelcomeRole) return
+    let welcomeRole = guildMember.guild.roles.cache.find(role => role.name === stringWelcomeRole)
+    console.log(welcomeRole)
     guildMember.roles.add(welcomeRole)
     guildMember.guild.systemChannel.send(`Welcome <@${guildMember.id}> to ${guildMember.guild.name}!`)
 })
