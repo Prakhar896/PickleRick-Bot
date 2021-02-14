@@ -16,7 +16,7 @@ module.exports = {
     execute(msg, args, logChannel, stringMainRole, stringMuteRole, allowsDeleting) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
-        // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`))
+        if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`))
         let ssParam = args[1]
         if (ssParam == 'current') {
             let mainRoleStatus;
