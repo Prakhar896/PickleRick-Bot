@@ -17,10 +17,10 @@ module.exports = {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.')
-        .then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`)
-        .catch(err => {
-            msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
-        }))
+            .then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`)
+                .catch(err => {
+                    msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+                }))
         let ssParam = args[1]
         if (ssParam == 'current') {
             let mainRoleStatus;
@@ -148,6 +148,7 @@ module.exports = {
                 .addField('pr!ss autosetup <main role name, spaces replaced with %> <mute role name, spaces replaced with %> <log channel ID>', 'Runs an auto-setup command that quickly sets the bot\'s main role, mute role and log channel. The command is quite complexed but if you know and understand how to use it, it is pretty good to use, especially for new servers.')
                 .addField('Spaces Replaced With % Formatting', 'In this bot, most commands have this style of formatting where spaces are replaced with the % sign, like pr!initiatespam hello%there 10 <channel ID>. This is to allow the bot to register commands quickly and properly and execute them as quickly as possible.', true)
                 .addField('pr!ss setdeletelogs <true or false>', 'This setting allows you to control whether the bot should report the deletion of messages throughout the server to the log channel. true means you allow and false means you don\'t')
+                .addField('pr!ss create.suggest', 'Creates a suggestion channel in the server for the pr!suggest command. Please do not rename this channel but you can change its permissions as you like.')
                 .setFooter('Do pr!cmdlist to view the full list of commands that can be executed.')
             msg.channel.send(ssHelpEmbed)
         } else if (ssParam == 'autosetup') {
@@ -207,9 +208,39 @@ module.exports = {
             }
             return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
         } else if (ssParam == 'create.suggest') {
-            msg.guild.channels.create('suggestions', { type: 'text', topic: 'Suggestions made by members to be democratically voted by all members in the server.' })
-            msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
-            return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+            const channel = msg.guild.channels.cache.find(c => c.name === 'suggestions' || c.name === 'suggest' || c.name === 'recommendations')
+            if (channel) {
+                msg.reply(`I identified <#${channel.id}> as a suggestions channel. Create one anyway? *WARNING: This could cause conflicts when sending suggestion messages* (respond with yes or no, you have 10 seconds to respond.)`)
+                const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
+                collector.on('collect', response => {
+                    let responseAsString = response.toString()
+                    let lowercasedResponse = responseAsString.toLowerCase()
+                    if (lowercasedResponse === 'yes') {
+                        msg.guild.channels.create('suggestions', { type: 'text', topic: 'Suggestions made by members to be democratically voted by all members in the server.' })
+                            .catch(err => {
+                                msg.reply('An error occurred in creating the channel. Please ensure I have Administrator permissions.')
+                                console.log('Suggestions channel creation error: ' + err)
+                            })
+                        msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
+                        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                    } else if (lowercasedResponse === 'no') {
+                        msg.reply('Channel creation aborted!')
+                        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                    } else {
+                        msg.reply('Invalid response, channel creation aborted.')
+                        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                    }
+                })
+            } else {
+                msg.guild.channels.create('suggestions', { type: 'text', topic: 'Suggestions made by members to be democratically voted by all members in the server.' })
+                    .catch(err => {
+                        msg.reply('An error occurred in creating the channel. Please ensure I have Administrator permissions.')
+                        console.log('Suggestions channel creation error: ' + err)
+                    })
+                msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
+                return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+            }
+
         }
         return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
     }

@@ -78,11 +78,16 @@ bot.on('ready', () => {
     console.log('The bot is online :).');
     bot.user.setActivity(`Do ${Prefix}help or ${Prefix}cmdlist`)
     bot.guilds.cache.forEach(guild => {
+        //Invites
         guild.fetchInvites()
             .then(invites => {
                 guildInvites.set(guild.id, invites)
             })
-            .catch(err => { console.log(err) })
+            .catch(err => { 
+                console.log('Fetching Invites Error: ' + err) 
+            })
+        //Setting guilds and their info
+        
     })
 })
 
@@ -230,10 +235,10 @@ bot.on('message', msg => {
             break;
         case 'ss':
             let params = ss.execute(msg, args, logChannel[serverIndex], stringMainRole, stringMuteRole)
-            stringMainRole = params.stringMainRole
-            stringMuteRole = params.stringMuteRole
-            logChannel[serverIndex] = params.logChannel
-            allowsDeleting[serverIndex] = params.allowsDeleting
+            if (params.stringMainRole) { stringMainRole = params.stringMainRole }
+            if (params.stringMuteRole) { stringMuteRole = params.stringMuteRole }
+            if (params.logChannel) { logChannel[serverIndex] = params.logChannel }
+            if (params.allowsDeleting) { allowsDeleting[serverIndex] = params.allowsDeleting }
             break;
         case 'lockchannel':
             lockchannel.execute(msg, args, logChannel[serverIndex], stringMainRole)
