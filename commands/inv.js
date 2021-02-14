@@ -18,10 +18,18 @@ module.exports = {
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
         let invParam = args[1]
         if (!invParam) {
-            if (!msg.member.hasPermission('CREATE_INSTANT_INVITE')) return msg.channel.send('You do not have permissions to create an invite. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} attempted to create an invite in #${msg.channel.name} despite not having permissions.`))
+            if (!msg.member.hasPermission('CREATE_INSTANT_INVITE')) return msg.channel.send('You do not have permissions to create an invite. This action will be logged.')
+            .then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} attempted to create an invite in #${msg.channel.name} despite not having permissions.`)
+            .catch(err => {
+                msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+            }))
             msg.channel.createInvite()
                 .then(invite => {
                     msg.reply(`Here is an invite: ${invite.url}`)
+                    msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} created an invite with the URL ${invite.url} in <#${msg.channel.id}>.`)
+                    .catch(err => {
+                        msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+                    })
                 })
                 .catch(err => {
                     msg.reply('An error occurred in creating an invite. Please ensure that I have Create Instant Invite permissions')

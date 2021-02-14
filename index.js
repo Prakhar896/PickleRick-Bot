@@ -151,6 +151,7 @@ bot.on('message', msg => {
         stringMainRole = 'verified'
         stringMuteRole = 'muted'
     }
+    console.log(`${serverIndex} - ${stringMainRole} - ${stringMuteRole}`)
     switch (args[0]) {
         case 'clear':
             clear.execute(msg, args, logChannel[serverIndex])

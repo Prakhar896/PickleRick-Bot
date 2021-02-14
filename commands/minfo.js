@@ -30,5 +30,8 @@ module.exports = {
 
         msg.channel.send(memberEmbed)
         msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} requested for information on ${memberUser.tag}`)
+        .catch(err => {
+            msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+        })
     }
 }
