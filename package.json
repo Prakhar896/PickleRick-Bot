@@ -19,6 +19,7 @@
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
     "fortnite-api-com": "^2.2.1",
+    "fs": "0.0.1-security",
     "https": "^1.0.0",
     "mathjs": "^8.1.1",
     "minecraft-server-util": "^3.4.2",
