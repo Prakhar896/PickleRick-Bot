@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'gi',
     description: 'Provides a random Google Image from the internet on a given subject.',
-    execute(msg, args, logChannel) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         let query = args[1]
         if (!query) {

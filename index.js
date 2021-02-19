@@ -67,10 +67,14 @@ class PickleRickGuild {
 
 //Init variables
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
-var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
-var mainRoles = ['member', 'ma homie']
-var muteRoles = ['dood is shut', 'stfu']
-var allowsDeleting = [true, false, true, true]
+//old server management
+// var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
+// var mainRoles = ['member', 'ma homie']
+// var muteRoles = ['dood is shut', 'stfu']
+// var allowsDeleting = [true, false, true, true]
+
+//new server management
+var guilds = [];
 const guildInvites = new Map();
 
 //Side Event Handlers
@@ -87,8 +91,41 @@ bot.on('ready', () => {
                 console.log('Fetching Invites Error: ' + err) 
             })
         //Setting guilds and their info
-        
+    guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false })
     })
+    let backEndChannel = bot.guilds.cache.get('805723501544603658').channels.cache.get('805733098297360406')
+    backEndChannel.send('Would you like to autoset guild data to custom guilds?')
+    //collector, for now, just autoset but itself
+    var index = 0
+    for (const guildData of guilds) {
+        if (guildData.id == '773172065263943701') {
+            //Smart People Server
+            guilds[index].logChannel = '773172065263943704'
+            guilds[index].mainRole = 'member'
+            guilds[index].muteRole = 'dood is shut'
+            guilds[index].allowsDeleting = true
+        } else if (guildData.id == '780685961079685120') {
+            //Ngee ann's maga party
+            guilds[index].logChannel = '804692091724496907'
+            guilds[index].mainRole = ''
+            guilds[index].muteRole = ''
+            guilds[index].allowsDeleting = false
+        } else if (guildData.id == '807599800379768862') {
+            //3r4, discord's better than whatsapp
+            guilds[index].logChannel = '804692091724496907'
+            guilds[index].mainRole = 'verified'
+            guilds[index].muteRole = 'muted'
+            guilds[index].allowsDeleting = false
+        } else if (guildData.id == '696270592135135242') {
+            //NASS Robotics
+            guilds[index].logChannel = '812321866923376670'
+            guilds[index].mainRole = 'Robotics Club Members'
+            guilds[index].muteRole = 'shut'
+            guilds[index].allowsDeleting = true
+        }
+        index += 1
+    }
+    console.log(guilds)
 })
 
 bot.on('inviteCreate', invite => {
@@ -134,167 +171,117 @@ bot.on('disconnect', () => {
 bot.on('message', msg => {
     if (!msg.content.startsWith(Prefix)) return
     let args = msg.content.substring(Prefix.length).split(' ');
-    var serverIndex
-    if (msg.guild.id == '780685961079685120') {
-        serverIndex = 1
-    } else if (msg.guild.id == '805723501544603658'){
-        serverIndex = 2
-    } else if (msg.guild.id == '807599800379768862') {
-        serverIndex = 3
-    } else {
-        serverIndex = 0
-    }
-    var stringMainRole;
-    var stringMuteRole;
-    if (msg.guild.id == '805723501544603658') {
-        stringMainRole = mainRoles[1]
-        stringMuteRole = muteRoles[1]
-    } else if (msg.guild.id == '773172065263943701') {
-        stringMainRole = mainRoles[0]
-        stringMuteRole = muteRoles[0]
-    } else if (msg.guild.id == '807599800379768862') {
-        stringMainRole = 'verified'
-        stringMuteRole = 'muted'
-    }
+    let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
+    if (!serverIndex) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
     console.log(`${serverIndex} - ${stringMainRole} - ${stringMuteRole}`)
+
+    //Access guildData using params: msg, args, guildData, Prefix, client, Discord
     switch (args[0]) {
         case 'clear':
-            clear.execute(msg, args, logChannel[serverIndex])
+            clear.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'minfo':
-            minfo.execute(msg, args, logChannel[serverIndex])
+            minfo.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'info':
-            info.execute(msg, args, logChannel[serverIndex], Prefix)
+            info.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'help':
-            help.execute(msg, args, logChannel[serverIndex])
+            help.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'mute':
-            mute.execute(msg, args, logChannel[serverIndex], stringMainRole, stringMuteRole)
+            mute.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'modhelp':
-            modhelp.execute(msg, args, logChannel[serverIndex])
+            modhelp.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case "poll":
-            poll.execute(msg, args, logChannel[serverIndex])
+            poll.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'clear-all':
-            clearAll.execute(msg, args, logChannel[serverIndex])
+            clearAll.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case "setprefix":
-            Prefix = setprefix.execute(msg, args, logChannel[serverIndex])
+            Prefix = setprefix.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'unmute':
-            unmute.execute(msg, args, logChannel[serverIndex])
+            unmute.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'initiatespam':
-            initiatespam.execute(msg, args, logChannel[serverIndex])
+            initiatespam.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'cinfo':
-            cinfo.execute(msg, args, logChannel[serverIndex])
+            cinfo.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'sinfo':
-            sinfo.execute(msg, args, logChannel[serverIndex])
+            sinfo.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'mc':
-            mc.execute(msg, args, logChannel[serverIndex])
+            mc.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'gi':
-            gi.execute(msg, args, logChannel[serverIndex])
+            gi.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'fn':
-            fn.execute(msg, args, logChannel[serverIndex], fortniteStats)
+            fn.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'coinflip':
-            coinflip.execute(msg, args, logChannel[serverIndex])
+            coinflip.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'kick':
-            kick.execute(msg, args, logChannel[serverIndex])
+            kick.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'ban':
-            ban.execute(msg, args, logChannel[serverIndex])
+            ban.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'trivia':
-            trivia.execute(msg, args, logChannel[serverIndex])
+            trivia.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'nick':
-            nick.execute(msg, args, logChannel[serverIndex])
+            nick.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'unban':
-            unban.execute(msg, args, logChannel[serverIndex])
+            unban.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'invitelist':
-            invitelist.execute(msg, args, logChannel[serverIndex], guildInvites)
+            invitelist.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'inv':
-            inv.execute(msg, args, logChannel[serverIndex])
+            inv.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'math':
-            math.execute(msg, args, logChannel[serverIndex])
+            math.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'ss':
-            let params = ss.execute(msg, args, logChannel[serverIndex], stringMainRole, stringMuteRole)
-            if (params.stringMainRole) { stringMainRole = params.stringMainRole }
-            if (params.stringMuteRole) { stringMuteRole = params.stringMuteRole }
-            if (params.logChannel) { logChannel[serverIndex] = params.logChannel }
-            if (params.allowsDeleting) { allowsDeleting[serverIndex] = params.allowsDeleting }
+            let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            guilds[serverIndex] = newGuildData
             break;
         case 'lockchannel':
-            lockchannel.execute(msg, args, logChannel[serverIndex], stringMainRole)
+            lockchannel.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'wiki':
-            wiki.execute(msg, args, logChannel[serverIndex])
+            wiki.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'music':
-            music.execute(msg, args, logChannel[serverIndex])
+            music.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'lullyspamyconsole':
-            consolespam.execute(msg, args, logChannel[serverIndex])
+            consolespam.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'dev':
-            dev.execute(msg, args, logChannel[serverIndex], bot)
+            dev.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
         case 'suggest':
-            suggest.execute(msg, args, logChannel[serverIndex])
+            suggest.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
             break;
     }
 })
 
 bot.on('messageDelete', deletedMessage => {
-    var sendDeleteOrNot;
-    var serverIndex;
-    if (deletedMessage.guild.id == '773172065263943701') {
-        if (allowsDeleting[0] == true) {
-            sendDeleteOrNot = true
-        } else {
-            sendDeleteOrNot = false
-        }
-        serverIndex = 0
-    } else if (deletedMessage.guild.id == '780685961079685120') {
-        if (allowsDeleting[1] == true) {
-            sendDeleteOrNot = true
-        } else {
-            sendDeleteOrNot = false
-        }
-        serverIndex = 1
-    } else if (deletedMessage.guild.id == '807599800379768862') {
-        if (allowsDeleting[3] == true) {
-            sendDeleteOrNot = true
-        } else {
-            sendDeleteOrNot = false
-        }
-        serverIndex = 3
-    } else {
-        if (allowsDeleting[2] == true) {
-            sendDeleteOrNot = true
-        } else {
-            sendDeleteOrNot = false
-        }
-        serverIndex = 2
-    }
-    if (sendDeleteOrNot == true) {
-        deletedMessage.guild.channels.cache.get(logChannel[serverIndex]).send(`${deletedMessage.author.tag} deleted a message with the content \`${deletedMessage.content}\` in <#${deletedMessage.channel.id}>`)
+    let serverIndex = guilds.findIndex(guildData => guildData.id === deletedMessage.guild.id)
+    if (!serverIndex) return console.log(`Error in Getting Server Index when trying to log deleted message due to data error. Deleted Message: ${deletedMessage.content}, Guild ID and Name: ${deletedMessage.guild.id}, ${deletedMessage.guild.name}`)
+    if (guilds[serverIndex].allowsDeleting == true) {
+        deletedMessage.guild.channels.cache.get(guilds[serverIndex].logChannel).send(`${deletedMessage.author.tag} deleted a message with the content \`${deletedMessage.content}\` in <#${deletedMessage.channel.id}>`)
     }
 })
 bot.login(process.env.DISCORD_TOKEN); //DISCORD_TOKEN is discord bot's token.

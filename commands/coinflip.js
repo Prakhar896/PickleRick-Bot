@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'coinflip',
     description: 'Flips a coin and tells the user whether they won what they had bet.',
-    execute(msg, args, logChannel) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         let bet = args[1]
         if (!bet) return msg.reply('Please give which side are you betting on. If you want to use scenario mode, type scenario.')

@@ -12,12 +12,13 @@ const fs = require('fs')
 module.exports = {
     name: 'ban',
     description: 'Bans a user from the server such that he/she cannot join again.',
-    execute(msg, args, logChannel) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
+        if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         const banMember = msg.mentions.users.first();
         if (!banMember) return msg.reply('Please mention a member that you would like to ban!')
         if (!msg.member.hasPermission('BAN_MEMBERS')) return msg.reply('You do not have authorization to use this command. To use this command you must have the Kick Members permission. This action will be logged!')
         .then(() => { 
-            msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} attempted to ban ${banMember.tag} in #${msg.channel.name} although the user does not have permissions!`)
+            msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} attempted to ban ${banMember.tag} in #${msg.channel.name} although the user does not have permissions!`)
         })
         .catch(err => {
             msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
@@ -27,7 +28,7 @@ module.exports = {
         memberWithinServerBan.ban()
             .then(() => {
                 msg.channel.send(`**The ban hammer has spoken!** ${memberWithinServerBan.user.tag} was banned!`)
-                msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} banned ${memberWithinServerBan.user.tag} in #${msg.channel.name}!`)
+                msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} banned ${memberWithinServerBan.user.tag} in #${msg.channel.name}!`)
                 .catch(err => {
                     msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
                 })

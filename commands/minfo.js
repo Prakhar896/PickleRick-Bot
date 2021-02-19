@@ -12,7 +12,8 @@ const fs = require('fs')
 module.exports = {
     name: 'minfo',
     description: 'Gets information about a member and displays it.',
-    execute(msg, args, logChannel) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
+        if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         const memberUser = msg.mentions.users.first()
         if (!memberUser) return msg.reply('Please mention a member you would like to have more information on.')
@@ -29,7 +30,7 @@ module.exports = {
             .setThumbnail(memberUser.displayAvatarURL());
 
         msg.channel.send(memberEmbed)
-        msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} requested for information on ${memberUser.tag}`)
+        msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} requested for information on ${memberUser.tag}`)
         .catch(err => {
             msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
         })

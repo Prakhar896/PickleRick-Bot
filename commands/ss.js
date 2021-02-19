@@ -13,11 +13,12 @@ const indexjs = require('../index')
 module.exports = {
     name: 'ss',
     description: 'Allows moderator to change some server\'s setting using the bot.',
-    execute(msg, args, logChannel, stringMainRole, stringMuteRole, allowsDeleting) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
+        if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.')
-            .then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`)
+            .then(msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} used the mod-only command (ss) in #${msg.channel.name}`)
                 .catch(err => {
                     msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
                 }))
@@ -26,9 +27,9 @@ module.exports = {
             let mainRoleStatus;
             let muteRoleStatus;
             let logChannelStatus;
-            if (!stringMainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = stringMainRole }
-            if (!stringMuteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = stringMuteRole }
-            if (!logChannel) { logChannelStatus = 'Not Set' } else { logChannelStatus = logChannel }
+            if (!guildData.mainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = guildData.mainRole }
+            if (!guildData.muteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = guildData.muteRole }
+            if (!guildData.logChannel) { logChannelStatus = 'Not Set' } else { logChannelStatus = guildData.logChannel }
             let ssCurrentEmbed = new Discord.MessageEmbed()
                 .setTitle(`Server Settings for ${msg.guild.name}`)
                 .addField(`Name`, `${msg.guild.name}`)
@@ -58,7 +59,7 @@ module.exports = {
                     return
                 })
             msg.channel.send('Server name successfully changed')
-            msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the name of this server from ${currentServerName} to ${newName} in <#${msg.channel.id}>`)
+            msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} set the name of this server from ${currentServerName} to ${newName} in <#${msg.channel.id}>`)
         } else if (ssParam == 'setsyschannel') {
             let channelID = args[2]
             if (!channelID) return msg.reply('Please give the channel ID of the new system channel.')
@@ -71,7 +72,7 @@ module.exports = {
                     return
                 })
             msg.reply(`System channel successfully changed to <#${channelID}>`)
-            msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the system channel in this server from <#${currentSystemChannel}> to <#${channelID}> in <#${msg.channel.id}>`)
+            msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} set the system channel in this server from <#${currentSystemChannel}> to <#${channelID}> in <#${msg.channel.id}>`)
         } else if (ssParam == 'setruleschannel') {
             let channelID = args[2]
             if (!channelID) return msg.reply('Please give the ID of the channel you would like to set as the new Rules Channel.')
@@ -84,7 +85,7 @@ module.exports = {
                     return
                 })
             msg.reply(`Set new rules channel as <#${channelID}> successfully.`)
-            msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the rules channel in this server from <#${currentRulesChannel}> to <#${channelID}> in <#${msg.channel.id}>`)
+            msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} set the rules channel in this server from <#${currentRulesChannel}> to <#${channelID}> in <#${msg.channel.id}>`)
         } else if (ssParam == 'setverlevel') {
             let newLevel = args[2]
             if (!newLevel) return msg.reply('Please provide the new level of verfication you would like to set it to. Vaild levels are: NONE, LOW, MEDIUM, HIGH, VERY_HIGH. For more info, type \'pr!ss setverlevel help\'')
@@ -111,7 +112,7 @@ module.exports = {
                         return
                     })
                 msg.reply(`Set verification level of this server to ${newLevel} successfully.`)
-                msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} set the verification level of this server from ${currentVerLevel} to ${newLevel}`)
+                msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} set the verification level of this server from ${currentVerLevel} to ${newLevel}`)
             }
         } else if (ssParam == 'setmainrole') {
             let mainRole = args[2]
@@ -119,20 +120,26 @@ module.exports = {
             mainRole = mainRole.split('%').join(' ')
             if (!msg.guild.roles.cache.find(role => role.name === mainRole)) return msg.reply('That role does not exist in this server.')
             msg.reply('Main role set successfully.')
-            return { stringMainRole: mainRole, stringMuteRole: stringMuteRole, logChannel: logChannel }
+            let newGuildData = guildData
+            newGuildData.mainRole = mainRole
+            return newGuildData
         } else if (ssParam == 'setmuterole') {
             let muteRole = args[2]
             if (!muteRole) return msg.reply('Please give the name of the mute role you would like to set as the new Mute role. Do note that any spaces should be replace with the % sign.')
             muteRole = muteRole.split('%').join(' ')
             if (!msg.guild.roles.cache.find(role => role.name === muteRole)) return msg.reply('That role does not exist in this server.')
             msg.reply('Mute role set successfully.')
-            return { stringMainRole: stringMainRole, stringMuteRole: muteRole, logChannel: logChannel }
+            let newGuildData = guildData
+            newGuildData.muteRole = muteRole
+            return newGuildData
         } else if (ssParam == 'setlogchannel') {
             let logChannelID = args[2]
             if (!logChannelID) return msg.reply('Please give the ID of the new log channel in this server.')
             if (!msg.guild.channels.cache.get(logChannelID)) return msg.reply('That channel does not exist in this server.')
             msg.reply(`Log Channel set to <#${logChannelID}> successfully.`)
-            return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannelID }
+            let newGuildData = guildData
+            newGuildData.logChannel = logChannelID
+            return newGuildData
         } else if (ssParam == 'help') {
             let ssHelpEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Settings Help')
@@ -195,18 +202,25 @@ module.exports = {
                 ssCurrentEmbed.addField('Log Channel', `Not Set`);
             }
             msg.channel.send(ssCurrentEmbed)
-            return { stringMainRole: mainRole, stringMuteRole: muteRole, logChannel: logChannelID, allowsDeleting }
+            let newGuildData = guildData
+            newGuildData.mainRole = mainRole
+            newGuildData.muteRole = muteRole
+            newGuildData.logChannel = logChannelID
+            return newGuildData
         } else if (ssParam == 'setdeletelogs') {
             let condition = args[2]
             if (!condition) return msg.reply('Please type either true (you want to have logs of deleted messages) or false (you do not want to have logs of deleted messages)')
             if (condition != "true" && condition != "false") return msg.reply('Please give a valid value (either true or false).')
             msg.reply(`Set deletelogs to ${condition} successfully!`)
+            var allowsDeleting;
             if (condition == 'true') {
                 allowsDeleting = true
             } else {
                 allowsDeleting = false
             }
-            return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+            let newGuildData = guildData
+            newGuildData.allowsDeleting = allowsDeleting
+            return newGuildData
         } else if (ssParam == 'create.suggest') {
             const channel = msg.guild.channels.cache.find(c => c.name === 'suggestions' || c.name === 'suggest' || c.name === 'recommendations')
             if (channel) {
@@ -222,13 +236,13 @@ module.exports = {
                                 console.log('Suggestions channel creation error: ' + err)
                             })
                         msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
-                        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                        return guildData
                     } else if (lowercasedResponse === 'no') {
                         msg.reply('Channel creation aborted!')
-                        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                        return guildData
                     } else {
                         msg.reply('Invalid response, channel creation aborted.')
-                        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                        return guildData
                     }
                 })
             } else {
@@ -238,10 +252,10 @@ module.exports = {
                         console.log('Suggestions channel creation error: ' + err)
                     })
                 msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
-                return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+                return guildData
             }
 
         }
-        return { stringMainRole: stringMainRole, stringMuteRole: stringMuteRole, logChannel: logChannel, allowsDeleting }
+        return guildData
     }
 }

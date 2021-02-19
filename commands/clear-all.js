@@ -12,10 +12,11 @@ const fs = require('fs')
 module.exports = {
     name: 'clear-all',
     description: 'Clears all messages in a channel',
-    execute(msg, args, logChannel) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
+        if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.')
-        .then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (clear-all) in #${msg.channel.name}`)
+        .then(msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} used the mod-only command (clear-all) in #${msg.channel.name}`)
         .catch(err => {
             msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
         }))
@@ -39,13 +40,13 @@ module.exports = {
                     } while (deleted.size != 0)
                 })();
                 status = true;
-                msg.guild.channels.cache.get(logChannel).send(`${msg.author.username} approved and executed a clear-all command in #${msg.channel.name} with the ID: ${msg.channel.id}`)
+                msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.username} approved and executed a clear-all command in #${msg.channel.name} with the ID: ${msg.channel.id}`)
                 .catch(err => {
                     msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
                 })
             } else if (response.content == "no") {
                 msg.reply('Command Disapproved and Aborted.')
-                msg.guild.channels.cache.get(logChannel).send(`${msg.author.username} disapproved and aborted a clear-all command in #${msg.channel.name} with the ID: ${msg.channel.id}`)
+                msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.username} disapproved and aborted a clear-all command in #${msg.channel.name} with the ID: ${msg.channel.id}`)
                 .catch(err => {
                     msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
                 })

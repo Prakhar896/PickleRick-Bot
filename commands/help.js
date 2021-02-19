@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'help',
     description: 'Help command for assistance on usage of this bot.',
-    execute(msg, args, logChannel) {
+    execute(msg, args, guildData, Prefix, client, Discord) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         let helpEmbed = new Discord.MessageEmbed()
             .setTitle('PickleRick Bot Help')

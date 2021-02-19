@@ -14,7 +14,7 @@ const ytSearch = require('yt-search');
 module.exports = {
     name: 'music',
     description: 'Used for playing music using this bot in a voice channel',
-    async execute(msg, args, logChannel) {
+    async execute(msg, args, guildData, Prefix, client, Discord) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
