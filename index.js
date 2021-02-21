@@ -173,106 +173,106 @@ bot.on('message', msg => {
     let args = msg.content.substring(Prefix.length).split(' ');
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (!serverIndex) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
-    console.log(`${serverIndex} - ${stringMainRole} - ${stringMuteRole}`)
+    console.log(`${guilds[serverIndex]}`)
 
-    //Access guildData using params: msg, args, guildData, Prefix, client, Discord
+    //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':
-            clear.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            clear.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'minfo':
-            minfo.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            minfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'info':
-            info.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            info.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'help':
-            help.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            help.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'mute':
-            mute.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            mute.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'modhelp':
-            modhelp.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            modhelp.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case "poll":
-            poll.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            poll.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'clear-all':
-            clearAll.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            clearAll.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case "setprefix":
-            Prefix = setprefix.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            Prefix = setprefix.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'unmute':
-            unmute.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            unmute.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'initiatespam':
-            initiatespam.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            initiatespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'cinfo':
-            cinfo.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            cinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'sinfo':
-            sinfo.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            sinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'mc':
-            mc.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            mc.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'gi':
-            gi.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            gi.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'fn':
-            fn.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            fn.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'coinflip':
-            coinflip.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            coinflip.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'kick':
-            kick.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            kick.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'ban':
-            ban.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            ban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'trivia':
-            trivia.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            trivia.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'nick':
-            nick.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            nick.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'unban':
-            unban.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            unban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'invitelist':
-            invitelist.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            invitelist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'inv':
-            inv.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            inv.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'math':
-            math.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            math.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'ss':
-            let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             guilds[serverIndex] = newGuildData
             break;
         case 'lockchannel':
-            lockchannel.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            lockchannel.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'wiki':
-            wiki.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            wiki.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'music':
-            music.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            music.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'lullyspamyconsole':
-            consolespam.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            consolespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'dev':
-            dev.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            dev.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'suggest':
-            suggest.execute(msg, args, guilds[serverIndex], Prefix, client, Discord)
+            suggest.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
     }
 })
