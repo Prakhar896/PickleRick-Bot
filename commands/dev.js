@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'dev',
     description: 'Commands reserved for use by developers of this bot',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, guilds) {
         if (!(msg.author.id == '445816983951507458')) return msg.reply('Sorry, you are not a valid developer of this bot.')
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
@@ -48,6 +48,21 @@ module.exports = {
             .addField('Invite link command', 'pr!dev inv')
             .addField('Uptime command', 'pr!dev uptime')
             msg.channel.send(devHelpEmbed)
+        } else if (devParam == 'announcedowntime' || devParam == 'ad') {
+            let msgArgs = args.slice(2).join(" ")
+            if (!msgArgs) return msg.reply('Please give the content of the downtime alert.')
+            let downtimeEmbed = new Discord.MessageEmbed()
+                .setColor('0xFFA500')
+                .setTitle('Downtime Alert')
+                .addField('Message from Developers:', msgArgs)
+                .setFooter('Contact the developers for more information.');
+            guilds.forEach(guildData => {
+                let guildObject = client.guilds.cache.get(guildData.id)
+                let guildLogChannelObject = guildObject.channels.cache.get(guildData.logChannel)
+                guildLogChannelObject.send(downtimeEmbed)
+            })
+            msg.reply('Successfully alerted all servers about downtime, sending a copy of the message here...')
+            msg.channel.send(downtimeEmbed)
         }
         return
     }

@@ -112,7 +112,7 @@ bot.on('ready', () => {
             guilds[index].allowsDeleting = false
         } else if (guildData.id == '807599800379768862') {
             //3r4, discord's better than whatsapp
-            guilds[index].logChannel = '804692091724496907'
+            guilds[index].logChannel = '807615806988746783'
             guilds[index].mainRole = 'verified'
             guilds[index].muteRole = 'muted'
             guilds[index].allowsDeleting = false
@@ -289,7 +289,7 @@ bot.on('message', msg => {
             consolespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'dev':
-            dev.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            dev.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guilds)
             break;
         case 'suggest':
             suggest.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
