@@ -22,20 +22,31 @@ module.exports = {
         }))
         let pollEmbed = new Discord.MessageEmbed()
             .setTitle("Initiating A Poll")
-            .setDescription('Start a poll by using $poll <polls channel id> <poll text>')
+            .setDescription('Start a poll by using $poll <polls channel id, type in \`current\` if you want to send it in the current channel> <poll text>')
             .setColor(0xFFC300);
 
         if (!args[1]) return msg.channel.send(pollEmbed);
 
         let msgArgs = args.slice(2).join(" ")
-
-        await msg.guild.channels.cache.get(args[1]).send("**" + msgArgs + "**")
+        if (!msgArgs) return msg.reply('Please give the poll\'s content, for e.g \`pr!poll current Are pancakes better than muffins?\`')
+        let pollChannel = args[1]
+        if (pollChannel == 'current') {
+            pollChannel = msg.channel.id
+        }
+        if (!msg.guild.channels.cache.get(pollChannel)) return msg.reply('That channel does not exist in this server.')
+        await msg.guild.channels.cache.get(pollChannel).send("**" + msgArgs + "**")
         .then(msgReaction => {
             msgReaction.react("👍🏻")
             msgReaction.react("👎🏻")
             msg.delete()
         })
-        msg.author.send(`Poll was created in #${msg.guild.channels.cache.get(args[1]).name} that has the ID: ${args[1]}`)
+        msg.author.send(`Poll was created in #${msg.guild.channels.cache.get(pollChannel).name} that has the ID: ${pollChannel}`)
+        msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} created a poll in the channel <#${msg.guild.channels.cache.get(pollChannel)}> with the poll content ${msgArgs}. This poll's command was run in <#${msg.channel.id}>`)
+        .catch(err => {
+            msg.reply('An error occurred in logging the poll event to the log channel. Please set the log channel using \`pr!ss setlogchannel <id of log channel>\`.')
+            console.log('Poll Creation Error (Logging to log channel): ' + err)
+            console.log('Guild data of error origin: ' + guildData)
+        })
         return
     }
 }

@@ -23,7 +23,7 @@ module.exports = {
         }))
         let lockCParam = args[1]
         if (!lockCParam && lockCParam != "unlock") {
-            let mainRole = msg.guild.roles.cache.find(role => role.name === stringMainRole)
+            let mainRole = msg.guild.roles.cache.find(role => role.name === guildData.mainRole)
             if (!mainRole) return msg.reply('Please set-up the main role of this server in this bot using the pr!ss setmainrole <main role name> command.')
             msg.channel.updateOverwrite(mainRole, { SEND_MESSAGES: false }, `${msg.author.tag} requested to lock #${msg.channel.name} to prevent people from sending messages.`)
             .catch(err => {
@@ -33,7 +33,7 @@ module.exports = {
             msg.reply('Channel has been locked successfully. Normal members now cannot message in this channel.')
             msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} locked <#${msg.channel.id}>. Normal members now cannot send messages in <#${msg.channel.id}>.`)
         } else {
-            let mainRole = msg.guild.roles.cache.find(role => role.name === stringMainRole)
+            let mainRole = msg.guild.roles.cache.find(role => role.name === guildData.mainRole)
             if (!mainRole) return msg.reply('Please set-up the main role of this server in this bot using the pr!ss setmainrole <main role name> command.')
             msg.channel.updateOverwrite(mainRole, { SEND_MESSAGES: true }, `${msg.author.tag} requested to unlock #${msg.channel.name} to prevent people from sending messages.`)
             .catch(err => {

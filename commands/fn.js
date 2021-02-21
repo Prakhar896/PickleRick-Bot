@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'fn',
     description: 'Displays information about something or someone related to Fortnite',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, fortniteStats) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         let fnParam = args[1]
         if (fnParam === 'help') {

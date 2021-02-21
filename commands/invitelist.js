@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'invitelist',
     description: 'Fetches all the server\'s invites and displays them.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, guildInvites) {
         if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check

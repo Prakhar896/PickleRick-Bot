@@ -29,7 +29,7 @@ module.exports = {
         } else if (devParam == 'stop') {
             msg.reply('Stopping bot!')
             .then(msg => client.destroy())
-        } else if (devParam == 'inv') {
+        } else if (devParam == 'inv' || devParam == 'link') {
             msg.reply('Generating invite...')
             .then(msg => {
                 client.generateInvite({ permissions: ['ADMINISTRATOR'] })

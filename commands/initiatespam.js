@@ -32,7 +32,10 @@ module.exports = {
         }
         let channelToSpam = args[3]
         console.log(channelToSpam)
-        if (!channelToSpam) return msg.reply('Please add the ID of the channel you would like to spam.')
+        if (!channelToSpam) return msg.reply('Please add the ID of the channel you would like to spam. If you would like to spam in this channel, type in \`pr!initiatespam <your message in % format> <number of messages, e.g 10> current\`')
+        if (channelToSpam == 'current') {
+            channelToSpam = msg.channel.id
+        }
         if (!msg.guild.channels.cache.get(channelToSpam)) return msg.reply('That channel does not exist in this server.')
         for (var i = 0; i < numberofMsgs; i++) {
             msg.guild.channels.cache.get(channelToSpam).send(messageToSpam)

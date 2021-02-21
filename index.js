@@ -87,11 +87,11 @@ bot.on('ready', () => {
             .then(invites => {
                 guildInvites.set(guild.id, invites)
             })
-            .catch(err => { 
-                console.log('Fetching Invites Error: ' + err) 
+            .catch(err => {
+                console.log('Fetching Invites Error: ' + err)
             })
         //Setting guilds and their info
-    guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false })
+        guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false })
     })
     let backEndChannel = bot.guilds.cache.get('805723501544603658').channels.cache.get('805733098297360406')
     backEndChannel.send('Would you like to autoset guild data to custom guilds?')
@@ -122,10 +122,29 @@ bot.on('ready', () => {
             guilds[index].mainRole = 'Robotics Club Members'
             guilds[index].muteRole = 'shut'
             guilds[index].allowsDeleting = true
+        } else if (guildData.id == '805723501544603658') {
+            //Backend Server: idk
+            guilds[index].logChannel = '805733098297360406'
+            guilds[index].mainRole = 'ma homie'
+            guilds[index].muteRole = 'stfu'
+            guilds[index].allowsDeleting = true
         }
         index += 1
     }
     console.log(guilds)
+})
+
+bot.on('guildCreate', guild => {
+    guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false })
+    console.log('Joined guild: ' + guild.name)
+    guild.systemChannel.send('Hey there! Thanks for addding me! To get started, run \`pr!ss help\` to find out the different mod commands and settings for this bot.')
+})
+
+bot.on('guildDelete', leftGuild => {
+    let serverIndex = guilds.findIndex(guildData => guildData.id === leftGuild.id)
+    if (serverIndex == -1 || serverIndex == undefined) return console.log('Fatal Guild Removing Error, Left Guild Data: ' + leftGuild)
+    guilds.splice(serverIndex, 1)
+    console.log('Left guild: ' + leftGuild.name)
 })
 
 bot.on('inviteCreate', invite => {
@@ -172,8 +191,8 @@ bot.on('message', msg => {
     if (!msg.content.startsWith(Prefix)) return
     let args = msg.content.substring(Prefix.length).split(' ');
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
-    if (!serverIndex) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
-    console.log(`${guilds[serverIndex]}`)
+    if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
+    console.log(`Message occurred, guild info: ${guilds[serverIndex]}`)
 
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
@@ -223,7 +242,7 @@ bot.on('message', msg => {
             gi.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'fn':
-            fn.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            fn.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, fortniteStats)
             break;
         case 'coinflip':
             coinflip.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
@@ -244,7 +263,7 @@ bot.on('message', msg => {
             unban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'invitelist':
-            invitelist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            invitelist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guildInvites)
             break;
         case 'inv':
             inv.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
@@ -254,6 +273,7 @@ bot.on('message', msg => {
             break;
         case 'ss':
             let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            if (!newGuildData.id) return
             guilds[serverIndex] = newGuildData
             break;
         case 'lockchannel':
@@ -279,7 +299,7 @@ bot.on('message', msg => {
 
 bot.on('messageDelete', deletedMessage => {
     let serverIndex = guilds.findIndex(guildData => guildData.id === deletedMessage.guild.id)
-    if (!serverIndex) return console.log(`Error in Getting Server Index when trying to log deleted message due to data error. Deleted Message: ${deletedMessage.content}, Guild ID and Name: ${deletedMessage.guild.id}, ${deletedMessage.guild.name}`)
+    if (serverIndex == undefined || serverIndex == -1) return console.log(`Error in Getting Server Index when trying to log deleted message due to data error. Deleted Message: ${deletedMessage.content}, Guild ID and Name: ${deletedMessage.guild.id}, ${deletedMessage.guild.name}`)
     if (guilds[serverIndex].allowsDeleting == true) {
         deletedMessage.guild.channels.cache.get(guilds[serverIndex].logChannel).send(`${deletedMessage.author.tag} deleted a message with the content \`${deletedMessage.content}\` in <#${deletedMessage.channel.id}>`)
     }

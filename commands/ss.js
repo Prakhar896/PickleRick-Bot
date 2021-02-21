@@ -14,7 +14,9 @@ module.exports = {
     name: 'ss',
     description: 'Allows moderator to change some server\'s setting using the bot.',
     execute(msg, args, guildData, Prefix, client, Discord) {
-        if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
+        if (args[1] != 'autosetup' && args[1] != 'current' && args[1] != 'setlogchannel' && args[1] != 'help') {
+            if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run. If this s')
+        }
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.')
@@ -40,6 +42,7 @@ module.exports = {
                 .addField('Verification Level', `${msg.guild.verificationLevel}`)
                 .addField('Main Role', `${mainRoleStatus}`)
                 .addField('Mute Role', `${muteRoleStatus}`)
+                .addField('Logging Of Deleted Messages', `${guildData.allowsDeleting}`)
                 .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
             if (logChannelStatus != 'Not Set') {
                 ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
@@ -121,7 +124,9 @@ module.exports = {
             if (!msg.guild.roles.cache.find(role => role.name === mainRole)) return msg.reply('That role does not exist in this server.')
             msg.reply('Main role set successfully.')
             let newGuildData = guildData
+            console.log('guild data currnet: ' + newGuildData)
             newGuildData.mainRole = mainRole
+            console.log('guild data new :' + newGuildData)
             return newGuildData
         } else if (ssParam == 'setmuterole') {
             let muteRole = args[2]
@@ -195,6 +200,7 @@ module.exports = {
                 .addField('Verification Level', `${msg.guild.verificationLevel}`)
                 .addField('Main Role', `${mainRoleStatus}`)
                 .addField('Mute Role', `${muteRoleStatus}`)
+                .addField('Logging Of Deleted Messages', `${guildData.allowsDeleting}`)
                 .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
             if (logChannelStatus != 'Not Set') {
                 ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
