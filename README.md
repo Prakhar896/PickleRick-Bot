@@ -49,6 +49,8 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 24) Change some server settings and bot settings: pr!ss help [MOD]
 25) Lock a channel (prevent people from messaging in it): pr!lockchannel help [MOD]
 26) Get information from Wikipedia: pr!wiki help
-27) Listen to Music in a Voice Channel: pr!music help
+27) Listen to Music in a Voice Channel: pr!music help (temporarily disabled)
+28) Delete Message Logs (Logs content of messages when they are deleted.): pr!ss setdeletelogs true/false [MOD]
+29) Suggestions (suggest improvements to a server democratically): pr!suggest (your suggestion here)
 
 Commands tagged with [MOD] or [SPECIAL PERMISSIONS] work only if you are a moderator or if you have specific permissions.
