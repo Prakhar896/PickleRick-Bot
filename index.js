@@ -80,7 +80,7 @@ const guildInvites = new Map();
 //Side Event Handlers
 bot.on('ready', () => {
     console.log('The bot is online :).');
-    bot.user.setActivity(`Do ${Prefix}help or ${Prefix}cmdlist`)
+    bot.user.setActivity(`${Prefix}help`)
     bot.guilds.cache.forEach(guild => {
         //Invites
         guild.fetchInvites()

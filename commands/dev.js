@@ -47,6 +47,7 @@ module.exports = {
             .addField('Stop command', 'pr!dev stop')
             .addField('Invite link command', 'pr!dev inv')
             .addField('Uptime command', 'pr!dev uptime')
+            .addField('Set Activity Command', 'pr!dev setactivity .listening/.watching/.playing/.streaming/.competing <status content>')
             msg.channel.send(devHelpEmbed)
         } else if (devParam == 'announcedowntime' || devParam == 'ad') {
             let msgArgs = args.slice(2).join(" ")
@@ -63,6 +64,31 @@ module.exports = {
             })
             msg.reply('Successfully alerted all servers about downtime, sending a copy of the message here...')
             msg.channel.send(downtimeEmbed)
+        } else if (devParam == 'setactivity' || 'sa') {
+            if (args[2] != '.listening' && args[2] != '.watching' && args[2] != '.playing' && args[2] != '.streaming' && args[2] != '.competing') return msg.reply('That is not a valid status. Valid statues include: \`.playing, .watching, .listening, .streaming, .competing\`')
+            var activityType;
+            if (args[2] == '.listening') {
+                activityType = 'LISTENING'
+            } else if (args[2] == '.watching') {
+                activityType = 'WATCHING'
+            } else if (args[2] == '.playing') {
+                activityType = 'PLAYING'
+            } else if (args[2] == '.streaming') {
+                activityType = 'STREAMING'
+            } else if (args[2] == '.competing') {
+                activityType = 'COMPETING'
+            }
+            let activityContent = args.slice(3).join(" ")
+            if (!activityContent) return msg.reply('Please give the content of the status/activity')
+            client.user.setActivity(activityContent, { type: activityType })
+            .then(presence => {
+                msg.reply(`Activity set to ${presence.activities[0].name}`)
+                console.log(`A developer set the activity of this bot to ${presence.activities[0].name} in the guild ${msg.guild.name} in the channel ${msg.channel.name}`)
+            })
+            .catch(err => {
+                console.log('Activity setting error: ' + err)
+                msg.reply('An error occurred. Failed to set the activity.')
+            })
         }
         return
     }
