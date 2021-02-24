@@ -193,7 +193,7 @@ bot.on('message', msg => {
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
     console.log(`Message occurred, guild info: ${guilds[serverIndex]}`)
-
+    
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':
