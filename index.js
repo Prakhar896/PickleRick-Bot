@@ -43,6 +43,7 @@ const dev = require('./commands/dev');
 const suggest = require('./commands/suggest');
 const assign = require('./commands/assign');
 const unassign = require('./commands/unassign');
+const create = require('./commands/create');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -301,6 +302,10 @@ bot.on('message', msg => {
             break;
         case 'unassign':
             unassign.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            break;
+        case 'create':
+            create.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            break;
     }
 })
 
