@@ -52,5 +52,6 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 27) Listen to Music in a Voice Channel: pr!music help (temporarily disabled)
 28) Delete Message Logs (Logs content of messages when they are deleted.): pr!ss setdeletelogs true/false [MOD]
 29) Suggestions (suggest improvements to a server democratically): pr!suggest (your suggestion here)
+30) Role Management (assign or unassign roles to members): 'pr!assign help' and 'pr!unassign help' [MOD]
 
 Commands tagged with [MOD] or [SPECIAL PERMISSIONS] work only if you are a moderator or if you have specific permissions.
