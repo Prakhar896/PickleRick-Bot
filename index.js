@@ -41,6 +41,7 @@ const consolespam = require('./commands/consolespam');
 const unmute = require('./commands/unmute');
 const dev = require('./commands/dev');
 const suggest = require('./commands/suggest');
+const assign = require('./commands/assign');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -293,6 +294,9 @@ bot.on('message', msg => {
             break;
         case 'suggest':
             suggest.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            break;
+        case 'assign':
+            assign.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
     }
 })
