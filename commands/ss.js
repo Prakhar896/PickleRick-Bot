@@ -124,9 +124,7 @@ module.exports = {
             if (!msg.guild.roles.cache.find(role => role.name === mainRole)) return msg.reply('That role does not exist in this server.')
             msg.reply('Main role set successfully.')
             let newGuildData = guildData
-            console.log('guild data currnet: ' + newGuildData)
             newGuildData.mainRole = mainRole
-            console.log('guild data new :' + newGuildData)
             return newGuildData
         } else if (ssParam == 'setmuterole') {
             let muteRole = args[2]

@@ -25,13 +25,29 @@ module.exports = {
         var roleName = args[1]
         if (!roleName) return msg.reply('Please give the name of the role you would like to assign.')
         roleName = args[1].split("%").join(" ");
+        if (roleName == '.main') {
+            if (guildData.mainRole) {
+                roleName = guildData.mainRole
+            } else {
+                msg.reply('You have not set the main role in this bot yet. Type \`pr!ss setmainrole <main role name, with spaces replaced with %>\` to set the main role.')
+                return
+            }
+        } else if (roleName == '.mute') {
+            if (guildData.muteRole) {
+                roleName = guildData.muteRole
+            } else {
+                msg.reply('You have not set the mute role in this bot yet. Type \`pr!ss setmuterole <mute role name, with spaces replaced with %>\` to set the mute role.')
+                return
+            }
+        }
         let helpEmbed = new Discord.MessageEmbed()
             .setTitle('Assign Role Command Help')
             .setDescription('This command allows moderators to easily assign roles to members with a single command.')
             .addField('Format', `${Prefix}assign <role name, with spaces replaced with the % sign> @member`)
             .setColor('AQUA')
             .setFooter(`Type ${Prefix}unassign help to find out how to remove roles.`)
-            .addField('Example:', `${Prefix}assign main%role @Jake`);
+            .addField('Example:', `${Prefix}assign main%role @Jake`)
+            .addField('Tip:', `If you are adding the main/mute role of a server to a member and have set-up the main/mute role in this bot, you can do \'${Prefix}assign .main/.mute @member\' to assign the main/mute role easily.`);
 
         if (roleName == 'help') return msg.channel.send(helpEmbed).catch(err => { msg.reply('An error occurred in sending the help embed. Err: ' + err) })
         let roleObject = msg.guild.roles.cache.find(r => r.name === roleName)
