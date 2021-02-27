@@ -131,6 +131,17 @@ bot.on('ready', () => {
             guilds[index].mainRole = 'ma homie'
             guilds[index].muteRole = 'stfu'
             guilds[index].allowsDeleting = true
+        } else if (guildData.id == '815050446766080040') {
+            //Running Server
+            guilds[index].logChannel = '815094333799006218'
+            guilds[index].mainRole = 'member'
+            guilds[index].allowsDeleting = true
+        } else if (guildData.id == '813332393007382559') {
+            //Discovery Server
+            guilds[index].logChannel = '814461682801442816'
+            guilds[index].mainRole = 'Mitglied'
+            guilds[index].muteRole = 'Muted'
+            guilds[index].allowsDeleting = true
         }
         index += 1
     }
