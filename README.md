@@ -18,6 +18,7 @@ This is a Discord bot that I made for any Discord server and has features from m
 - You should see the bot become active on the server.
 
 **This step is required:** Do `pr!ss help` to find out the different admin commands for the bot. Please create a log channel and use `pr!ss setlogchannel <id of log channel>` to set the log channel. After this, you can use the bot as per normal. (you may choose to set a main and muted role as well...do `pr!ss help` for more information)
+
 `pr!` is the default prefix of the bot. Do `pr!setprefix <prefix>` if you want to choose your own prefix.
 
 To find out more about the bot, do pr!modhelp (moderator-only command) or pr!help.
