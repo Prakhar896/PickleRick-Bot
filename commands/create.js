@@ -29,8 +29,15 @@ module.exports = {
         if (createParam == 'help') {
             let helpEmbed = new Discord.MessageEmbed()
                 .setTitle('Create Command Help')
-                .setColor('PURPLE');
-            //TO DO
+                .setColor('PURPLE')
+                .setDescription('Help for using the create command to easily create and customise text or voice channels.')
+                .addField('About', 'There are two modes to both creating text and voice channels; they are basic and advanced. Basic mode is simple with just the basic requirements for a text or voice channel, with advanced, you can customise more.')
+                .addField('Text Channels: Basic Mode', 'pr!create tc basic <channel name with spaces replaced with % or -, e.g vip-general> <topic, can be with spaces (this is optional)>')
+                .addField('Text Channels: Advanced Mode', '\`pr!create tc adv\`, follow instructions that will be sent to customise channel (customisations include name, topic, NSFW and permissions).')
+                .addField('Voice Channels: Basic Mode', 'pr!create vc basic <channel name, with spaces>')
+                .addField('Voice Channels: Advanced Mode', '\`pr!create vc adv\`, follow instructions that will be sent to customise channel (customisations include name, bitrate, user limit and permissions)');
+
+            msg.channel.send(helpEmbed)
         }
         if (createParam == 'tc') {
             let mode = args[2]
