@@ -136,11 +136,17 @@ bot.on('ready', () => {
             guilds[index].logChannel = '815094333799006218'
             guilds[index].mainRole = 'member'
             guilds[index].allowsDeleting = true
-        } else if (guildData.id == '813332393007382559') {
-            //Discovery Server
-            guilds[index].logChannel = '814461682801442816'
-            guilds[index].mainRole = 'Mitglied'
+        } else if (guildData.id == '814661841451483166') {
+            // The Study Corner Server
+            guilds[index].logChannel = '816277234599985163'
+            guilds[index].mainRole = 'Member'
             guilds[index].muteRole = 'Muted'
+            guilds[index].allowsDeleting = true
+        } else if (guildData.id == '816517340190736424') {
+            // meme founders gang server
+            guilds[index].logChannel = '816581576980693004'
+            guilds[index].mainRole = 'employee'
+            guilds[index].muteRole = 'shut up'
             guilds[index].allowsDeleting = true
         }
         index += 1
