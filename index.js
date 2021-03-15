@@ -118,7 +118,7 @@ bot.on('ready', () => {
             guilds[index].logChannel = '807615806988746783'
             guilds[index].mainRole = 'verified'
             guilds[index].muteRole = 'muted'
-            guilds[index].allowsDeleting = false
+            guilds[index].allowsDeleting = true
         } else if (guildData.id == '696270592135135242') {
             //NASS Robotics
             guilds[index].logChannel = '812321866923376670'

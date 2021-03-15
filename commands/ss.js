@@ -259,6 +259,52 @@ module.exports = {
                 return guildData
             }
 
+        } else if (ssParam == 'auditlog' || ssParam == 'al') {
+            var limit = args[2]
+            if (!limit) {
+                limit = 10
+            } else {
+                if (!(parseInt(limit))) return msg.reply(`Please give a valid number more than or equal to 1. To get the last 10 audit log entries, type \`${Prefix}ss auditlog/al\`. Type \`${Prefix}ss auditlog/al help\` for more information.`)
+                if (parseInt(limit) < 1) return msg.reply(`Please give a valid number more than or equal to 1. To get the last 10 audit log entries, type \`${Prefix}ss auditlog/al\`. Type \`${Prefix}ss auditlog/al help\` for more information.`)
+                msg.guild.fetchAuditLogs({limit: parseInt(limit)})
+                .then(audit => {
+                    const entries = audit.entries
+                    console.log(entries)
+                    msg.reply(`Listing last ${limit} entries...`)
+                    var counter = 0
+                    entries.forEach(entry => {
+                        counter += 1
+                        let entryEmbed = new Discord.MessageEmbed()
+                        .setTitle(`Entry Number ${counter}`)
+                        .setColor('RANDOM')
+                        .addField('Executor:', `Username: ${entry.executor.username + '#' + entry.executor.discriminator}`)
+                        .addField('Action:', `${String(entry.action).split('_').join(' ')}`);
+                        if (entry.reason) entryEmbed.addField('Reason:', `${entry.reason}`)
+                        if (entry.changes) {
+                            entryEmbed.addField('***Changes***', '**Below are all the changes made in this entry:**')
+                            entry.changes.forEach(change => {
+                                entryEmbed
+                                .addField(`Change: ${change.key}`, `Old: ${change.old}, New: ${change.new}`);
+                            })
+                        }
+                        if (entry.extra) {
+                            // working on showing extra shit
+                            console.log(entry.extra)
+                            if (entry.action == 'MESSAGE_BULK_DELETE') {
+                                entryEmbed.addField('Effect:', `${entry.extra.count} messages were deleted in #${entry.extra.channel.id}.`)
+                            }
+                        }
+                        entryEmbed.setFooter(`Requested by @${msg.author.tag} in #${msg.channel.name}.`)
+                        msg.channel.send(entryEmbed)
+                    })
+                })
+                .catch(err => {
+                    msg.reply('An error occurred in fetching the audit logs. Please ensure I have Administrator permissions.')
+                    console.log("Server Settings Error (Unable to fetch audit logs): " + err)
+                    return
+                })
+            }
+            
         }
         return guildData
     }
