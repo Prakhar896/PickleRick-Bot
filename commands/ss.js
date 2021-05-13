@@ -254,10 +254,17 @@ module.exports = {
                     .catch(err => {
                         msg.reply('An error occurred in creating the channel. Please ensure I have Administrator permissions.')
                         console.log('Suggestions channel creation error: ' + err)
-                    })
+                    });
                 msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
                 return guildData
             }
+        } else if (ssParam == 'ar') {
+            let trueOrFalse = args[2]
+            if (!trueOrFalse) return msg.reply('Please state whether you would like to enable (true) or disable (false) the AutoRoles system.')
+            if (trueOrFalse) { trueOrFalse = true } else { trueOrFalse = false }
+            var currentGuildData = guildData
+            currentGuildData.autorolesEnabled = true
+            return currentGuildData
         }
         return guildData
     }

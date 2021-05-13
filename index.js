@@ -94,7 +94,7 @@ bot.on('ready', () => {
                 console.log('Fetching Invites Error: ' + err)
             })
         //Setting guilds and their info
-        guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false })
+        guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false, autorolesEnabled: false })
     })
     let backEndChannel = bot.guilds.cache.get('805723501544603658').channels.cache.get('805733098297360406')
     backEndChannel.send('Would you like to autoset guild data to custom guilds?')
@@ -107,47 +107,61 @@ bot.on('ready', () => {
             guilds[index].mainRole = 'member'
             guilds[index].muteRole = 'dood is shut'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
         } else if (guildData.id == '780685961079685120') {
             //Ngee ann's maga party
             guilds[index].logChannel = '804692091724496907'
             guilds[index].mainRole = ''
             guilds[index].muteRole = ''
             guilds[index].allowsDeleting = false
+            guilds[index].autorolesEnabled = false
         } else if (guildData.id == '807599800379768862') {
             //3r4, discord's better than whatsapp
             guilds[index].logChannel = '807615806988746783'
             guilds[index].mainRole = 'verified'
             guilds[index].muteRole = 'muted'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
         } else if (guildData.id == '696270592135135242') {
             //NASS Robotics
             guilds[index].logChannel = '812321866923376670'
             guilds[index].mainRole = 'Robotics Club Members'
             guilds[index].muteRole = 'shut'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
         } else if (guildData.id == '805723501544603658') {
             //Backend Server: idk
             guilds[index].logChannel = '805733098297360406'
             guilds[index].mainRole = 'ma homie'
             guilds[index].muteRole = 'stfu'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
         } else if (guildData.id == '815050446766080040') {
             //Running Server
             guilds[index].logChannel = '815094333799006218'
             guilds[index].mainRole = 'member'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = false
         } else if (guildData.id == '814661841451483166') {
             // The Study Corner Server
             guilds[index].logChannel = '816277234599985163'
             guilds[index].mainRole = 'Member'
             guilds[index].muteRole = 'Muted'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
         } else if (guildData.id == '816517340190736424') {
             // meme founders gang server
             guilds[index].logChannel = '816581576980693004'
             guilds[index].mainRole = 'employee'
             guilds[index].muteRole = 'shut up'
             guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
+        } else if (guildData.id == '836808479099453460') {
+            // stumble gamers server
+            guilds[index].logChannel = '836962402796306472'
+            guilds[index].mainRole = 'admin'
+            guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
         }
         index += 1
     }
@@ -191,15 +205,29 @@ bot.on('inviteDelete', invite => {
 })
 
 bot.on('guildMemberAdd', guildMember => {
-    var stringWelcomeRole;
-    if (guildMember.guild.id == '773172065263943701') {
-        stringWelcomeRole = 'member'
+    var roleString;
+    for (guildData in guilds) {
+        if (guildData.id == guildMember.guild.id) {
+            if (guildData.autorolesEnabled) {
+                if (!guildData.mainRole) return guildMember.guild.systemChannel.send(`An error (could not find main role) occurred in adding the main role to the new member ${guildMember.user.tag}. Please set the main role again using \`${Prefix}ss setmainrole <main role with spaces replaced with %>\``)
+                roleString = guildData.mainRole
+                var role = guildMember.guild.roles.cache.find(r => r.name === roleString)
+                if (!role) return guildMember.guild.systemChannel.send(`The role, \'${roleString}\', that has been set in my records does not exist. Failed to assign the role using AutoRoles. Please re-set the role using \`${Prefix}ss setmainrole <main role with spaces replaced with %>\``)
+                guildMember.roles.add(role)
+                .then(member => {
+                    guildMember.guild.systemChannel.send(`Welcome <@${member.id}> to ${member.guild.name}!`)
+                })
+                .catch(err => {
+                    guildMember.guild.systemChannel.send('An error occurred in adding the main role to the new member via the AutoRoles system. Please ensure that I have Administrator permissions.')
+                    console.log('AutoRoles Error (Failed to add role to member): ' + err)
+                    return
+                })
+                return
+            } else {
+                return
+            }
+        }
     }
-    if (!stringWelcomeRole) return
-    let welcomeRole = guildMember.guild.roles.cache.find(role => role.name === stringWelcomeRole)
-    console.log(welcomeRole)
-    guildMember.roles.add(welcomeRole)
-    guildMember.guild.systemChannel.send(`Welcome <@${guildMember.id}> to ${guildMember.guild.name}!`)
 })
 
 bot.on('disconnect', () => {
@@ -213,7 +241,7 @@ bot.on('message', msg => {
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
     console.log(`Message occurred, guild info: ${guilds[serverIndex]}`)
-    
+
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':

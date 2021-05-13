@@ -106,22 +106,50 @@ module.exports = {
                 .setColor('GREEN')
                 .setFooter(`Requested by ${msg.author.tag} in #${msg.channel.name}`);
             msg.channel.send(statusDevEmbed)
-            .catch(err => {
-                console.log('Error in Sending Status Embed: ' + err)
-                msg.reply('An error occurred in sending the status embed.')
-            })
+                .catch(err => {
+                    console.log('Error in Sending Status Embed: ' + err)
+                    msg.reply('An error occurred in sending the status embed.')
+                })
         } else if (devParam == 'setusername' || devParam == 'su') {
             let newUsername = args.slice(2).join(" ")
             if (!newUsername) return msg.reply('Please give the new username of this bot.')
             client.user.setUsername(newUsername)
-            .then(() => {
-                msg.reply(`Changed bot username to \`${newUsername}\` successfully.`)
+                .then(() => {
+                    msg.reply(`Changed bot username to \`${newUsername}\` successfully.`)
+                })
+                .catch(err => {
+                    console.log('Username Changing Error: ' + err)
+                    msg.reply('An error occurred in changing this bot\'s username.')
+                    msg.reply('Error log: ' + err)
+                })
+        } else if (devParam == 'getalldata') {
+            guilds.forEach(guildData => {
+                let dataEmbed = new Discord.MessageEmbed()
+                .setTitle(guildData.name)
+                .setColor('RANDOM');
+                if (guildData.id) dataEmbed.addField('ID', guildData.id)
+                if (guildData.logChannel) dataEmbed.addField('Log Channel', guildData.logChannel)
+                if (guildData.mainRole) dataEmbed.addField('Main Role', guildData.mainRole)
+                if (guildData.muteRole) dataEmbed.addField('Mute Role', guildData.muteRole)
+                if (String(guildData.allowsDeleting)) dataEmbed.addField('Allows Deleting', String(guildData.allowsDeleting))
+                if (String(guildData.autorolesEnabled)) dataEmbed.addField('AutoRoles Enabled', String(guildData.autorolesEnabled));
+                msg.channel.send(dataEmbed)
             })
-            .catch(err => {
-                console.log('Username Changing Error: ' + err)
-                msg.reply('An error occurred in changing this bot\'s username.')
-                msg.reply('Error log: ' + err)
+        } else if (devParam == 'announce' || devParam == 'an') {
+            let msgArgs = args.slice(2).join(" ")
+            if (!msgArgs) return msg.reply('Please give the content of the announcement.')
+            let downtimeEmbed = new Discord.MessageEmbed()
+                .setColor('0xFFA500')
+                .setTitle('Announcement from Developers')
+                .addField('Message from Developers:', msgArgs)
+                .setFooter('Contact the developers for more information.');
+            guilds.forEach(guildData => {
+                let guildObject = client.guilds.cache.get(guildData.id)
+                let guildLogChannelObject = guildObject.channels.cache.get(guildData.logChannel)
+                guildLogChannelObject.send(downtimeEmbed)
             })
+            msg.reply('Successfully sent announcement to all servers, sending a copy of the message here...')
+            msg.channel.send(downtimeEmbed)
         }
         return
     }
