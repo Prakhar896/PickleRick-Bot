@@ -69,7 +69,11 @@ class PickleRickGuild {
 }
 
 //Init variables
+var botTestingMode = true
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
+if (botTestingMode) {
+    Prefix = 'prb!'
+} 
 //old server management
 // var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
 // var mainRoles = ['member', 'ma homie']
@@ -361,4 +365,8 @@ bot.on('messageDelete', deletedMessage => {
         deletedMessage.guild.channels.cache.get(guilds[serverIndex].logChannel).send(`${deletedMessage.author.tag} deleted a message with the content \`${deletedMessage.content}\` in <#${deletedMessage.channel.id}>`)
     }
 })
-bot.login(process.env.DISCORD_TOKEN); //DISCORD_TOKEN is discord bot's token.
+if (botTestingMode) {
+    bot.login(process.env.DISCORD_BETA_TOKEN) //DISCORD_BETA_TOKEN is the beta discord bot's token
+} else {
+    bot.login(process.env.DISCORD_TOKEN) //DISCORD_TOKEN is official discord bot's token
+}
