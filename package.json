@@ -21,6 +21,7 @@
     "fortnite-api-com": "^2.2.1",
     "fs": "0.0.1-security",
     "https": "^1.0.0",
+    "images-scraper": "^6.3.0",
     "is-url": "^1.2.4",
     "mathjs": "^8.1.1",
     "minecraft-server-util": "^3.5.1",

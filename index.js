@@ -70,7 +70,7 @@ class PickleRickGuild {
 }
 
 //Init variables
-var botTestingMode = false
+var botTestingMode = true
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 if (botTestingMode) {
     Prefix = 'prb!'
