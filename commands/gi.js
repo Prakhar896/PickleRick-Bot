@@ -37,7 +37,7 @@ module.exports = {
         msg.reply(`Please wait a second while I get a random image from online, with the subject **${image_query}**`)
 
         const image_results = await google.scrape(image_query, 200);
-        msg.channel.send(image_results[Math.floor((Math.random() * 200) + 1)].url)
+        msg.channel.send(image_results[Math.floor((Math.random() * image_results.length) + 1)].url)
         return
     }
 }
