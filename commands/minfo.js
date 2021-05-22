@@ -26,11 +26,17 @@ module.exports = {
             .addField('Name and Tag', memberUser.tag, true)
             .addField('Nickname in ' + member.guild.name, member.nickname, true);
 
-        var roles = member.roles.cache.get()
-
+        var roleString = ""
+        var roles = member.roles.cache.forEach(role => {
+            if (role.name != '@everyone') {
+                roleString = roleString + ` <@&${role.id}>`
+            }
+        })
+        memberEmbed.addField('Roles: ', roleString)
         memberEmbed.addField('User', 'ID: ' + memberUser.id)
             .addField('Account Created At', memberUser.createdAt, true)
-            .setThumbnail(memberUser.displayAvatarURL());
+            .setThumbnail(memberUser.displayAvatarURL())
+            .setColor('RANDOM');
 
         msg.channel.send(memberEmbed)
         msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} requested for information on ${memberUser.tag}`)
