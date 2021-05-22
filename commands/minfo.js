@@ -24,15 +24,18 @@ module.exports = {
         const memberEmbed = new Discord.MessageEmbed()
             .setTitle('Info About ' + memberUser.username)
             .addField('Name and Tag', memberUser.tag, true)
-            .addField('Nickname in ' + member.guild.name, member.nickname, true)
-            .addField('User', 'ID: ' + memberUser.id)
+            .addField('Nickname in ' + member.guild.name, member.nickname, true);
+
+        var roles = member.roles.cache.get()
+
+        memberEmbed.addField('User', 'ID: ' + memberUser.id)
             .addField('Account Created At', memberUser.createdAt, true)
             .setThumbnail(memberUser.displayAvatarURL());
 
         msg.channel.send(memberEmbed)
         msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} requested for information on ${memberUser.tag}`)
-        .catch(err => {
-            msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
-        })
+            .catch(err => {
+                msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+            })
     }
 }

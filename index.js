@@ -69,11 +69,11 @@ class PickleRickGuild {
 }
 
 //Init variables
-var botTestingMode = true
+var botTestingMode = false
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 if (botTestingMode) {
     Prefix = 'prb!'
-} 
+}
 //old server management
 // var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
 // var mainRoles = ['member', 'ma homie']
@@ -253,6 +253,7 @@ bot.on('message', msg => {
             break;
         case 'minfo':
             minfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            let member = msg.guild.member(msg.author)
             break;
         case 'info':
             info.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
