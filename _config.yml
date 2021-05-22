@@ -1,0 +1,5 @@
+theme: jekyll-theme-cayman
+title: DollarMate - Your expense buddy
+github:
+  is_project_page: false
+  repository_url: https://prakhar896.github.io
