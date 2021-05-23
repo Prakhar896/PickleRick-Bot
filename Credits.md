@@ -12,6 +12,8 @@ These are some credits to services that my bot uses:
 9) @discordjs/opus: https://www.npmjs.com/package/@discordjs/opus
 10) ytdl-core: https://www.npmjs.com/package/ytdl-core
 11) yt-search: https://www.npmjs.com/package/yt-search
+12) images-scraper: https://www.npmjs.com/package/images-scraper
+13) weather-js: https://www.npmjs.com/package/weather-js
 
 Credits to YT Tutorials:
 
