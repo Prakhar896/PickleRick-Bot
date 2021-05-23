@@ -56,5 +56,6 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 30) Role Management (assign or unassign roles to members): 'pr!assign help' and 'pr!unassign help' [MOD]
 31) Channel Creation (create text or voice channels with special customisations): pr!create help [MOD]
 32) Link to All Features Webpage: pr!cmdlist
+33) Get the Weather for any location: pr!weather (location name)
 
 Commands tagged with [MOD] or [SPECIAL PERMISSIONS] work only if you are a moderator or if you have specific permissions.
