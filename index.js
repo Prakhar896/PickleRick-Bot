@@ -45,6 +45,7 @@ const assign = require('./commands/assign');
 const unassign = require('./commands/unassign');
 const create = require('./commands/create');
 const cmdlist = require('./commands/cmdlist');
+const weather = require('./commands/weather');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -358,6 +359,9 @@ bot.on('message', msg => {
             break;
         case 'cmdlist':
             cmdlist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            break;
+        case 'weather':
+            weather.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
     }
 })
