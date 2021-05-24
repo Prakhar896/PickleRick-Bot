@@ -71,7 +71,7 @@ class PickleRickGuild {
 }
 
 //Init variables
-var botTestingMode = false
+var botTestingMode = true
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 if (botTestingMode) {
     Prefix = 'prb!'
@@ -363,6 +363,7 @@ bot.on('message', msg => {
         case 'weather':
             weather.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
+        
     }
 })
 
