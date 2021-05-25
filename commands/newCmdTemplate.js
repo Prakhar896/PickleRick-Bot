@@ -26,3 +26,9 @@ module.exports = {
         return
     }
 }
+
+//Collector template
+const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
+collector.on('collect', response => {
+    
+})

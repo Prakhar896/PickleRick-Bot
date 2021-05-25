@@ -57,5 +57,6 @@ To find out more about the bot, do pr!modhelp (moderator-only command) or pr!hel
 31) Channel Creation (create text or voice channels with special customisations): pr!create help [MOD]
 32) Link to All Features Webpage: pr!cmdlist
 33) Get the Weather for any location: pr!weather (location name)
+34) Destroy server completely by deleting all channels and roles: pr!destroy [OWNER ONLY]
 
 Commands tagged with [MOD] or [SPECIAL PERMISSIONS] work only if you are a moderator or if you have specific permissions.

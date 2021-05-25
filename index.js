@@ -46,6 +46,7 @@ const unassign = require('./commands/unassign');
 const create = require('./commands/create');
 const cmdlist = require('./commands/cmdlist');
 const weather = require('./commands/weather');
+const destroy = require('./commands/destroy');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -71,7 +72,7 @@ class PickleRickGuild {
 }
 
 //Init variables
-var botTestingMode = true
+var botTestingMode = false
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 if (botTestingMode) {
     Prefix = 'prb!'
@@ -363,7 +364,9 @@ bot.on('message', msg => {
         case 'weather':
             weather.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
-        
+        case 'destroy':
+            destroy.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            break;
     }
 })
 
