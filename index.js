@@ -101,11 +101,11 @@ bot.on('ready', () => {
                 console.log('Fetching Invites Error: ' + err)
             })
         //Setting guilds and their info
-        guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false, autorolesEnabled: false })
+        guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false, autorolesEnabled: false, giProfanityFilterEnabled: false })
     })
     let backEndChannel = bot.guilds.cache.get('805723501544603658').channels.cache.get('805733098297360406')
     backEndChannel.send('Would you like to autoset guild data to custom guilds?')
-    //collector, for now, just autoset but itself
+    //collector, for now, just autoset by itself
     var index = 0
     for (const guildData of guilds) {
         if (guildData.id == '773172065263943701') {
@@ -122,6 +122,7 @@ bot.on('ready', () => {
             guilds[index].muteRole = ''
             guilds[index].allowsDeleting = false
             guilds[index].autorolesEnabled = false
+            guilds[index].giProfanityFilterEnabled = true
         } else if (guildData.id == '807599800379768862') {
             //3r4, discord's better than whatsapp
             guilds[index].logChannel = '807615806988746783'
@@ -129,6 +130,7 @@ bot.on('ready', () => {
             guilds[index].muteRole = 'muted'
             guilds[index].allowsDeleting = true
             guilds[index].autorolesEnabled = true
+            guilds[index].giProfanityFilterEnabled = true
         } else if (guildData.id == '696270592135135242') {
             //NASS Robotics
             guilds[index].logChannel = '812321866923376670'
@@ -137,12 +139,13 @@ bot.on('ready', () => {
             guilds[index].allowsDeleting = true
             guilds[index].autorolesEnabled = true
         } else if (guildData.id == '805723501544603658') {
-            //Backend Server: idk
+            //Backend Server
             guilds[index].logChannel = '805733098297360406'
             guilds[index].mainRole = 'ma homie'
             guilds[index].muteRole = 'stfu'
             guilds[index].allowsDeleting = true
             guilds[index].autorolesEnabled = true
+            guilds[index].giProfanityFilterEnabled = true
         } else if (guildData.id == '815050446766080040') {
             //Running Server
             guilds[index].logChannel = '815094333799006218'
@@ -248,6 +251,7 @@ bot.on('message', msg => {
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
     console.log(`Message occurred, guild info: ${guilds[serverIndex]}`)
+
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':

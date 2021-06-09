@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
+    "bad-words": "^3.0.4",
     "cheerio": "^1.0.0-rc.9",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

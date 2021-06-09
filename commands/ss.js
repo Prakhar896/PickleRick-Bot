@@ -43,6 +43,7 @@ module.exports = {
                 .addField('Main Role', `${mainRoleStatus}`)
                 .addField('Mute Role', `${muteRoleStatus}`)
                 .addField('Logging Of Deleted Messages', `${guildData.allowsDeleting}`)
+                .addField('Google Images Profanity Filter Enabled:', `${guildData.giProfanityFilterEnabled}`)
                 .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
             if (logChannelStatus != 'Not Set') {
                 ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
@@ -159,6 +160,7 @@ module.exports = {
                 .addField('Spaces Replaced With % Formatting', 'In this bot, most commands have this style of formatting where spaces are replaced with the % sign, like pr!initiatespam hello%there 10 <channel ID>. This is to allow the bot to register commands quickly and properly and execute them as quickly as possible.', true)
                 .addField('pr!ss setdeletelogs <true or false>', 'This setting allows you to control whether the bot should report the deletion of messages throughout the server to the log channel. true means you allow and false means you don\'t')
                 .addField('pr!ss create.suggest', 'Creates a suggestion channel in the server for the pr!suggest command. Please do not rename this channel but you can change its permissions as you like.')
+                .addField('pr!ss profanity filter <true | false>', 'Turn on or off a profanity filter on the search queries I search to mitigate explicit media being sent.')
                 .setFooter('Do pr!cmdlist to view the full list of commands that can be executed.')
             msg.channel.send(ssHelpEmbed)
         } else if (ssParam == 'autosetup') {
@@ -264,6 +266,21 @@ module.exports = {
             if (trueOrFalse) { trueOrFalse = true } else { trueOrFalse = false }
             var currentGuildData = guildData
             currentGuildData.autorolesEnabled = true
+            return currentGuildData
+        } else if (ssParam == 'profanityfilter') {
+            var trueOrFalse = args[2]
+            if (!trueOrFalse) return msg.reply('Please state whether you would like to enable (true) or disable (false) the Profanity Filter system.')
+            if (trueOrFalse == 'true') {
+                trueOrFalse = true
+            } else if (trueOrFalse == 'false') {
+                trueOrFalse = false
+            } else {
+                msg.reply('Invalid response. Only \`true\` and \`false\` are accepted.')
+                return
+            }
+            var currentGuildData = guildData
+            currentGuildData.giProfanityFilterEnabled = trueOrFalse
+            msg.reply(`Set the Profanity Filter system\'s status to \`${trueOrFalse}\` successfully`)
             return currentGuildData
         }
         return guildData
