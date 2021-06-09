@@ -47,6 +47,7 @@ const create = require('./commands/create');
 const cmdlist = require('./commands/cmdlist');
 const weather = require('./commands/weather');
 const destroy = require('./commands/destroy');
+const rinfo = require('./commands/rinfo');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -251,7 +252,7 @@ bot.on('message', msg => {
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
     console.log(`Message occurred, guild info: ${guilds[serverIndex]}`)
-
+    
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':
@@ -370,6 +371,9 @@ bot.on('message', msg => {
             break;
         case 'destroy':
             destroy.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            break;
+        case 'rinfo':
+            rinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
     }
 })
