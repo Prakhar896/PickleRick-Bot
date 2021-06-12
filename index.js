@@ -173,6 +173,14 @@ bot.on('ready', () => {
             guilds[index].mainRole = 'admin'
             guilds[index].allowsDeleting = true
             guilds[index].autorolesEnabled = true
+        } else if (guildData.id == '853148400693805117') {
+            //nickels server
+            guilds[index].logChannel = '853150722317484042'
+            guilds[index].mainRole = 'nickels'
+            guilds[index].muteRole = 'bad boi'
+            guilds[index].allowsDeleting = true
+            guilds[index].autorolesEnabled = true
+            guilds[index].giProfanityFilterEnabled = true
         }
         index += 1
     }
