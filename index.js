@@ -176,7 +176,7 @@ bot.on('ready', () => {
         } else if (guildData.id == '853148400693805117') {
             //nickels server
             guilds[index].logChannel = '853150722317484042'
-            guilds[index].mainRole = 'nickels'
+            guilds[index].mainRole = 'nickeler'
             guilds[index].muteRole = 'bad boi'
             guilds[index].allowsDeleting = true
             guilds[index].autorolesEnabled = true
@@ -260,7 +260,6 @@ bot.on('message', msg => {
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
     console.log(`Message occurred, guild info: ${guilds[serverIndex]}`)
-    
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':
@@ -307,7 +306,8 @@ bot.on('message', msg => {
             mc.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             break;
         case 'gi':
-            gi.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            // gi.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            msg.reply('Sorry, this command is currently inactive.')
             break;
         case 'fn':
             fn.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, fortniteStats)
