@@ -8,6 +8,7 @@ const cheerio = require('cheerio');
 const request = require('request');
 const fortniteAPI = require('fortnite-api-com');
 const triviaDB = require('triviadb');
+
 const { Console } = require('console');
 const clear = require('./commands/clear');
 const minfo = require('./commands/minfo')
