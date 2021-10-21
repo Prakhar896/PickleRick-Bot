@@ -8,7 +8,7 @@ const cheerio = require('cheerio');
 const request = require('request');
 const fortniteAPI = require('fortnite-api-com');
 const triviaDB = require('triviadb');
-
+const axios = require('axios');
 const { Console } = require('console');
 const clear = require('./commands/clear');
 const minfo = require('./commands/minfo')
@@ -234,14 +234,14 @@ bot.on('guildMemberAdd', guildMember => {
                 var role = guildMember.guild.roles.cache.find(r => r.name === roleString)
                 if (!role) return guildMember.guild.systemChannel.send(`The role, \'${roleString}\', that has been set in my records does not exist. Failed to assign the role using AutoRoles. Please re-set the role using \`${Prefix}ss setmainrole <main role with spaces replaced with %>\``)
                 guildMember.roles.add(role)
-                .then(member => {
-                    guildMember.guild.systemChannel.send(`Welcome <@${member.id}> to ${member.guild.name}!`)
-                })
-                .catch(err => {
-                    guildMember.guild.systemChannel.send('An error occurred in adding the main role to the new member via the AutoRoles system. Please ensure that I have Administrator permissions.')
-                    console.log('AutoRoles Error (Failed to add role to member): ' + err)
-                    return
-                })
+                    .then(member => {
+                        guildMember.guild.systemChannel.send(`Welcome <@${member.id}> to ${member.guild.name}!`)
+                    })
+                    .catch(err => {
+                        guildMember.guild.systemChannel.send('An error occurred in adding the main role to the new member via the AutoRoles system. Please ensure that I have Administrator permissions.')
+                        console.log('AutoRoles Error (Failed to add role to member): ' + err)
+                        return
+                    })
                 return
             } else {
                 return
@@ -254,9 +254,43 @@ bot.on('disconnect', () => {
     console.log('Bot is disconnected or disconnecting.')
 })
 
+async function checkDowntime() {
+    var status = false
+    try {
+        await axios({
+            method: 'get',
+            url: process.env.DT_SERVER_STATUS_URL
+        })
+            .then(async (response) => {
+                if (response.statusText == 'OK' && (response.data == 'True' || response.data == 'False')) {
+                    if (response.data == 'True') {
+                        status = true
+                    } else {
+                        status = false
+                    }
+                } else {
+                    console.log('Error in properly getting downtime status from the server.')
+                    return
+                }
+            })
+    } catch (err) {
+        console.log('Error in checking downtime: ' + err)
+        return
+    }
+    return status
+}
+
 //Main Event Handler
-bot.on('message', msg => {
+bot.on('message', async msg => {
     if (!msg.content.startsWith(Prefix)) return
+
+    //Check downtime
+    var status = await checkDowntime()
+    if (status == true) {
+        msg.reply('**You caught us at an unfortunate time.** This service is currently experiencing downtime. We will be back up shortly.')
+        return
+    }
+
     let args = msg.content.substring(Prefix.length).split(' ');
     let serverIndex = guilds.findIndex(guildData => guildData.id === msg.guild.id)
     if (serverIndex == undefined || serverIndex == -1) return msg.reply('There was a data error. This server is not in my backend servers list. Please contact my developers.')
