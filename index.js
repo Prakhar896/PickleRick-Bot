@@ -74,11 +74,12 @@ class PickleRickGuild {
 }
 
 //Init variables
-var botTestingMode = false
+var botTestingMode = true
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 if (botTestingMode) {
     Prefix = 'prb!'
 }
+var creatorBypassMode = false
 //old server management
 // var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
 // var mainRoles = ['member', 'ma homie']
@@ -300,125 +301,133 @@ bot.on('message', async msg => {
     //Access guildData using params: msg, args, guildData, Prefix, bot, Discord
     switch (args[0]) {
         case 'clear':
-            clear.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            clear.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'minfo':
-            minfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            minfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             let member = msg.guild.member(msg.author)
             break;
         case 'info':
-            info.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            info.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'help':
-            help.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            help.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'mute':
-            mute.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            mute.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'modhelp':
-            modhelp.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            modhelp.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case "poll":
-            poll.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            poll.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'clear-all':
-            clearAll.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            clearAll.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case "setprefix":
-            Prefix = setprefix.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            Prefix = setprefix.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'unmute':
-            unmute.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            unmute.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'initiatespam':
-            initiatespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            initiatespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'cinfo':
-            cinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            cinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'sinfo':
-            sinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            sinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'mc':
-            mc.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            mc.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'gi':
             // gi.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
             msg.reply('Sorry, this command is currently inactive.')
             break;
         case 'fn':
-            fn.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, fortniteStats)
+            fn.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, fortniteStats, creatorBypassMode)
             break;
         case 'coinflip':
-            coinflip.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            coinflip.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'kick':
-            kick.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            kick.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'ban':
-            ban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            ban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'trivia':
-            trivia.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            trivia.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'nick':
-            nick.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            nick.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'unban':
-            unban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            unban.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'invitelist':
-            invitelist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guildInvites)
+            invitelist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guildInvites, creatorBypassMode)
             break;
         case 'inv':
-            inv.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            inv.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'math':
-            math.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            math.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'ss':
-            let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             if (!newGuildData.id) return
             guilds[serverIndex] = newGuildData
             break;
         case 'lockchannel':
-            lockchannel.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            lockchannel.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'wiki':
-            wiki.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            wiki.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'music':
-            music.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            music.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'lullyspamyconsole':
-            consolespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            consolespam.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'dev':
-            dev.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guilds)
+            dev.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guilds, creatorBypassMode, creatorBypassMode)
+            .then(newState => {
+                if (newState != true && newState != false) return
+                if (newState == true) {
+                    creatorBypassMode = true
+                } else {
+                    creatorBypassMode = false
+                }
+            })
             break;
         case 'suggest':
-            suggest.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            suggest.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'assign':
-            assign.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            assign.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'unassign':
-            unassign.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            unassign.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'create':
-            create.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            create.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'cmdlist':
-            cmdlist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            cmdlist.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'weather':
-            weather.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            weather.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'destroy':
-            destroy.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            destroy.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
         case 'rinfo':
-            rinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord)
+            rinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             break;
     }
 })

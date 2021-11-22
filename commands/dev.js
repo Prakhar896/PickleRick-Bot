@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'dev',
     description: 'Commands reserved for use by developers of this bot',
-    execute(msg, args, guildData, Prefix, client, Discord, guilds) {
+    async execute(msg, args, guildData, Prefix, client, Discord, guilds, creatorBypassMode) {
         if (!(msg.author.id == '445816983951507458')) return msg.reply('Sorry, you are not a valid developer of this bot.')
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
@@ -50,6 +50,8 @@ module.exports = {
                 .addField('Set Activity Command', 'pr!dev setactivity/sa .listening/.watching/.playing/.streaming/.competing <status content>')
                 .addField('Get bot status', 'pr!dev status')
                 .addField('Set the bot\'s username', 'pr!dev setusername/su <new username>')
+                .addField('Announce Downtime', 'pr!dev announcedowntime/ad <downtime message, spaces allowed>')
+                .addField('Announce Message', 'pr!dev announce/an <announcement message, spaces allowed>')
             msg.channel.send(devHelpEmbed)
         } else if (devParam == 'announcedowntime' || devParam == 'ad') {
             let msgArgs = args.slice(2).join(" ")
@@ -102,6 +104,7 @@ module.exports = {
                 .addField('Current Status/Activity', `${activity}`)
                 .addField('Uptime', `${uptime} seconds`)
                 .addField('Current Username', `${username}`)
+                .addField('Creator Bypass Mode', `${creatorBypassMode}`)
                 .setThumbnail('https://github.com/Prakhar896/PickleRick-Bot/blob/main/picklerickboticon.png?raw=true')
                 .setColor('GREEN')
                 .setFooter(`Requested by ${msg.author.tag} in #${msg.channel.name}`);
@@ -150,7 +153,17 @@ module.exports = {
             })
             msg.reply('Successfully sent announcement to all servers, sending a copy of the message here...')
             msg.channel.send(downtimeEmbed)
+        } else if (devParam == 'creatorbypass') {
+            var newState = args[2]
+            if (newState != 'true' && newState != 'false') return msg.reply('Invalid new state. New state for `creatorbypass` can only be `true` or `false`. Please try again.')
+            if (newState == 'true') {
+                newState = true
+            } else {
+                newState = false
+            }
+            msg.reply(`Creator bypass mode set to ${newState} successfully.`)
+            return newState
         }
-        return
+        return creatorBypassMode
     }
 }
