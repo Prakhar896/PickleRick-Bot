@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'kick',
     description: 'Kicks a user from the server.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         const kickMember = msg.mentions.users.first();
         if (!kickMember) return msg.reply('Please mention a member that you would like to kick!')

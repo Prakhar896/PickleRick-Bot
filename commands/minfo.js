@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'minfo',
     description: 'Gets information about a member and displays it.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         const memberUser = msg.mentions.users.first()

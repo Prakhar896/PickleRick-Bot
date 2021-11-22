@@ -23,7 +23,7 @@ filter.removeWords('shit', 'bitch');
 module.exports = {
     name: 'gi',
     description: 'Provides a random Google Image from the internet on a given subject.',
-    async execute(msg, args, guildData, Prefix, client, Discord) {
+    async execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         var image_query = args.slice(1).join(' ');
         if (!image_query) {

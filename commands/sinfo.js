@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'sinfo',
     description: 'Provides information about the server.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Could not find guild to get information from. Please type this command in a channel.')
         let serverEmbed = new Discord.MessageEmbed()
             .setTitle('Server Info')

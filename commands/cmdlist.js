@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'cmdlist',
     description: 'Sends link to all features webpage',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         //if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')

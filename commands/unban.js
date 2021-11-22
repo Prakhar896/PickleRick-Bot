@@ -13,7 +13,7 @@ const { error } = require('console');
 module.exports = {
     name: 'Unban',
     description: 'Unbans a banned user',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.')

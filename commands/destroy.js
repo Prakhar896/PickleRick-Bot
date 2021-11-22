@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'destroy',
     description: 'Completely wipes out all channels and roles, can only be run by Owner.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         //if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')

@@ -13,7 +13,7 @@ const wiki = require('wikipedia')
 module.exports = {
     name: 'wiki',
     description: 'Searches Wikipedia for an article related to a search.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))

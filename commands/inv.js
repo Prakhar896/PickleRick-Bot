@@ -12,24 +12,28 @@ const fs = require('fs')
 module.exports = {
     name: 'inv',
     description: 'Creates a server invite',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('THIS IS A MOD-ONLY COMMAND, YOU DO NOT HAVE PERMISSIONS TO USE THIS COMMAND. THIS ACTION WILL BE LOGGED').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
         let invParam = args[1]
         if (!invParam) {
-            if (!msg.member.hasPermission('CREATE_INSTANT_INVITE')) return msg.channel.send('You do not have permissions to create an invite. This action will be logged.')
-            .then(msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} attempted to create an invite in #${msg.channel.name} despite not having permissions.`)
-            .catch(err => {
-                msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
-            }))
+            if (msg.author.id == process.env.CREATOR_DISCORD_ID && creatorBypassMode == true) {
+
+            } else {
+                if (!msg.member.hasPermission('CREATE_INSTANT_INVITE')) return msg.channel.send('You do not have permissions to create an invite. This action will be logged.')
+                    .then(msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} attempted to create an invite in #${msg.channel.name} despite not having permissions.`)
+                        .catch(err => {
+                            msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+                        }))
+            }
             msg.channel.createInvite()
                 .then(invite => {
                     msg.reply(`Here is an invite: ${invite.url}`)
                     msg.guild.channels.cache.get(guildData.logChannel).send(`${msg.author.tag} created an invite with the URL ${invite.url} in <#${msg.channel.id}>.`)
-                    .catch(err => {
-                        msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
-                    })
+                        .catch(err => {
+                            msg.reply('Failed to log event to log channel. Please ensure that you have a log channel setup! Use \`pr!ss setlogchannel <id of log channel>\` to set the log channel.')
+                        })
                 })
                 .catch(err => {
                     msg.reply('An error occurred in creating an invite. Please ensure that I have Create Instant Invite permissions')
@@ -37,10 +41,10 @@ module.exports = {
                 })
         } else if (invParam == 'help') {
             let invHelpEmbed = new Discord.MessageEmbed()
-            .setTitle('Invite Command Help Embed')
-            .addField('Creating an Invite to Channel', 'pr!inv')
-            .addField('Deleting an invite', 'pr!inv delete <invite code, e.g 7jpqmx7>')
-            .setFooter('This command manages all the invites in a server.')
+                .setTitle('Invite Command Help Embed')
+                .addField('Creating an Invite to Channel', 'pr!inv')
+                .addField('Deleting an invite', 'pr!inv delete <invite code, e.g 7jpqmx7>')
+                .setFooter('This command manages all the invites in a server.')
 
             msg.channel.send(invHelpEmbed)
         } else if (invParam == 'delete') {

@@ -12,8 +12,9 @@ const fs = require('fs')
 module.exports = {
     name: 'lullyspamyconsole',
     description: 'This is a random command only for me to use, no one will know this command. :)',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
+        if (msg.author.id != process.env.CREATOR_DISCORD_ID) return msg.reply("This command can only be used by the creator of this bot.")
         // admin check
         // if (!msg.member.hasPermission('ADMINISTRATOR', true)) return msg.channel.send('This is a mod-only command. You do not have permissions to use this command. This action will be logged.').then(msg.guild.channels.cache.get(logChannel).send(`${msg.author.tag} used the mod-only command (initiatespam) in #${msg.channel.name}`))
         setInterval(() => {

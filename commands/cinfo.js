@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'cinfo',
     description: 'Provides the channel\'s information.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         if (!msg.channel) return msg.reply('Could not find channel to get information from. Please type this command in a channel.')
         let channelEmbed = new Discord.MessageEmbed()

@@ -14,7 +14,7 @@ const ytSearch = require('yt-search');
 module.exports = {
     name: 'music',
     description: 'Used for playing music using this bot in a voice channel',
-    async execute(msg, args, guildData, Prefix, client, Discord) {
+    async execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         msg.reply('So sadly, this command is disabled cuz prakhar has bad wifi and this bot is locally run, hes working on hosting it online. contact him for more info, sry once again :(')
         return
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')

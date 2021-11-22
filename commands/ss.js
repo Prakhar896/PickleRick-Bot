@@ -13,7 +13,7 @@ const indexjs = require('../index')
 module.exports = {
     name: 'ss',
     description: 'Allows moderator to change some server\'s setting using the bot.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (args[1] != 'autosetup' && args[1] != 'current' && args[1] != 'setlogchannel' && args[1] != 'help') {
             if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run. If this s')
         }

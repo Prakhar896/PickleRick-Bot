@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'mc',
     description: 'Provides information about a Minecraft server',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         let serverIP = args[1]
         if (!serverIP) {

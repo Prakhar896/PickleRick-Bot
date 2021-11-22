@@ -12,7 +12,7 @@ const fs = require('fs')
 module.exports = {
     name: 'ban',
     description: 'Bans a user from the server such that he/she cannot join again.',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
         const banMember = msg.mentions.users.first();
         if (!banMember) return msg.reply('Please mention a member that you would like to ban!')

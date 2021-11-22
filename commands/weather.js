@@ -13,7 +13,7 @@ const weather = require('weather-js');
 module.exports = {
     name: 'weather',
     description: 'Shows the current weather in a specific city',
-    execute(msg, args, guildData, Prefix, client, Discord) {
+    execute(msg, args, guildData, Prefix, client, Discord, creatorBypassMode) {
         if (!msg.guild) return msg.reply('Please use this bot in a guild.')
         // admin check
         //if (!guildData.logChannel) return msg.reply('A log channel is required to be set up for this command to run.')
