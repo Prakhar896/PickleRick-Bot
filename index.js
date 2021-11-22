@@ -182,6 +182,8 @@ bot.on('ready', () => {
             guilds[index].allowsDeleting = true
             guilds[index].autorolesEnabled = true
             guilds[index].giProfanityFilterEnabled = true
+        } else if (guildData.id == "909686440525459536") {
+            guilds[index].logChannel = '910002422301212692'
         }
         index += 1
     }
