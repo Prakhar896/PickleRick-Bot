@@ -219,9 +219,9 @@ module.exports = {
         } else if (ssParam == 'ar') {
             let trueOrFalse = args[2]
             if (!trueOrFalse) return msg.reply('Please state whether you would like to enable (true) or disable (false) the AutoRoles system.')
-            if (trueOrFalse) { trueOrFalse = true } else { trueOrFalse = false }
+            if (trueOrFalse == 'true') { trueOrFalse = true } else { trueOrFalse = false }
             var currentGuildData = guildData
-            currentGuildData.autorolesEnabled = true
+            currentGuildData.autorolesEnabled = trueOrFalse
             if (trueOrFalse) {
                 msg.reply('AutoRoles system enabled successfully!')
             } else {

@@ -49,6 +49,7 @@ const cmdlist = require('./commands/cmdlist');
 const weather = require('./commands/weather');
 const destroy = require('./commands/destroy');
 const rinfo = require('./commands/rinfo');
+const reactiveList = require('./commands/reactiveList');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -419,6 +420,17 @@ bot.on('message', async msg => {
             break;
         case 'rinfo':
             rinfo.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
+            break;
+        case 'rl':
+            reactiveList.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode, rlMessagesList)
+            .then(newRLMessagesList => {
+                if (typeof newRLMessagesList == 'object') {
+                    if (newRLMessagesList.newRLData) {
+                        rlMessagesList = newRLMessagesList["newRLData"]
+                        console.log("rlMessagesList updated: " + rlMessagesList)
+                    }
+                }
+            })
             break;
     }
 })
