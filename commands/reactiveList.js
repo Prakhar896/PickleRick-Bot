@@ -39,7 +39,7 @@ module.exports = {
 
         let targetChannel = msg.guild.channels.cache.get(channelID)
         var rlMessageID = ""
-        await targetChannel.send(`New Reactive List: ${rlHeader}`)
+        await targetChannel.send(`New Reactive List: ${rlHeader}\n`)
             .then(async rlMessage => {
                 rlMessageID = rlMessage.id
                 await rlMessage.react('🖐')

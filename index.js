@@ -50,6 +50,13 @@ const weather = require('./commands/weather');
 const destroy = require('./commands/destroy');
 const rinfo = require('./commands/rinfo');
 const reactiveList = require('./commands/reactiveList');
+const reactionAdd = require('./event-listeners/reactionAdd');
+const guildMemberAdd = require('./event-listeners/guildMemberAdd');
+const inviteDelete = require('./event-listeners/inviteDelete');
+const inviteCreate = require('./event-listeners/inviteCreate');
+const guildDelete = require('./event-listeners/guildDelete');
+const guildCreate = require('./event-listeners/guildCreate');
+const ready = require('./event-listeners/ready');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -82,166 +89,47 @@ const guildInvites = new Map();
 
 //Side Event Handlers
 bot.on('ready', () => {
-    console.log('The bot is online :).');
-    bot.user.setActivity(`${Prefix}help`)
-    bot.guilds.cache.forEach(guild => {
-        //Invites
-        guild.fetchInvites()
-            .then(invites => {
-                guildInvites.set(guild.id, invites)
-            })
-            .catch(err => {
-                console.log('Fetching Invites Error: ' + err)
-            })
-        //Setting guilds and their info
-        guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false, autorolesEnabled: false, giProfanityFilterEnabled: false })
-    })
-    let backEndChannel = bot.guilds.cache.get('805723501544603658').channels.cache.get('805733098297360406')
-    backEndChannel.send('Would you like to autoset guild data to custom guilds?')
-    //collector, for now, just autoset by itself
-    var index = 0
-    for (const guildData of guilds) {
-        if (guildData.id == '773172065263943701') {
-            //Smart People Server
-            guilds[index].logChannel = '773172065263943704'
-            guilds[index].mainRole = 'member'
-            guilds[index].muteRole = 'dood is shut'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-        } else if (guildData.id == '780685961079685120') {
-            //Ngee ann's maga party
-            guilds[index].logChannel = '804692091724496907'
-            guilds[index].mainRole = ''
-            guilds[index].muteRole = ''
-            guilds[index].allowsDeleting = false
-            guilds[index].autorolesEnabled = false
-            guilds[index].giProfanityFilterEnabled = true
-        } else if (guildData.id == '807599800379768862') {
-            //3r4, discord's better than whatsapp
-            guilds[index].logChannel = '807615806988746783'
-            guilds[index].mainRole = 'verified'
-            guilds[index].muteRole = 'muted'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-            guilds[index].giProfanityFilterEnabled = true
-        } else if (guildData.id == '696270592135135242') {
-            //NASS Robotics
-            guilds[index].logChannel = '812321866923376670'
-            guilds[index].mainRole = 'Robotics Club Members'
-            guilds[index].muteRole = 'shut'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-        } else if (guildData.id == '805723501544603658') {
-            //Backend Server
-            guilds[index].logChannel = '805733098297360406'
-            guilds[index].mainRole = 'ma homie'
-            guilds[index].muteRole = 'stfu'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-            guilds[index].giProfanityFilterEnabled = true
-        } else if (guildData.id == '815050446766080040') {
-            //Running Server
-            guilds[index].logChannel = '815094333799006218'
-            guilds[index].mainRole = 'member'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = false
-        } else if (guildData.id == '814661841451483166') {
-            // The Study Corner Server
-            guilds[index].logChannel = '816277234599985163'
-            guilds[index].mainRole = 'Member'
-            guilds[index].muteRole = 'Muted'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-        } else if (guildData.id == '816517340190736424') {
-            // meme founders gang server
-            guilds[index].logChannel = '816581576980693004'
-            guilds[index].mainRole = 'employee'
-            guilds[index].muteRole = 'shut up'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-        } else if (guildData.id == '836808479099453460') {
-            // stumble gamers server
-            guilds[index].logChannel = '836962402796306472'
-            guilds[index].mainRole = 'admin'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-        } else if (guildData.id == '853148400693805117') {
-            //nickels server
-            guilds[index].logChannel = '853150722317484042'
-            guilds[index].mainRole = 'nickeler'
-            guilds[index].muteRole = 'bad boi'
-            guilds[index].allowsDeleting = true
-            guilds[index].autorolesEnabled = true
-            guilds[index].giProfanityFilterEnabled = true
-        } else if (guildData.id == "909686440525459536") {
-            guilds[index].logChannel = '910002422301212692'
-            guilds[index].mainRole = 'man is alright'
-        }
-        index += 1
-    }
-    console.log(guilds)
+    ready.execute(bot, guildInvites, guilds)
+        .then(responseArray => {
+            guildInvites = responseArray[0]
+            guilds = responseArray[1]
+        })
 })
 
 bot.on('guildCreate', guild => {
-    guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false, autorolesEnabled: false, giProfanityFilterEnabled: false })
-    console.log('Joined guild: ' + guild.name)
-    guild.systemChannel.send('Hey there! Thanks for addding me! To get started, run \`pr!ss help\` to find out the different mod commands and settings for this bot.')
+    guildCreate.execute(guild, guilds)
+        .then(updatedGuilds => {
+            guilds = updatedGuilds
+        })
 })
 
 bot.on('guildDelete', leftGuild => {
-    let serverIndex = guilds.findIndex(guildData => guildData.id === leftGuild.id)
-    if (serverIndex == -1 || serverIndex == undefined) return console.log('Fatal Guild Removing Error, Left Guild Data: ' + leftGuild)
-    guilds.splice(serverIndex, 1)
-    console.log('Left guild: ' + leftGuild.name)
+    guildDelete.execute(leftGuild, guilds)
+        .then(updatedGuilds => {
+            guilds = updatedGuilds
+        })
 })
 
 bot.on('inviteCreate', invite => {
-    bot.guilds.cache.forEach(guild => {
-        guild.fetchInvites()
-            .then(invites => {
-                guildInvites.set(guild.id, invites)
-            })
-            .catch(err => { console.log(err) })
-    })
-    console.log(`Invite created: ${invite.url}`)
+    inviteCreate.execute(invite, guildInvites, bot)
+        .then(updatedGuildInvites => {
+            guildInvites = updatedGuildInvites
+        })
 })
 
 bot.on('inviteDelete', invite => {
-    //refresh invites list
-    bot.guilds.cache.forEach(guild => {
-        guild.fetchInvites()
-            .then(invites => {
-                guildInvites.set(guild.id, invites)
-            })
-            .catch(err => { console.log(err) })
-    })
-    console.log(`Invite deleted: ${invite.url}`)
+    inviteDelete.execute(invite, guildInvites, bot)
+        .then(updatedGuildInvites => {
+            guildInvites = updatedGuildInvites
+        })
 })
 
 bot.on('guildMemberAdd', guildMember => {
-    var roleString;
-    for (guildData of guilds) {
-        if (guildData.id == guildMember.guild.id) {
-            if (guildData.autorolesEnabled == true) {
-                if (!guildData.mainRole) return guildMember.guild.systemChannel.send(`An error (could not find main role) occurred in adding the main role to the new member ${guildMember.user.tag}. Please set the main role again using \`${Prefix}ss setmainrole <main role with spaces replaced with %>\``)
-                roleString = guildData.mainRole
-                var role = guildMember.guild.roles.cache.find(r => r.name === roleString)
-                if (!role) return guildMember.guild.systemChannel.send(`The role, \'${roleString}\', that has been set in my records does not exist. Failed to assign the role using AutoRoles. Please re-set the role using \`${Prefix}ss setmainrole <main role with spaces replaced with %>\``)
-                guildMember.roles.add(role)
-                    .then(member => {
-                        guildMember.guild.systemChannel.send(`Welcome <@${member.id}> to ${member.guild.name}!`)
-                    })
-                    .catch(err => {
-                        guildMember.guild.systemChannel.send('An error occurred in adding the main role to the new member via the AutoRoles system. Please ensure that I have Administrator permissions.')
-                        console.log('AutoRoles Error (Failed to add role to member): ' + err)
-                        return
-                    })
-                return
-            } else {
-                return
-            }
-        }
-    }
+    guildMemberAdd.execute(guildMember, guilds)
+})
+
+bot.on("messageReactionAdd", async (reaction, user) => {
+    reactionAdd.execute(reaction, user)
 })
 
 bot.on('disconnect', () => {
@@ -388,14 +276,14 @@ bot.on('message', async msg => {
             break;
         case 'dev':
             dev.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, guilds, creatorBypassMode, creatorBypassMode)
-            .then(newState => {
-                if (newState != true && newState != false) return
-                if (newState == true) {
-                    creatorBypassMode = true
-                } else {
-                    creatorBypassMode = false
-                }
-            })
+                .then(newState => {
+                    if (newState != true && newState != false) return
+                    if (newState == true) {
+                        creatorBypassMode = true
+                    } else {
+                        creatorBypassMode = false
+                    }
+                })
             break;
         case 'suggest':
             suggest.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
@@ -423,14 +311,14 @@ bot.on('message', async msg => {
             break;
         case 'rl':
             reactiveList.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode, rlMessagesList)
-            .then(newRLMessagesList => {
-                if (typeof newRLMessagesList == 'object') {
-                    if (newRLMessagesList.newRLData) {
-                        rlMessagesList = newRLMessagesList["newRLData"]
-                        console.log("rlMessagesList updated: " + rlMessagesList)
+                .then(newRLMessagesList => {
+                    if (typeof newRLMessagesList == 'object') {
+                        if (newRLMessagesList.newRLData) {
+                            rlMessagesList = newRLMessagesList["newRLData"]
+                            console.log("rlMessagesList updated: " + rlMessagesList)
+                        }
                     }
-                }
-            })
+                })
             break;
     }
 })
