@@ -4,9 +4,10 @@ const ms = require("ms");
 const axios = require('axios');
 
 module.exports = {
-    name: 'reactionAddEL',
+    name: 'reactionAdd',
     description: 'This is an event listener that listens for new message reactions.',
-    async execute(reaction, user) {
+    async execute(reaction, user, localRlMessagesList) {
+        var rlMessagesList = localRlMessagesList
         if (reaction.me) return
         if (reaction.emoji.name != "🖐") return
         for (var rlMessageID of rlMessagesList) {

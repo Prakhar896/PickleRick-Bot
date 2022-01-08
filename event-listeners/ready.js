@@ -6,8 +6,9 @@ const axios = require('axios');
 module.exports = {
     name: 'ready',
     description: 'This EL listens for when the bot connects to Discord Servers',
-    async execute(bot, guildInvites, localGuilds) {
+    async execute(bot, localGuildInvites, localGuilds, Prefix) {
         var guilds = localGuilds
+        var guildInvites = localGuildInvites
         console.log('The bot is online :).');
         bot.user.setActivity(`${Prefix}help`)
         bot.guilds.cache.forEach(guild => {

@@ -85,11 +85,11 @@ var rlMessagesList = []
 
 //new server management
 var guilds = [];
-const guildInvites = new Map();
+var guildInvites = new Map();
 
 //Side Event Handlers
 bot.on('ready', () => {
-    ready.execute(bot, guildInvites, guilds)
+    ready.execute(bot, guildInvites, guilds, Prefix)
         .then(responseArray => {
             guildInvites = responseArray[0]
             guilds = responseArray[1]
@@ -129,7 +129,7 @@ bot.on('guildMemberAdd', guildMember => {
 })
 
 bot.on("messageReactionAdd", async (reaction, user) => {
-    reactionAdd.execute(reaction, user)
+    reactionAdd.execute(reaction, user, rlMessagesList)
 })
 
 bot.on('disconnect', () => {
