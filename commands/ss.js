@@ -26,30 +26,7 @@ module.exports = {
                 }))
         let ssParam = args[1]
         if (ssParam == 'current') {
-            let mainRoleStatus;
-            let muteRoleStatus;
-            let logChannelStatus;
-            if (!guildData.mainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = guildData.mainRole }
-            if (!guildData.muteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = guildData.muteRole }
-            if (!guildData.logChannel) { logChannelStatus = 'Not Set' } else { logChannelStatus = guildData.logChannel }
-            let ssCurrentEmbed = new Discord.MessageEmbed()
-                .setTitle(`Server Settings for ${msg.guild.name}`)
-                .addField(`Name`, `${msg.guild.name}`)
-                .addField('Description', `${msg.guild.description}`)
-                .addField('Owner', `${msg.guild.owner.user.tag}`)
-                .addField('System Channel', `<#${msg.guild.systemChannelID}>`)
-                .addField('Rules Channel', `<#${msg.guild.rulesChannelID}>`)
-                .addField('Verification Level', `${msg.guild.verificationLevel}`)
-                .addField('Main Role', `${mainRoleStatus}`)
-                .addField('Mute Role', `${muteRoleStatus}`)
-                .addField('Logging Of Deleted Messages', `${guildData.allowsDeleting}`)
-                .addField('Google Images Profanity Filter Enabled:', `${guildData.giProfanityFilterEnabled}`)
-                .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
-            if (logChannelStatus != 'Not Set') {
-                ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
-            } else {
-                ssCurrentEmbed.addField('Log Channel', `Not Set`);
-            }
+            const ssCurrentEmbed = currentSettingsEmbed(msg, guildData);
             msg.channel.send(ssCurrentEmbed)
         } else if (ssParam == 'setname') {
             let newName = args[2]
@@ -161,6 +138,7 @@ module.exports = {
                 .addField('pr!ss setdeletelogs <true or false>', 'This setting allows you to control whether the bot should report the deletion of messages throughout the server to the log channel. true means you allow and false means you don\'t')
                 .addField('pr!ss create.suggest', 'Creates a suggestion channel in the server for the pr!suggest command. Please do not rename this channel but you can change its permissions as you like.')
                 .addField('pr!ss profanity filter <true | false>', 'Turn on or off a profanity filter on the search queries I search to mitigate explicit media being sent.')
+                .addField('pr!ss ar <true | false>', 'Turn on or off the AutoRoles feature of the bot. This feature will automatically add the main role to new members who join the server.')
                 .setFooter('Do pr!cmdlist to view the full list of commands that can be executed.')
             msg.channel.send(ssHelpEmbed)
         } else if (ssParam == 'autosetup') {
@@ -183,35 +161,13 @@ module.exports = {
             if (!msg.guild.channels.cache.get(logChannelID)) return msg.reply('Given log channel does not exist in this server. Auto-setup failed.')
             msg.reply(`Log Channel set to <#${logChannelID}> successfully.`)
             //Sending pr!ss current command embed
-            msg.channel.send('Auto-setup complete! Triggering pr!ss current command to show all new current settings...')
-            let mainRoleStatus;
-            let muteRoleStatus;
-            let logChannelStatus;
-            if (!mainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = mainRole }
-            if (!muteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = muteRole }
-            if (!logChannelID) { logChannelStatus = 'Not Set' } else { logChannelStatus = logChannelID }
-            let ssCurrentEmbed = new Discord.MessageEmbed()
-                .setTitle(`Server Settings for ${msg.guild.name}`)
-                .addField(`Name`, `${msg.guild.name}`)
-                .addField('Description', `${msg.guild.description}`)
-                .addField('Owner', `${msg.guild.owner.user.tag}`)
-                .addField('System Channel', `<#${msg.guild.systemChannelID}>`)
-                .addField('Rules Channel', `<#${msg.guild.rulesChannelID}>`)
-                .addField('Verification Level', `${msg.guild.verificationLevel}`)
-                .addField('Main Role', `${mainRoleStatus}`)
-                .addField('Mute Role', `${muteRoleStatus}`)
-                .addField('Logging Of Deleted Messages', `${guildData.allowsDeleting}`)
-                .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
-            if (logChannelStatus != 'Not Set') {
-                ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
-            } else {
-                ssCurrentEmbed.addField('Log Channel', `Not Set`);
-            }
-            msg.channel.send(ssCurrentEmbed)
+            msg.channel.send('Auto-setup complete! Triggering `pr!ss current` command to show all new current settings...')
             let newGuildData = guildData
             newGuildData.mainRole = mainRole
             newGuildData.muteRole = muteRole
             newGuildData.logChannel = logChannelID
+            let ssCurrentEmbed = currentSettingsEmbed(msg, newGuildData)
+            msg.channel.send(ssCurrentEmbed)
             return newGuildData
         } else if (ssParam == 'setdeletelogs') {
             let condition = args[2]
@@ -266,6 +222,11 @@ module.exports = {
             if (trueOrFalse) { trueOrFalse = true } else { trueOrFalse = false }
             var currentGuildData = guildData
             currentGuildData.autorolesEnabled = true
+            if (trueOrFalse) {
+                msg.reply('AutoRoles system enabled successfully!')
+            } else {
+                msg.reply('AutoRoles system disabled successfully!')
+            }
             return currentGuildData
         } else if (ssParam == 'profanityfilter') {
             var trueOrFalse = args[2]
@@ -285,4 +246,35 @@ module.exports = {
         }
         return guildData
     }
+}
+
+
+// Make current settings embed
+function currentSettingsEmbed(msg, guildData) {
+    let mainRoleStatus;
+    let muteRoleStatus;
+    let logChannelStatus;
+    if (!guildData.mainRole) { mainRoleStatus = 'Not Set' } else { mainRoleStatus = guildData.mainRole }
+    if (!guildData.muteRole) { muteRoleStatus = 'Not Set' } else { muteRoleStatus = guildData.muteRole }
+    if (!guildData.logChannel) { logChannelStatus = 'Not Set' } else { logChannelStatus = guildData.logChannel }
+    let ssCurrentEmbed = new Discord.MessageEmbed()
+        .setTitle(`Server Settings for ${msg.guild.name}`)
+        .addField(`Name`, `${msg.guild.name}`)
+        .addField('Description', `${msg.guild.description}`)
+        .addField('Owner', `${msg.guild.owner.user.tag}`)
+        .addField('System Channel', `<#${msg.guild.systemChannelID}>`)
+        .addField('Rules Channel', `<#${msg.guild.rulesChannelID}>`)
+        .addField('Verification Level', `${msg.guild.verificationLevel}`)
+        .addField('Main Role', `${mainRoleStatus}`)
+        .addField('Mute Role', `${muteRoleStatus}`)
+        .addField('Logging Of Deleted Messages', `${guildData.allowsDeleting}`)
+        .addField('Google Images Profanity Filter Enabled:', `${guildData.giProfanityFilterEnabled}`)
+        .addField('AutoRoles Enabled:', `${guildData.autorolesEnabled}`)
+        .setFooter(`Requested by Admin: ${msg.author.tag} in #${msg.channel.name}`);
+    if (logChannelStatus != 'Not Set') {
+        ssCurrentEmbed.addField('Log Channel', `<#${msg.guild.channels.cache.get(logChannelStatus).id}>`);
+    } else {
+        ssCurrentEmbed.addField('Log Channel', `Not Set`);
+    }
+    return ssCurrentEmbed
 }

@@ -60,18 +60,6 @@ const fortniteConfig = {
 };
 var fortniteStats = new fortniteAPI(fortniteConfig);
 
-//models
-class PickleRickGuild {
-    constructor(guildID, logChannel, stringMainRole, stringMuteRole) {
-        this.guildID = guildID
-        this.logChannel = logChannel
-        this.stringMainRole = stringMainRole
-        this.stringMuteRole = stringMuteRole
-    }
-    sendLogMessage(message, logMessage) {
-        message.guild.channels.cache.get(this.logChannel).send(logMessage)
-    }
-}
 
 //Init variables
 var botTestingMode = false
@@ -80,6 +68,7 @@ if (botTestingMode) {
     Prefix = 'prb!'
 }
 var creatorBypassMode = false
+var rlMessagesList = []
 //old server management
 // var logChannel = ['773172065263943704', '804692091724496907', '805733098297360406', '807615806988746783']
 // var mainRoles = ['member', 'ma homie']
@@ -193,7 +182,7 @@ bot.on('ready', () => {
 })
 
 bot.on('guildCreate', guild => {
-    guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false })
+    guilds.push({ id: guild.id, name: guild.name, logChannel: undefined, mainRole: '', muteRole: '', allowsDeleting: false, autorolesEnabled: false, giProfanityFilterEnabled: false })
     console.log('Joined guild: ' + guild.name)
     guild.systemChannel.send('Hey there! Thanks for addding me! To get started, run \`pr!ss help\` to find out the different mod commands and settings for this bot.')
 })
@@ -230,9 +219,9 @@ bot.on('inviteDelete', invite => {
 
 bot.on('guildMemberAdd', guildMember => {
     var roleString;
-    for (guildData in guilds) {
+    for (guildData of guilds) {
         if (guildData.id == guildMember.guild.id) {
-            if (guildData.autorolesEnabled) {
+            if (guildData.autorolesEnabled == true) {
                 if (!guildData.mainRole) return guildMember.guild.systemChannel.send(`An error (could not find main role) occurred in adding the main role to the new member ${guildMember.user.tag}. Please set the main role again using \`${Prefix}ss setmainrole <main role with spaces replaced with %>\``)
                 roleString = guildData.mainRole
                 var role = guildMember.guild.roles.cache.find(r => r.name === roleString)
@@ -382,6 +371,7 @@ bot.on('message', async msg => {
             let newGuildData = ss.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)
             if (!newGuildData.id) return
             guilds[serverIndex] = newGuildData
+            console.log(newGuildData)
             break;
         case 'lockchannel':
             lockchannel.execute(msg, args, guilds[serverIndex], Prefix, bot, Discord, creatorBypassMode)

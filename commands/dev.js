@@ -52,6 +52,7 @@ module.exports = {
                 .addField('Set the bot\'s username', 'pr!dev setusername/su <new username>')
                 .addField('Announce Downtime', 'pr!dev announcedowntime/ad <downtime message, spaces allowed>')
                 .addField('Announce Message', 'pr!dev announce/an <announcement message, spaces allowed>')
+                .addField('Get All Guild Data', 'pr!dev getalldata')
             msg.channel.send(devHelpEmbed)
         } else if (devParam == 'announcedowntime' || devParam == 'ad') {
             let msgArgs = args.slice(2).join(" ")
