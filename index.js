@@ -57,6 +57,7 @@ const inviteCreate = require('./event-listeners/inviteCreate');
 const guildDelete = require('./event-listeners/guildDelete');
 const guildCreate = require('./event-listeners/guildCreate');
 const ready = require('./event-listeners/ready');
+const messageDelete = require('./event-listeners/messageDelete');
 require('dotenv').config();
 const token = process.env.DISCORD_TOKEN
 
@@ -324,12 +325,9 @@ bot.on('message', async msg => {
 })
 
 bot.on('messageDelete', deletedMessage => {
-    let serverIndex = guilds.findIndex(guildData => guildData.id === deletedMessage.guild.id)
-    if (serverIndex == undefined || serverIndex == -1) return console.log(`Error in Getting Server Index when trying to log deleted message due to data error. Deleted Message: ${deletedMessage.content}, Guild ID and Name: ${deletedMessage.guild.id}, ${deletedMessage.guild.name}`)
-    if (guilds[serverIndex].allowsDeleting == true) {
-        deletedMessage.guild.channels.cache.get(guilds[serverIndex].logChannel).send(`${deletedMessage.author.tag} deleted a message with the content \`${deletedMessage.content}\` in <#${deletedMessage.channel.id}>`)
-    }
+    messageDelete.execute(guilds, deletedMessage)
 })
+
 if (botTestingMode) {
     bot.login(process.env.DISCORD_BETA_TOKEN) //DISCORD_BETA_TOKEN is the beta discord bot's token
 } else {

@@ -31,7 +31,17 @@ module.exports = {
         let channelHash = args[1]
         if (!channelHash) return msg.reply('Please provide a channel ID to create the reactive list in.')
         let channelID = channelIDExtractor(channelHash)
-        if (channelHash == "current") { channelID = msg.channel.id }
+        if (channelHash == "current") { channelID = msg.channel.id } else if (channelHash == "help") {
+            var helpEmbed = new Discord.MessageEmbed()
+                .setTitle("Reactive Lists Help")
+                .setColor("ORANGE")
+                .addField("Usage", "`pr!rl #channel <Reactive List title here, spaces allowed>`")
+                .addField("Example usage:", "`pr!rl #general Volunteer here to join the beach cleanup!")
+                .setFooter("Tip: you can replace the #channel parameter with `current` and PickleRick will send the reactive message in the current channel you are messaging in. For e.g `pr!rl current Volunteer here to join the beach cleanup!`")
+
+            msg.channel.send(helpEmbed)
+            return
+        }
         if (!msg.guild.channels.cache.get(channelID)) return msg.reply('Please provide a valid channel ID to create the reactive list in.')
 
         let rlHeader = args.slice(2).join(' ')
