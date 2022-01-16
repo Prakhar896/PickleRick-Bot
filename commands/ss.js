@@ -15,6 +15,7 @@ const setruleschannel = require('./ssCmdFiles/setruleschannel');
 const setverlevel = require('./ssCmdFiles/setverlevel');
 const setmainrole = require('./ssCmdFiles/setmainrole');
 const setmuterole = require('./ssCmdFiles/setmuterole');
+const setlogchannel = require('./ssCmdFiles/setlogchannel');
 
 module.exports = {
     name: 'ss',
@@ -73,13 +74,15 @@ module.exports = {
             return newData
 
         } else if (ssParam == 'setlogchannel') {
-            let logChannelID = args[2]
-            if (!logChannelID) return msg.reply('Please give the ID of the new log channel in this server.')
-            if (!msg.guild.channels.cache.get(logChannelID)) return msg.reply('That channel does not exist in this server.')
-            msg.reply(`Log Channel set to <#${logChannelID}> successfully.`)
-            let newGuildData = guildData
-            newGuildData.logChannel = logChannelID
-            return newGuildData
+            
+            var newData = guildData
+            setlogchannel.execute(msg, args, guildData)
+            .then(newGuildData => {
+                if (!newGuildData.logChannel) return
+                newData = newGuildData
+            })
+            return newData
+
         } else if (ssParam == 'help') {
             let ssHelpEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Settings Help')

@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 
 module.exports = {
-    name: 'setname',
-    description: 'This SS command changes the name of the server.',
+    name: 'setsyschannel',
+    description: 'This SS command changes the system channel of the server. All new member notifications will be sent to this channel.',
     execute(msg, args, guildData) {
         // SS Command Code
         let channelID = args[2]

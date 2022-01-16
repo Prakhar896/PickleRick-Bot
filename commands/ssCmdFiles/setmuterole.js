@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 
 module.exports = {
-    name: 'setname',
-    description: 'This SS command changes the name of the server.',
+    name: 'setmuterole',
+    description: 'This SS command changes the server\'s mute role in the PickleRick database.',
     async execute(msg, args, guildData) {
         // SS Command Code
         let muteRole = args[2]

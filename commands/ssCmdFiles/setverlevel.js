@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 
 module.exports = {
-    name: 'setname',
-    description: 'This SS command changes the name of the server.',
+    name: 'setverlevel',
+    description: 'This SS command changes the required verification level of the server.',
     execute(msg, args, guildData) {
         // SS Command Code
         let newLevel = args[2]
