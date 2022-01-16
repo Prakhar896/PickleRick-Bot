@@ -101,8 +101,20 @@ module.exports = {
                 guilds[index].autorolesEnabled = true
                 guilds[index].giProfanityFilterEnabled = true
             } else if (guildData.id == "909686440525459536") {
+                // AWS Accelerator lmao
                 guilds[index].logChannel = '910002422301212692'
                 guilds[index].mainRole = 'man is alright'
+            } else if (guildData.id == "857942746647101466") {
+                // OneStop Backend
+                guilds[index].logChannel = "894749183200870430"
+                guilds[index].mainRole = "Project Admins"
+                guilds[index].muteRole = "muted"
+                guilds[index].allowsDeleting = true
+            } else if (guildData.id == '931502923043704832') {
+                // Code X competition
+                guilds[index].logChannel = '931521123739381780'
+                guilds[index].mainRole = 'admins'
+                guilds[index].muteRole = 'main'
             }
             index += 1
         }

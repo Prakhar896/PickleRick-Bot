@@ -55,6 +55,7 @@ module.exports = {
                 .addField('Get All Guild Data', 'pr!dev getalldata')
             msg.channel.send(devHelpEmbed)
         } else if (devParam == 'announcedowntime' || devParam == 'ad') {
+
             let msgArgs = args.slice(2).join(" ")
             if (!msgArgs) return msg.reply('Please give the content of the downtime alert.')
             let downtimeEmbed = new Discord.MessageEmbed()
@@ -69,6 +70,7 @@ module.exports = {
             })
             msg.reply('Successfully alerted all servers about downtime, sending a copy of the message here...')
             msg.channel.send(downtimeEmbed)
+            
         } else if (devParam == 'setactivity' || devParam == 'sa') {
             if (args[2] != '.listening' && args[2] != '.watching' && args[2] != '.playing' && args[2] != '.streaming' && args[2] != '.competing') return msg.reply('That is not a valid status. Valid statuses include: \`.playing, .watching, .listening, .streaming, .competing\`')
             var activityType;
