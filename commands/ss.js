@@ -18,6 +18,8 @@ const setmuterole = require('./ssCmdFiles/setmuterole');
 const setlogchannel = require('./ssCmdFiles/setlogchannel');
 const ssHelp = require('./ssCmdFiles/ssHelp');
 const autosetup = require('./ssCmdFiles/autosetup');
+const setdeletelogs = require('./ssCmdFiles/setdeletelogs');
+const createSuggest = require('./ssCmdFiles/createSuggest');
 
 module.exports = {
     name: 'ss',
@@ -100,52 +102,19 @@ module.exports = {
             return newData
 
         } else if (ssParam == 'setdeletelogs') {
-            let condition = args[2]
-            if (!condition) return msg.reply('Please type either true (you want to have logs of deleted messages) or false (you do not want to have logs of deleted messages)')
-            if (condition != "true" && condition != "false") return msg.reply('Please give a valid value (either true or false).')
-            msg.reply(`Set deletelogs to ${condition} successfully!`)
-            var allowsDeleting;
-            if (condition == 'true') {
-                allowsDeleting = true
-            } else {
-                allowsDeleting = false
-            }
-            let newGuildData = guildData
-            newGuildData.allowsDeleting = allowsDeleting
-            return newGuildData
+
+            var newData = guildData
+            setdeletelogs.execute(msg, args, guildData)
+            .then(newGuildData => {
+                if (!newGuildData.allowsDeleting) return
+                newData = newGuildData
+            })
+            return newData
+
         } else if (ssParam == 'create.suggest') {
-            const channel = msg.guild.channels.cache.find(c => c.name === 'suggestions' || c.name === 'suggest' || c.name === 'recommendations')
-            if (channel) {
-                msg.reply(`I identified <#${channel.id}> as a suggestions channel. Create one anyway? *WARNING: This could cause conflicts when sending suggestion messages* (respond with yes or no, you have 10 seconds to respond.)`)
-                const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
-                collector.on('collect', response => {
-                    let responseAsString = response.toString()
-                    let lowercasedResponse = responseAsString.toLowerCase()
-                    if (lowercasedResponse === 'yes') {
-                        msg.guild.channels.create('suggestions', { type: 'text', topic: 'Suggestions made by members to be democratically voted by all members in the server.' })
-                            .catch(err => {
-                                msg.reply('An error occurred in creating the channel. Please ensure I have Administrator permissions.')
-                                console.log('Suggestions channel creation error: ' + err)
-                            })
-                        msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
-                        return guildData
-                    } else if (lowercasedResponse === 'no') {
-                        msg.reply('Channel creation aborted!')
-                        return guildData
-                    } else {
-                        msg.reply('Invalid response, channel creation aborted.')
-                        return guildData
-                    }
-                })
-            } else {
-                msg.guild.channels.create('suggestions', { type: 'text', topic: 'Suggestions made by members to be democratically voted by all members in the server.' })
-                    .catch(err => {
-                        msg.reply('An error occurred in creating the channel. Please ensure I have Administrator permissions.')
-                        console.log('Suggestions channel creation error: ' + err)
-                    });
-                msg.reply('Suggestions channel created! Please do not rename this channel but you can change its permissions how ever you like.')
-                return guildData
-            }
+
+            createSuggest.execute(msg, args, guildData)
+            
         } else if (ssParam == 'ar') {
             let trueOrFalse = args[2]
             if (!trueOrFalse) return msg.reply('Please state whether you would like to enable (true) or disable (false) the AutoRoles system.')
