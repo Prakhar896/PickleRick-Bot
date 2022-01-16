@@ -2,8 +2,8 @@ const Discord = require('discord.js')
 const miscFunctions = require('../../miscFunctions')
 
 module.exports = {
-    name: '',
-    description: "",
+    name: 'Server Settings Help',
+    description: "This SS command sends an extremely packed help embed full of information on how to use this bot.",
     async execute(msg, args, guildData) {
         // SS Command Code
         let ssHelpEmbed = new Discord.MessageEmbed()

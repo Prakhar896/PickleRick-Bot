@@ -17,6 +17,7 @@ const setmainrole = require('./ssCmdFiles/setmainrole');
 const setmuterole = require('./ssCmdFiles/setmuterole');
 const setlogchannel = require('./ssCmdFiles/setlogchannel');
 const ssHelp = require('./ssCmdFiles/ssHelp');
+const autosetup = require('./ssCmdFiles/autosetup');
 
 module.exports = {
     name: 'ss',
@@ -65,57 +66,39 @@ module.exports = {
             return newData
 
         } else if (ssParam == 'setmuterole') {
-            
+
             var newData = guildData
             setmuterole.execute(msg, args, guildData)
-            .then(newGuildData => {
-                if (!newGuildData.muteRole) return
-                newData = newGuildData
-            })
+                .then(newGuildData => {
+                    if (!newGuildData.muteRole) return
+                    newData = newGuildData
+                })
             return newData
 
         } else if (ssParam == 'setlogchannel') {
-            
+
             var newData = guildData
             setlogchannel.execute(msg, args, guildData)
-            .then(newGuildData => {
-                if (!newGuildData.logChannel) return
-                newData = newGuildData
-            })
+                .then(newGuildData => {
+                    if (!newGuildData.logChannel) return
+                    newData = newGuildData
+                })
             return newData
 
         } else if (ssParam == 'help') {
-            
+
             ssHelp.execute(msg, args, guildData)
 
         } else if (ssParam == 'autosetup') {
-            msg.reply('Running auto-setup with given fields.')
-            //Set main role
-            let mainRole = args[2]
-            if (!mainRole) return msg.reply('Please give the name of the main role you would like to set as the new Main role. Do note that any spaces should be replace with the % sign. Auto-setup failed.')
-            mainRole = mainRole.split('%').join(' ')
-            if (!msg.guild.roles.cache.find(role => role.name === mainRole)) return msg.reply('Given main role does not exist in this server. Auto-setup failed.')
-            msg.reply('Main role set successfully.')
-            //Set mute role
-            let muteRole = args[3]
-            if (!muteRole) return msg.reply('Please give the name of the mute role you would like to set as the new Mute role. Do note that any spaces should be replace with the % sign. Auto-setup failed.')
-            muteRole = muteRole.split('%').join(' ')
-            if (!msg.guild.roles.cache.find(role => role.name === muteRole)) return msg.reply('Given mute role does not exist in this server. Auto-setup failed.')
-            msg.reply('Mute role set successfully.')
-            //Set log channel
-            let logChannelID = args[4]
-            if (!logChannelID) return msg.reply('Please give the ID of the new log channel in this server. Auto-setup failed.')
-            if (!msg.guild.channels.cache.get(logChannelID)) return msg.reply('Given log channel does not exist in this server. Auto-setup failed.')
-            msg.reply(`Log Channel set to <#${logChannelID}> successfully.`)
-            //Sending pr!ss current command embed
-            msg.channel.send('Auto-setup complete! Triggering `pr!ss current` command to show all new current settings...')
-            let newGuildData = guildData
-            newGuildData.mainRole = mainRole
-            newGuildData.muteRole = muteRole
-            newGuildData.logChannel = logChannelID
-            let ssCurrentEmbed = currentSettingsEmbed(msg, newGuildData)
-            msg.channel.send(ssCurrentEmbed)
-            return newGuildData
+
+            var newData = guildData
+            autosetup.execute(msg, args, guildData, currentSettingsEmbed)
+                .then(newGuildData => {
+                    if (!newGuildData.logChannel) return
+                    newData = newGuildData
+                })
+            return newData
+
         } else if (ssParam == 'setdeletelogs') {
             let condition = args[2]
             if (!condition) return msg.reply('Please type either true (you want to have logs of deleted messages) or false (you do not want to have logs of deleted messages)')
