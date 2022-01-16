@@ -65,8 +65,12 @@ module.exports = {
                 .setFooter('Contact the developers for more information.');
             guilds.forEach(guildData => {
                 let guildObject = client.guilds.cache.get(guildData.id)
-                let guildLogChannelObject = guildObject.channels.cache.get(guildData.logChannel)
-                guildLogChannelObject.send(downtimeEmbed)
+                if (!guildData.logChannel || guildData.logChannel == '') {
+                    msg.reply(`Failed to send downtime broadcast to \`${guildObject.name}\` server. Its log channel was not found in the PickleRick Database`)
+                } else {
+                    let guildLogChannelObject = guildObject.channels.cache.get(guildData.logChannel)
+                    guildLogChannelObject.send(downtimeEmbed)
+                }
             })
             msg.reply('Successfully alerted all servers about downtime, sending a copy of the message here...')
             msg.channel.send(downtimeEmbed)
@@ -151,8 +155,12 @@ module.exports = {
                 .setFooter('Contact the developers for more information.');
             guilds.forEach(guildData => {
                 let guildObject = client.guilds.cache.get(guildData.id)
-                let guildLogChannelObject = guildObject.channels.cache.get(guildData.logChannel)
-                guildLogChannelObject.send(downtimeEmbed)
+                if (!guildData.logChannel || guildData.logChannel == '') {
+                    msg.reply(`Failed to send downtime broadcast to \`${guildObject.name}\` server. Its log channel was not found in the PickleRick Database`)
+                } else {
+                    let guildLogChannelObject = guildObject.channels.cache.get(guildData.logChannel)
+                    guildLogChannelObject.send(downtimeEmbed)
+                }
             })
             msg.reply('Successfully sent announcement to all servers, sending a copy of the message here...')
             msg.channel.send(downtimeEmbed)
