@@ -71,7 +71,7 @@ var fortniteStats = new fortniteAPI(fortniteConfig);
 
 
 //Init variables
-var botTestingMode = true
+var botTestingMode = false
 var Prefix = 'pr!'; //default prefix, do pr!setprefix to update prefix
 if (botTestingMode) {
     Prefix = 'prb!'

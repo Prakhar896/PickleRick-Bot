@@ -20,6 +20,8 @@ const ssHelp = require('./ssCmdFiles/ssHelp');
 const autosetup = require('./ssCmdFiles/autosetup');
 const setdeletelogs = require('./ssCmdFiles/setdeletelogs');
 const createSuggest = require('./ssCmdFiles/createSuggest');
+const autoroles = require('./ssCmdFiles/autoroles');
+const profanityfilter = require('./ssCmdFiles/profanityfilter');
 
 module.exports = {
     name: 'ss',
@@ -105,43 +107,36 @@ module.exports = {
 
             var newData = guildData
             setdeletelogs.execute(msg, args, guildData)
-            .then(newGuildData => {
-                if (!newGuildData.allowsDeleting) return
-                newData = newGuildData
-            })
+                .then(newGuildData => {
+                    if (!newGuildData.allowsDeleting) return
+                    newData = newGuildData
+                })
             return newData
 
         } else if (ssParam == 'create.suggest') {
 
             createSuggest.execute(msg, args, guildData)
-            
+
         } else if (ssParam == 'ar') {
-            let trueOrFalse = args[2]
-            if (!trueOrFalse) return msg.reply('Please state whether you would like to enable (true) or disable (false) the AutoRoles system.')
-            if (trueOrFalse == 'true') { trueOrFalse = true } else { trueOrFalse = false }
-            var currentGuildData = guildData
-            currentGuildData.autorolesEnabled = trueOrFalse
-            if (trueOrFalse) {
-                msg.reply('AutoRoles system enabled successfully!')
-            } else {
-                msg.reply('AutoRoles system disabled successfully!')
-            }
-            return currentGuildData
+
+            var newData = guildData
+            autoroles.execute(msg, args, guildData)
+                .then(newGuildData => {
+                    if (!newGuildData.autorolesEnabled) return
+                    newData = newGuildData
+                })
+            return newData
+
         } else if (ssParam == 'profanityfilter') {
-            var trueOrFalse = args[2]
-            if (!trueOrFalse) return msg.reply('Please state whether you would like to enable (true) or disable (false) the Profanity Filter system.')
-            if (trueOrFalse == 'true') {
-                trueOrFalse = true
-            } else if (trueOrFalse == 'false') {
-                trueOrFalse = false
-            } else {
-                msg.reply('Invalid response. Only \`true\` and \`false\` are accepted.')
-                return
-            }
-            var currentGuildData = guildData
-            currentGuildData.giProfanityFilterEnabled = trueOrFalse
-            msg.reply(`Set the Profanity Filter system\'s status to \`${trueOrFalse}\` successfully`)
-            return currentGuildData
+            
+            var newData = guildData
+            profanityfilter.execute(msg, args, guildData)
+            .then(newGuildData => {
+                if (!newGuildData.giProfanityFilterEnabled) return
+                newData = newGuildData
+            })
+            return newData
+
         }
         return guildData
     }
