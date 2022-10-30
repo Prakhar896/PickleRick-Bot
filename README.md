@@ -3,7 +3,7 @@
 This is a Discord bot that I made for any Discord server and has features from moderation to fun google images and game stats.
 
 ## Contributors
-- Prakhar Trivedi, public email: prakh0706@outlook.com
+- Prakhar Trivedi
 
 ## Usage
 
