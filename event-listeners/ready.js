@@ -115,6 +115,12 @@ module.exports = {
                 guilds[index].logChannel = '931521123739381780'
                 guilds[index].mainRole = 'admins'
                 guilds[index].muteRole = 'main'
+            } else if (guildData.id == "1101069107111137340") {
+                // IT2301 crackheads
+                guilds[index].logChannel = "1101072007514296351"
+                guilds[index].mainRole = 'member'
+                guilds[index].muteRole = "shut"
+                guilds[index].allowsDeleting = true
             }
             index += 1
         }
